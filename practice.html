@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life in the UK — Official Practice Test</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{
+  --navy:#0d1b2a;--red:#cf142b;--blue:#00247d;--cream:#f4f0e6;--gold:#c9a84c;
+  --pale:#e8e2d6;--white:#fff;--text:#1a1a2e;--muted:#64748b;
+  --correct:#15803d;--correct-bg:#f0fdf4;--correct-border:#22c55e;
+  --wrong:#b91c1c;--wrong-bg:#fff1f2;--wrong-border:#f87171;
+  --missed-bg:#fffbeb;--missed-border:#f59e0b;--radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+header{background:var(--navy);padding:13px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 20px rgba(0,0,0,.4);position:sticky;top:0;z-index:100}
+.flag-svg{width:46px;height:29px;border-radius:3px;flex-shrink:0}
+.hdr-txt h1{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;font-weight:700}
+.hdr-txt p{font-size:.68rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-weight:500;margin-top:1px}
+.switch-link{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;border-radius:8px;padding:5px 11px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;white-space:nowrap;flex-shrink:0;transition:background .15s}
+.switch-link:hover{background:rgba(255,255,255,.26)}
+.score-badge{margin-left:auto;background:var(--gold);color:var(--navy);font-weight:700;font-size:.8rem;padding:5px 13px;border-radius:20px;display:none;white-space:nowrap}
+.timer-badge{margin-left:8px;background:#ef4444;color:#fff;font-weight:700;font-size:.8rem;padding:5px 13px;border-radius:20px;display:none;white-space:nowrap}
+.hdr-home-btn{margin-left:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;display:none;align-items:center;gap:4px;transition:background .15s;white-space:nowrap}
+.hdr-home-btn:hover{background:rgba(255,255,255,.25)}
+
+main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
+
+/* HOME */
+#home{padding-bottom:10px}
+.home-hero{text-align:center;padding:20px 0 16px}
+.home-hero h2{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--navy);margin-bottom:6px}
+.home-hero p{color:var(--muted);font-size:.87rem;max-width:480px;margin:0 auto 16px;line-height:1.65}
+.stats-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.stat-card{background:var(--white);border-radius:var(--radius);padding:10px 16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);min-width:80px}
+.stat-card .num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--blue)}
+.stat-card .lbl{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+
+.mock-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--red),#a00020);color:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;box-shadow:0 4px 16px rgba(207,20,43,.35);letter-spacing:.03em}
+.mock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(207,20,43,.4)}
+.mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.mock-card{background:var(--white);border:2px solid #fecaca;border-radius:var(--radius);padding:12px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;color:var(--wrong);text-align:left;display:flex;flex-direction:column;gap:2px;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.mock-card span{font-size:.7rem;color:var(--muted);font-weight:400}
+.mock-card:hover{border-color:var(--red);background:#fff1f2;transform:translateY(-1px)}
+
+.section-lbl{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.topic-card{background:var(--white);border:2px solid transparent;border-radius:var(--radius);padding:14px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;display:flex;align-items:center;gap:10px}
+.topic-card:hover{border-color:var(--blue);background:#f0f4ff;transform:translateY(-1px)}
+.topic-card .tco{font-size:1.4rem;flex-shrink:0}
+.topic-card .tinf{flex:1}
+.topic-card .ttitle{font-weight:700;font-size:.82rem;color:var(--navy);line-height:1.3}
+.topic-card .tsub{font-size:.68rem;color:var(--muted);margin-top:2px}
+.topic-card .tcount{background:var(--navy);color:#fff;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+
+/* QUIZ */
+#quiz{display:none}
+.quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.cancel-btn{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;display:flex;align-items:center;transition:color .15s,background .15s;flex-shrink:0}
+.cancel-btn:hover{color:var(--red);background:rgba(207,20,43,.1)}
+.cancel-btn svg{width:20px;height:20px}
+.progress-wrap{flex:1;display:flex;align-items:center;gap:10px}
+.progress-bar{flex:1;height:6px;background:var(--pale);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--red));border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-lbl{font-size:.74rem;font-weight:600;color:var(--muted);white-space:nowrap}
+
+.q-card{background:var(--white);border-radius:var(--radius);padding:22px 20px 18px;box-shadow:0 4px 24px rgba(0,0,0,.08);border-left:5px solid var(--blue);animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.q-meta{display:flex;align-items:center;gap:7px;margin-bottom:10px;flex-wrap:wrap}
+.q-topic-tag{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);background:var(--navy);padding:3px 9px;border-radius:20px}
+.q-src-tag{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);background:var(--gold);padding:3px 9px;border-radius:20px}
+.q-text{font-family:'Playfair Display',serif;font-size:1.07rem;line-height:1.6;color:var(--navy);margin-bottom:5px}
+.q-hint{font-size:.74rem;color:#b45309;font-weight:600;margin-bottom:10px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;background:var(--cream);border:2px solid transparent;border-radius:10px;padding:11px 14px;cursor:pointer;font-size:.88rem;color:var(--text);transition:all .15s;text-align:left;width:100%}
+.opt:hover:not(:disabled){background:#e8eeff;border-color:var(--blue);transform:translateX(3px)}
+.opt input{width:16px;height:16px;accent-color:var(--blue);flex-shrink:0;cursor:pointer}
+.opt.correct{background:var(--correct-bg);border-color:var(--correct-border);color:var(--correct);font-weight:500}
+.opt.wrong{background:var(--wrong-bg);border-color:var(--wrong-border);color:var(--wrong)}
+.opt.missed{background:var(--missed-bg);border-color:var(--missed-border);color:#92400e}
+.opt:disabled{cursor:default;transform:none}
+.explanation{display:none;background:#f0f7ff;border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:11px 14px;margin-top:11px;font-size:.83rem;line-height:1.6;color:#1e3a5f;animation:fadeIn .3s ease}
+.explanation.show{display:block}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.btn-row{display:flex;gap:10px;margin-top:12px}
+.check-btn,.next-btn{border:none;border-radius:10px;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.check-btn{background:var(--blue);color:#fff;box-shadow:0 3px 12px rgba(0,36,125,.25)}
+.check-btn:hover{background:#001a5e;transform:translateY(-1px)}
+.check-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.next-btn{background:var(--navy);color:#fff;display:none}
+.next-btn:hover{background:#1a2f45}
+
+/* RESULTS */
+#results{display:none;text-align:center}
+.result-circle{width:130px;height:130px;border-radius:50%;margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;border:6px solid}
+.result-circle.pass{color:var(--correct);border-color:var(--correct-border);background:var(--correct-bg)}
+.result-circle.fail{color:var(--wrong);border-color:var(--wrong-border);background:var(--wrong-bg)}
+.result-circle span{font-size:.62rem;font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-top:-3px}
+#results h2{font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--navy);margin-bottom:6px}
+#results>p{color:var(--muted);font-size:.87rem;margin-bottom:20px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.r-card{background:var(--white);border-radius:var(--radius);padding:13px 10px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.r-card .rnum{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700}
+.r-card .rlbl{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.r-card.green .rnum{color:var(--correct)}.r-card.red .rnum{color:var(--wrong)}.r-card.blue .rnum{color:var(--blue)}
+.btn-group{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.restart-btn{background:var(--blue);color:#fff;border:none;border-radius:var(--radius);padding:12px 32px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(0,36,125,.3)}
+.restart-btn:hover{background:#001a5e;transform:translateY(-2px)}
+.home-btn{background:var(--white);color:var(--navy);border:2px solid var(--pale);border-radius:var(--radius);padding:12px 32px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s}
+.home-btn:hover{border-color:var(--blue);background:#f0f4ff}
+.wrong-review{margin-top:6px;text-align:left}
+.wrong-review h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid var(--pale)}
+.review-item{background:var(--white);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;border-left:4px solid var(--wrong-border);font-size:.81rem;line-height:1.6}
+.review-item .rq{font-weight:600;color:var(--navy);margin-bottom:2px}
+.review-item .ra{color:var(--correct)}
+
+@media(max-width:480px){main{padding:14px 10px 50px}.q-text{font-size:1rem}.topic-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <svg class="flag-svg" viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg">
+    <rect width="60" height="36" fill="#00247d"/>
+    <line x1="0" y1="0" x2="60" y2="36" stroke="white" stroke-width="7.2"/>
+    <line x1="60" y1="0" x2="0" y2="36" stroke="white" stroke-width="7.2"/>
+    <line x1="0" y1="0" x2="60" y2="36" stroke="#cf142b" stroke-width="4" stroke-dasharray="25 14 25 0"/>
+    <line x1="60" y1="0" x2="0" y2="36" stroke="#cf142b" stroke-width="4" stroke-dasharray="0 25 14 25"/>
+    <rect x="24" y="0" width="12" height="36" fill="white"/><rect x="0" y="12" width="60" height="12" fill="white"/>
+    <rect x="26" y="0" width="8" height="36" fill="#cf142b"/><rect x="0" y="14" width="60" height="8" fill="#cf142b"/>
+  </svg>
+  <div class="hdr-txt"><h1>Life in the UK</h1><p>Official 3rd Edition Practice</p></div>
+  <a class="switch-link" id="timelineLink" href="index.html">📜 Timeline</a>
+  <div class="score-badge" id="scoreBadge">0/0</div>
+  <div class="timer-badge" id="timerBadge">45:00</div>
+  <button class="hdr-home-btn" id="hdrHomeBtn" onclick="goHome()">🏠 Home</button>
+</header>
+
+<main>
+<!-- HOME -->
+<div id="home">
+  <div class="home-hero">
+    <h2>Study Smart. Pass First Time.</h2>
+    <p>Questions written directly from the <strong>official Home Office 3rd Edition handbook</strong>. Practice by topic or simulate the real exam.</p>
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="statTotal">—</div><div class="lbl">Questions</div></div>
+      <div class="stat-card"><div class="num">14</div><div class="lbl">Topics</div></div>
+      <div class="stat-card"><div class="num">75%</div><div class="lbl">Pass Mark</div></div>
+      <div class="stat-card"><div class="num">24</div><div class="lbl">Real Test Qs</div></div>
+    </div>
+  </div>
+
+  <button class="mock-btn" onclick="startMockExam(1)">🎓 Mock Exam 1 — 24 Questions · 45 Minutes</button>
+  <div class="mock-grid">
+    <button class="mock-card" onclick="startMockExam(2)">📝 Mock Exam 2<span>Different 24 questions</span></button>
+    <button class="mock-card" onclick="startMockExam(3)">📝 Mock Exam 3<span>Different 24 questions</span></button>
+  </div>
+
+  <div class="section-lbl">Practice by Topic</div>
+  <div class="topic-grid" id="topicGrid"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz">
+  <div class="quiz-header">
+    <button class="cancel-btn" onclick="confirmHome()" title="Exit to home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+      </svg>
+    </button>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-lbl" id="progressLbl">1/24</div>
+    </div>
+  </div>
+  <div class="q-card" id="qCard">
+    <div class="q-meta">
+      <span class="q-src-tag" id="qSrc"></span>
+      <span class="q-topic-tag" id="qTop"></span>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="q-hint" id="qHint"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation"></div>
+    <div class="btn-row">
+      <button class="check-btn" id="checkBtn" onclick="checkAnswer()">Check Answer</button>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div style="text-align:right;margin-bottom:14px">
+    <button onclick="goHome()" style="background:none;border:2px solid var(--pale);border-radius:8px;padding:7px 16px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--pale)';this.style.color='var(--muted)'">🏠 Back to Home</button>
+  </div>
+  <div class="result-circle" id="resultCircle"><div id="resultScore"></div><span id="resultLabel"></span></div>
+  <h2 id="resultHeading"></h2>
+  <p id="resultMsg"></p>
+  <div class="result-grid">
+    <div class="r-card green"><div class="rnum" id="rC">0</div><div class="rlbl">Correct</div></div>
+    <div class="r-card red"><div class="rnum" id="rW">0</div><div class="rlbl">Incorrect</div></div>
+    <div class="r-card blue"><div class="rnum" id="rP">0%</div><div class="rlbl">Score</div></div>
+  </div>
+  <div class="btn-group">
+    <button class="restart-btn" onclick="restartSame()">Try Again →</button>
+    <button class="home-btn" onclick="goHome()">← Back to Topics</button>
+  </div>
+  <div class="wrong-review" id="wrongReview"></div>
+</div>
+</main>
+
+<script>
+// ── QUESTION BANK ─────────────────────────────────────────────────────────────
+// All questions sourced directly from Life in the UK: A Guide for New Residents, 3rd Edition (Crown Copyright)
+const S=(t,tp,q,opts,c,exp)=>({t,tp,q,type:'single',opts,c:[c],exp,hint:''});
+const M=(t,tp,q,opts,c,exp,hint)=>({t,tp,q,type:'multi',opts,c,exp,hint:hint||'Select all correct answers'});
+
+const TOPICS={
+  ch1:{label:'Ch 1 · Values & Principles',icon:'🏛️',color:'#00247d'},
+  ch2:{label:'Ch 2 · What is the UK?',icon:'🗺️',color:'#15803d'},
+  ch3a:{label:'Ch 3 · Early Britain',icon:'🪨',color:'#7c3aed'},
+  ch3b:{label:'Ch 3 · Middle Ages',icon:'🏰',color:'#b45309'},
+  ch3c:{label:'Ch 3 · Tudors & Stuarts',icon:'👑',color:'#be185d'},
+  ch3d:{label:'Ch 3 · Global Power & Empire',icon:'⚓',color:'#0369a1'},
+  ch3e:{label:'Ch 3 · WWI, WWII & Inventions',icon:'✈️',color:'#374151'},
+  ch3f:{label:'Ch 3 · Britain Since 1945',icon:'🏥',color:'#065f46'},
+  ch4a:{label:'Ch 4 · Arts, Music & Literature',icon:'🎭',color:'#7c3aed'},
+  ch4b:{label:'Ch 4 · Sport',icon:'⚽',color:'#b45309'},
+  ch4c:{label:'Ch 4 · Festivals & Customs',icon:'🎆',color:'#be185d'},
+  ch4d:{label:'Ch 4 · UK Today',icon:'🇬🇧',color:'#0369a1'},
+  ch5a:{label:'Ch 5 · Government & Parliament',icon:'⚖️',color:'#00247d'},
+  ch5b:{label:'Ch 5 · Law, Courts & Rights',icon:'🔒',color:'#991b1b'},
+};
+
+const qBank={
+ch1:[
+  S('Ch1','Values & Principles','How many questions are in the Life in the UK test?',['18','20','24','30'],2,'The test consists of 24 questions about important aspects of life in the UK. The 24 questions will be different for each person taking the test at that session.'),
+  S('Ch1','Values & Principles','Approximately how many registered Life in the UK test centres are there in the UK?',['About 10','About 30','About 60','About 120'],2,'You can only take the test at a registered and approved Life in the UK test centre. There are about 60 test centres around the UK.'),
+  S('Ch1','Values & Principles','Where can you book the Life in the UK test?',['At any local library','Online at www.lifeintheuktest.gov.uk','At any town hall or council office','By calling the Home Office'],1,'You can only book your test online, at www.lifeintheuktest.gov.uk. You should not take your test at any other establishment as the UK Border Agency will only accept certificates from registered test centres.'),
+  S('Ch1','Values & Principles','The Life in the UK test can be taken in which languages?',['English only','English, Welsh or Scottish Gaelic','English or Welsh only','English or French'],1,'The Life in the UK test is usually taken in English, although special arrangements can be made if you wish to take it in Welsh or Scottish Gaelic.'),
+  M('Ch1','Values & Principles','What are the five fundamental principles of British life?',['Democracy','The rule of law','Individual liberty','Tolerance of those with different faiths and beliefs','Participation in community life','Equality of income'],[0,1,2,3,4],'The fundamental principles of British life include: Democracy, The rule of law, Individual liberty, Tolerance of those with different faiths and beliefs, and Participation in community life.','Select FIVE'),
+  S('Ch1','Values & Principles','Which of the following is NOT one of the responsibilities of a permanent UK resident?',['Respect and obey the law','Look after yourself and your family','Work in a profession approved by the government','Look after the area in which you live and the environment'],2,'Responsibilities include: respect and obey the law, respect the rights of others, treat others with fairness, look after yourself and your family, and look after the area in which you live and the environment. There is no requirement to work in an approved profession.'),
+  M('Ch1','Values & Principles','What does the UK offer to its residents in return for respecting its values? (Select FIVE)',['Freedom of belief and religion','Freedom of speech','Free university tuition','Freedom from unfair discrimination','A right to a fair trial','A right to join in the election of a government'],[0,1,3,4,5],'The UK offers: freedom of belief and religion, freedom of speech, freedom from unfair discrimination, a right to a fair trial, and a right to join in the election of a government. Free university tuition is NOT listed.','Select FIVE'),
+  S('Ch1','Values & Principles','There is no place in British society for extremism or intolerance.',['True','False'],0,'TRUE. The handbook states: "There is no place in British society for extremism or intolerance."'),
+  S('Ch1','Values & Principles','What is the correct citizenship pledge?',['I will honour the King and defend the UK if required','I will give my loyalty to the UK and respect its rights and freedoms. I will uphold its democratic values. I will observe its laws faithfully and fulfil my duties as a British citizen.','I will pay my taxes and obey the law at all times','I will give my loyalty to the King and serve in the armed forces if called upon'],1,'The pledge is: "I will give my loyalty to the United Kingdom and respect its rights and freedoms. I will uphold its democratic values. I will observe its laws faithfully and fulfil my duties and obligations as a British citizen."'),
+  S('Ch1','Values & Principles','What English language level must you evidence alongside passing the Life in the UK test (from October 2013)?',['A2 – Elementary','B1 – Intermediate (ESOL Entry Level 3)','C1 – Advanced','B2 – Upper Intermediate'],1,'From October 2013, for settlement or permanent residence, you must pass the Life in the UK test AND produce acceptable evidence of speaking and listening skills in English at B1 of the Common European Framework of Reference — equivalent to ESOL Entry Level 3.'),
+],
+ch2:[
+  S('Ch2','What is the UK?','What does "Great Britain" refer to?',['England, Scotland and Wales','England, Scotland, Wales and Northern Ireland','England and Scotland only','The whole of Ireland and Britain'],0,'"Great Britain" refers only to England, Scotland and Wales — not to Northern Ireland. The full official name is the United Kingdom of Great Britain and Northern Ireland.'),
+  S('Ch2','What is the UK?','The Channel Islands and the Isle of Man are part of the United Kingdom.',['True','False'],1,'FALSE. The Channel Islands and the Isle of Man are closely linked with the UK but are NOT part of it. They have their own governments and are called "Crown dependencies".'),
+  M('Ch2','What is the UK?','What are the four capital cities of the UK?',['London','Edinburgh','Cardiff','Belfast','Manchester','Liverpool'],[0,1,2,3],'London (UK & England), Edinburgh (Scotland), Cardiff (Wales), Belfast (Northern Ireland).','Select FOUR'),
+  S('Ch2','What is the UK?','What is the official name of the United Kingdom?',['Great Britain','The United Kingdom','The United Kingdom of Great Britain and Northern Ireland','The British Isles'],2,'The official name of the country is the United Kingdom of Great Britain and Northern Ireland.'),
+  S('Ch2','What is the UK?','Which of the following is an example of a British overseas territory?',['Isle of Man','The Falkland Islands','The Channel Islands','Gibraltar'],1,'The Falkland Islands and St Helena are examples of British overseas territories linked to the UK but not part of it. The Isle of Man and Channel Islands are Crown dependencies.'),
+  S('Ch2','What is the UK?','Scotland, Wales and Northern Ireland have their own parliaments or assemblies with devolved powers.',['True','False'],0,'TRUE. The UK is governed by the parliament sitting in Westminster, but Scotland, Wales and Northern Ireland also have parliaments or assemblies of their own with devolved powers in defined areas.'),
+  S('Ch2','What is the UK?','The rest of Ireland (outside Northern Ireland) is which of the following?',['A Crown dependency','A British overseas territory','An independent country','Part of Great Britain'],2,'The UK is made up of England, Scotland, Wales and Northern Ireland. The rest of Ireland is an independent country.'),
+  S('Ch2','What is the UK?','What is the capital city of Scotland?',['Glasgow','Aberdeen','Dundee','Edinburgh'],3,'Edinburgh is the capital city of Scotland.'),
+],
+ch3a:[
+  S('Ch3a','Early Britain','Who were the first people to live in Britain in what we call the Stone Age?',['Farmers','Hunter-gatherers','Roman settlers','Celtic warriors'],1,'The first people to live in Britain were hunter-gatherers, in what we call the Stone Age.'),
+  S('Ch3a','Early Britain','How long ago did Britain become permanently separated from the continent by the Channel?',['5,000 years ago','6,000 years ago','10,000 years ago','15,000 years ago'],2,'Britain only became permanently separated from the continent by the Channel about 10,000 years ago.'),
+  S('Ch3a','Early Britain','How long ago did the first farmers arrive in Britain?',['2,000 years ago','4,000 years ago','6,000 years ago','8,000 years ago'],2,'The first farmers arrived in Britain about 6,000 years ago. The ancestors of these first farmers probably came from south-east Europe.'),
+  S('Ch3a','Early Britain','Stonehenge is located in which English county?',['Dorset','Wiltshire','Somerset','Hampshire'],1,'Stonehenge still stands in what is now the English county of Wiltshire. It was probably a special gathering place for seasonal ceremonies.'),
+  S('Ch3a','Early Britain','Skara Brae, the best-preserved prehistoric village in northern Europe, is located where?',['Orkney, off the north coast of Scotland','Cornwall, south-west England','The Isle of Man','Anglesey, Wales'],0,'Skara Brae on Orkney, off the north coast of Scotland, is the best preserved prehistoric village in northern Europe, helping archaeologists understand life near the end of the Stone Age.'),
+  S('Ch3a','Early Britain','Where is an impressive Iron Age hill fort still visible today?',['Windsor, Berkshire','Maiden Castle, Dorset','Stonehenge, Wiltshire','Edinburgh, Scotland'],1,'A very impressive hill fort can still be seen today at Maiden Castle, in the English county of Dorset.'),
+  S('Ch3a','Early Britain','Julius Caesar led the first Roman invasion of Britain in which year?',['100 BC','55 BC','43 AD','410 AD'],1,'Julius Caesar led a Roman invasion of Britain in 55 BC. This was unsuccessful and for nearly 100 years Britain remained separate from the Roman Empire.'),
+  S('Ch3a','Early Britain','Which Roman emperor led the successful invasion of Britain in AD 43?',['Julius Caesar','Emperor Nero','Emperor Claudius','Emperor Hadrian'],2,'In AD 43 the Emperor Claudius led the Roman army in a new invasion. The Romans were successful in occupying almost all of Britain.'),
+  S('Ch3a','Early Britain','Who was Boudicca?',['A Roman empress who ruled Britain','Queen of the Iceni who fought against the Romans','The first queen of Scotland','A Viking warrior queen'],1,'Boudicca was the queen of the Iceni in what is now eastern England. She is still remembered today and there is a statue of her on Westminster Bridge in London.'),
+  S('Ch3a','Early Britain','Why did the Emperor Hadrian build a wall in northern England?',['To mark the boundary with Wales','To keep out the Picts (ancestors of the Scottish people)','To defend against Viking raids from the sea','To prevent trade with the north'],1,'The Emperor Hadrian built a wall in the north of England to keep out the Picts, who were the ancestors of the Scottish people. Hadrian\'s Wall is now a UNESCO World Heritage Site.'),
+  S('Ch3a','Early Britain','How long did the Romans remain in Britain?',['About 100 years','About 200 years','About 400 years','About 600 years'],2,'The Romans remained in Britain for 400 years. They built roads and public buildings, created a structure of law, and introduced new plants and animals.'),
+  S('Ch3a','Early Britain','When did the Roman army leave Britain?',['AD 300','AD 410','AD 600','AD 789'],1,'The Roman army left Britain in AD 410 to defend other parts of the Roman Empire and never returned.'),
+  S('Ch3a','Early Britain','Which three tribes invaded Britain after the Romans left?',['Vikings, Normans and Celts','Jutes, Angles and Saxons','Picts, Scots and Celts','Danes, Frisians and Gauls'],1,'Britain was again invaded by tribes from northern Europe: the Jutes, the Angles and the Saxons. The languages they spoke are the basis of modern-day English.'),
+  S('Ch3a','Early Britain','Who became the first Archbishop of Canterbury?',['St Patrick','St Augustine','St Columba','St David'],1,'St Augustine led missionaries from Rome who spread Christianity in the south. St Augustine became the first Archbishop of Canterbury.'),
+  S('Ch3a','Early Britain','Where did St Columba found his famous monastery?',['Lindisfarne, Northumbria','Canterbury, Kent','Iona, off the coast of Scotland','Glastonbury, Somerset'],2,'St Columba founded a monastery on the island of Iona, off the coast of what is now Scotland, spreading Christianity in the north.'),
+  S('Ch3a','Early Britain','When did the Vikings first visit Britain?',['AD 650','AD 710','AD 789','AD 900'],2,'The Vikings came from Denmark and Norway. They first visited Britain in AD 789 to raid coastal towns and take away goods and slaves.'),
+  S('Ch3a','Early Britain','Which Anglo-Saxon king defeated the Vikings?',['King Edward','King Alfred the Great','King Ethelred','King Offa'],1,'The Anglo-Saxon kingdoms in England united under King Alfred the Great, who defeated the Vikings.'),
+  S('Ch3a','Early Britain','Who was the first Danish king of England?',['Eric Bloodaxe','Harald Hardrada','Cnut (Canute)','Sweyn Forkbeard'],2,'Anglo-Saxon kings continued to rule what is now England, except for a short period when there were Danish kings. The first of these was Cnut, also called Canute.'),
+  S('Ch3a','Early Britain','In 1066, William of Normandy defeated Harold at which battle?',['Battle of Bannockburn','Battle of Agincourt','Battle of the Boyne','Battle of Hastings'],3,'In 1066, an invasion led by William, the Duke of Normandy, defeated Harold, the Saxon king of England, at the Battle of Hastings. Harold was killed in the battle.'),
+  S('Ch3a','Early Britain','What was the Bayeux Tapestry?',['A map created by William the Conqueror','A great piece of embroidery commemorating the Battle of Hastings','A document listing English laws after the Conquest','A royal charter granting rights to the nobles'],1,'The Battle of Hastings is commemorated in a great piece of embroidery, known as the Bayeux Tapestry, which can still be seen in France today.'),
+  S('Ch3a','Early Britain','What was the Domesday Book?',['A book of laws introduced by William the Conqueror','A religious text translated into English','A list of towns, villages, landowners and animals across England','A history of the Norman Conquest'],2,'William sent people all over England to draw up lists of all the towns and villages, who lived there, who owned the land and what animals they owned. This was called the Domesday Book.'),
+],
+ch3b:[
+  S('Ch3b','Middle Ages','What did the Magna Carta establish in 1215?',['Universal voting rights for all men','That even the king was subject to the law','The Church of England','The union of England and Scotland'],1,'The Magna Carta (Great Charter), signed in 1215, established the idea that even the king was subject to the law. It protected the rights of the nobility and restricted the king\'s power.'),
+  S('Ch3b','Middle Ages','King John was forced to sign the Magna Carta in which year?',['1066','1215','1314','1455'],1,'There were few formal limits to the king\'s power until 1215. In that year, King John was forced by his noblemen to agree to the Magna Carta.'),
+  S('Ch3b','Middle Ages','In 1284, which English king introduced the Statute of Rhuddlan, annexing Wales to the Crown?',['Henry V','Edward I','Henry VIII','Richard III'],1,'In 1284 King Edward I of England introduced the Statute of Rhuddlan, which annexed Wales to the Crown of England. Huge castles including Conwy and Caernarvon were built.'),
+  S('Ch3b','Middle Ages','The Scottish, led by Robert the Bruce, defeated the English at the Battle of Bannockburn in which year?',['1215','1314','1415','1485'],1,'In 1314 the Scottish, led by Robert the Bruce, defeated the English at the Battle of Bannockburn, and Scotland remained unconquered by the English.'),
+  S('Ch3b','Middle Ages','The Hundred Years War was a conflict between which two countries?',['England and Scotland','England and France','England and Ireland','England and Spain'],1,'English kings fought a long war with France, called the Hundred Years War (even though it actually lasted 116 years).'),
+  S('Ch3b','Middle Ages','At the Battle of Agincourt in 1415, which English king defeated the French?',['Henry IV','Henry V','Henry VI','Henry VIII'],1,'One of the most famous battles of the Hundred Years War was the Battle of Agincourt in 1415, where King Henry V\'s vastly outnumbered English army defeated the French.'),
+  S('Ch3b','Middle Ages','The Black Death came to Britain in which year?',['1215','1314','1348','1415'],2,'In 1348, a disease, probably a form of plague, came to Britain. This was known as the Black Death.'),
+  S('Ch3b','Middle Ages','What proportion of England\'s population died in the Black Death?',['One quarter','One third','One half','Two thirds'],1,'One third of the population of England died and a similar proportion in Scotland and Wales. This was one of the worst disasters ever to strike Britain.'),
+  S('Ch3b','Middle Ages','Who wrote The Canterbury Tales?',['William Shakespeare','William Caxton','Geoffrey Chaucer','John Barbour'],2,'Geoffrey Chaucer wrote a series of poems in English about a group of people going to Canterbury on a pilgrimage. This collection is called The Canterbury Tales.'),
+  S('Ch3b','Middle Ages','William Caxton was famous for what?',['Writing the Domesday Book','Winning the Battle of Agincourt','Being the first person in England to print books using a printing press','Writing the King James Bible'],2,'William Caxton was the first person in England to print books using a printing press. The Canterbury Tales was one of the first books he printed.'),
+  S('Ch3b','Middle Ages','The Wars of the Roses began in which year?',['1314','1415','1455','1485'],2,'In 1455, a civil war was begun to decide who should be king of England, fought between the House of Lancaster and the House of York.'),
+  M('Ch3b','Middle Ages','Which two houses fought in the Wars of the Roses?',['House of Chester','House of York','House of Lancaster','House of Newcastle'],[1,2],'The Wars of the Roses were fought between the House of Lancaster (symbol: red rose) and the House of York (symbol: white rose).','Select TWO'),
+  S('Ch3b','Middle Ages','The Wars of the Roses ended with which battle?',['Battle of Bannockburn','Battle of Agincourt','Battle of Bosworth Field','Battle of Hastings'],2,'The war ended with the Battle of Bosworth Field in 1485. King Richard III was killed and Henry Tudor became King Henry VII, founding the House of Tudor.'),
+  S('Ch3b','Middle Ages','In the Scottish Parliament of the Middle Ages, the three Houses were called what?',['Lords, Commons and Bishops','Lords, Commons and Clergy (the Estates)','Nobles, Merchants and Clergy','Upper House, Lower House and Church'],1,'A similar Parliament developed in Scotland. It had three Houses, called Estates: the lords, the commons and the clergy.'),
+  S('Ch3b','Middle Ages','What was the main export of England during the Middle Ages?',['Coal','Wool','Iron','Timber'],1,'During this period, England was an important trading nation. English wool became a very important export.'),
+],
+ch3c:[
+  S('Ch3c','Tudors & Stuarts','Henry VIII was most famous for breaking away from the Church of Rome and how many marriages?',['Three','Four','Five','Six'],3,'Henry VIII was most famous for breaking away from the Church of Rome and marrying six times.'),
+  S('Ch3c','Tudors & Stuarts','Why did Henry VIII break away from the Church of Rome?',['He disagreed with Catholic doctrine','The Pope refused to approve his divorce from Catherine of Aragon','He wanted to seize church lands','He was a lifelong Protestant'],1,'To divorce his first wife, Henry needed the approval of the Pope. When the Pope refused, Henry established the Church of England, in which the king — not the Pope — would have the power.'),
+  S('Ch3c','Tudors & Stuarts','Which wife of Henry VIII gave him his son Edward?',['Catherine of Aragon','Anne Boleyn','Jane Seymour','Catherine Parr'],2,'Jane Seymour gave Henry the son he wanted, Edward, but she died shortly after the birth.'),
+  S('Ch3c','Tudors & Stuarts','Anne Boleyn was executed at which location?',['Buckingham Palace','Windsor Castle','The Tower of London','The Houses of Parliament'],2,'Anne Boleyn was unpopular in the country and was accused of taking lovers. She was executed at the Tower of London.'),
+  S('Ch3c','Tudors & Stuarts','Why was Queen Mary I known as "Bloody Mary"?',['She executed all six of her husbands','She persecuted Protestants during her reign','She invaded Ireland and killed thousands','She ordered the execution of many Scottish nobles'],1,'Mary was a devout Catholic who persecuted Protestants during her reign, which is why she became known as "Bloody Mary".'),
+  S('Ch3c','Tudors & Stuarts','Elizabeth I became popular particularly after which event in 1588?',['The union of England and Wales','The English defeated the Spanish Armada','The translation of the King James Bible','The founding of the Globe Theatre'],1,'Elizabeth became one of the most popular monarchs in English history, particularly after 1588, when the English defeated the Spanish Armada — a large fleet of ships sent by Spain to conquer England and restore Catholicism.'),
+  S('Ch3c','Tudors & Stuarts','Sir Francis Drake\'s ship that circumnavigated the world was named what?',['The Mayflower','The Victory','The Golden Hind','The Endeavour'],2,'Sir Francis Drake, one of the commanders in the defeat of the Spanish Armada, was one of the founders of England\'s naval tradition. His ship, the Golden Hind, was one of the first to sail right around the world.'),
+  S('Ch3c','Tudors & Stuarts','Where was William Shakespeare born?',['London','Canterbury','Stratford-upon-Avon','Oxford'],2,'Shakespeare was born in Stratford-upon-Avon, England.'),
+  M('Ch3c','Tudors & Stuarts','Which of these are Shakespeare plays?',['Hamlet','Macbeth','Oliver Twist','Romeo and Juliet','A Midsummer Night\'s Dream'],[0,1,3,4],'Shakespeare\'s most famous plays include A Midsummer Night\'s Dream, Hamlet, Macbeth and Romeo and Juliet. Oliver Twist is a novel by Charles Dickens.','Select FOUR'),
+  S('Ch3c','Tudors & Stuarts','What was "The King James Version"?',['A set of laws for governing England','A new translation of the Bible into English','A record of all battles fought during King James\'s reign','An official census of the English population'],1,'One achievement of King James I\'s reign was a new translation of the Bible into English, known as the "King James Version" or the "Authorised Version". It continues to be used in many Protestant churches today.'),
+  S('Ch3c','Tudors & Stuarts','Elizabeth I never married and had no children. When she died in 1603, who became her heir?',['A new election was held by Parliament','James VI of Scotland (who became James I of England)','Charles I, son of James I','Mary Queen of Scots'],1,'Elizabeth I never married and so had no children of her own to inherit her throne. When she died in 1603, her heir was her cousin James VI of Scotland, who became King James I of England.'),
+  S('Ch3c','Tudors & Stuarts','What did Charles I believe about the monarchy?',['The monarch should be elected by the people','The king had a "Divine Right" — directly appointed by God','The monarch must always follow Parliament\'s wishes','The monarchy should be abolished'],1,'James I and his son Charles I both believed in the "Divine Right of Kings": the idea that the king was directly appointed by God to rule and should not need Parliament\'s approval.'),
+  S('Ch3c','Tudors & Stuarts','No monarch has set foot in the House of Commons since which event?',['The signing of the Magna Carta','The Battle of Hastings','Charles I tried to arrest five parliamentary leaders','The Glorious Revolution'],2,'Charles I entered the House of Commons and tried to arrest five parliamentary leaders, but they had been warned and were not there. No monarch has set foot in the Commons since.'),
+  S('Ch3c','Tudors & Stuarts','What title was Oliver Cromwell given when he ruled England?',['King Oliver I','Lord Protector','Lord Chancellor','Duke of Parliament'],1,'After his campaign in Ireland and victory over Charles II at Worcester, Cromwell was recognised as the leader of the new republic. He was given the title of Lord Protector and ruled until his death in 1658.'),
+  S('Ch3c','Tudors & Stuarts','The Habeas Corpus Act became law in which year?',['1645','1660','1679','1689'],2,'The Habeas Corpus Act became law in 1679. Habeas corpus is Latin for "you must present the person in court". The Act guaranteed that no one could be held prisoner unlawfully. Every prisoner has a right to a court hearing.'),
+  S('Ch3c','Tudors & Stuarts','What was the "Glorious Revolution" of 1688?',['Parliament overthrew the king and became the government','William of Orange invaded England; James II fled; Parliament\'s power was guaranteed without any fighting in England','A peaceful transfer from monarchy to republic','England united with Scotland through a bloodless negotiation'],1,'In 1688, important Protestants in England asked William of Orange to invade. James II fled and William took over the throne. This was called the "Glorious Revolution" because there was no fighting in England and it guaranteed the power of Parliament.'),
+  S('Ch3c','Tudors & Stuarts','What did the Bill of Rights 1689 confirm?',['Voting rights for all adult men','The rights of Parliament and the limits of the king\'s power','The establishment of the Church of England','The independence of Scotland'],1,'The Bill of Rights 1689 confirmed the rights of Parliament and the limits of the king\'s power. Parliament took control of who could be monarch and declared the king or queen must be a Protestant.'),
+  S('Ch3c','Tudors & Stuarts','Isaac Newton was born in which county?',['Yorkshire','Devon','Lincolnshire','Cambridgeshire'],2,'Born in Lincolnshire, eastern England, Isaac Newton first became interested in science when he studied at Cambridge University.'),
+  S('Ch3c','Tudors & Stuarts','What did Isaac Newton discover that white light is made of?',['A single wavelength of energy','The colours of the rainbow','Particles called photons','Electromagnetic radiation'],1,'Newton discovered that white light is made up of the colours of the rainbow. His most famous published work showed how gravity applied to the whole universe.'),
+  S('Ch3c','Tudors & Stuarts','Supporters of the deposed James II became known as what?',['Cavaliers','Roundheads','Jacobites','Puritans'],2,'Some continued to believe that James was the rightful king, particularly in Scotland. Some joined him in exile in France; others were secret supporters. James\' supporters became known as Jacobites.'),
+],
+ch3d:[
+  S('Ch3d','Global Power & Empire','The Act of Union in 1707 created what?',['The Commonwealth of Nations','The Kingdom of Great Britain (England, Scotland and Wales)','The United Kingdom of Great Britain and Ireland','The British Empire'],1,'The Act of Union (Treaty of Union in Scotland) was agreed in 1707, creating the Kingdom of Great Britain. Although Scotland was no longer an independent country, it kept its own legal and education systems and Presbyterian Church.'),
+  S('Ch3d','Global Power & Empire','Who was the first person to be called Prime Minister?',['Winston Churchill','Duke of Wellington','Sir Robert Walpole','William Pitt the Elder'],2,'The most important minister in Parliament became known as the Prime Minister. The first man to be called this was Sir Robert Walpole, who was Prime Minister from 1721 to 1742.'),
+  S('Ch3d','Global Power & Empire','Bonnie Prince Charlie was defeated at which battle in 1746?',['Battle of Bannockburn','Battle of Culloden','Battle of the Boyne','Battle of Waterloo'],1,'Charles Edward Stuart (Bonnie Prince Charlie), the grandson of James II, landed in Scotland but was defeated by George II\'s army at the Battle of Culloden in 1746.'),
+  S('Ch3d','Global Power & Empire','Robert Burns, known as "The Bard", wrote which famous song?',['God Save the King','Rule Britannia','Auld Lang Syne','Jerusalem'],2,'Robert Burns (1759-96), known in Scotland as "The Bard", wrote Auld Lang Syne, which is sung by people in the UK and other countries when celebrating the New Year.'),
+  S('Ch3d','Global Power & Empire','What were the "Highland Clearances"?',['A military campaign against the Highland clans','Scottish landlords destroying small farms (crofts) to make space for sheep and cattle','A programme to clear forests in the Scottish Highlands','The removal of Jacobite supporters after Culloden'],1,'A process began known as the "Highland Clearances". Many Scottish landlords destroyed individual small farms (known as "crofts") to make space for large flocks of sheep and cattle.'),
+  S('Ch3d','Global Power & Empire','Who were Adam Smith, David Hume and James Watt?',['Military leaders of the Highland clans','Key figures of the Enlightenment: Smith in economics, Hume in philosophy, Watt in science','Prime Ministers of the 18th century','Founders of the first British political parties'],1,'During the Enlightenment, many great thinkers were Scottish. Adam Smith developed ideas about economics, David Hume\'s ideas about human nature continue to influence philosophers, and James Watt\'s work on steam power helped the Industrial Revolution.'),
+  S('Ch3d','Global Power & Empire','Sake Dean Mahomet opened the first curry house in Britain in which year?',['1785','1810','1835','1865'],1,'In 1810 he opened the Hindoostane Coffee House in George Street, London. It was the first curry house to open in Britain. Mahomet and his wife also introduced "shampooing", the Indian art of head massage, to Britain.'),
+  S('Ch3d','Global Power & Empire','Richard Arkwright was originally trained as which profession?',['A farmer','A blacksmith','A barber','A sailor'],2,'Born in 1732, Arkwright originally trained and worked as a barber. He later became famous for the efficient and profitable way he ran his textile factories.'),
+  S('Ch3d','Global Power & Empire','The slave trade was made illegal in British ships or from British ports in which year?',['1787','1807','1833','1850'],1,'In 1807, it became illegal to trade slaves in British ships or from British ports.'),
+  S('Ch3d','Global Power & Empire','The Emancipation Act abolished slavery throughout the British Empire in which year?',['1807','1820','1833','1865'],2,'In 1833, the Emancipation Act abolished slavery throughout the British Empire. William Wilberforce played an important role in changing the law.'),
+  S('Ch3d','Global Power & Empire','The first formal anti-slavery groups in Britain were set up by which religious group?',['Methodists','Anglicans','The Quakers','Baptists'],2,'The first formal anti-slavery groups were set up by the Quakers in the late 1700s, and they petitioned Parliament to ban the practice.'),
+  S('Ch3d','Global Power & Empire','Admiral Nelson was killed at which battle in 1805?',['Battle of Waterloo','Battle of the Boyne','Battle of Culloden','Battle of Trafalgar'],3,'Britain\'s navy won the Battle of Trafalgar in 1805. Admiral Nelson was in charge of the British fleet and was killed in the battle. Nelson\'s Column in Trafalgar Square, London, is a monument to him.'),
+  S('Ch3d','Global Power & Empire','The Duke of Wellington defeated Napoleon at which battle in 1815?',['Battle of Trafalgar','Battle of Waterloo','Battle of the Somme','Battle of Dunkirk'],1,'In 1815, the French Wars ended with the defeat of Emperor Napoleon by the Duke of Wellington at the Battle of Waterloo. Wellington was known as the Iron Duke and later became Prime Minister.'),
+  S('Ch3d','Global Power & Empire','In 1801, Ireland became unified with England, Scotland and Wales after the Act of Union, creating what?',['The Kingdom of Great Britain','The British Empire','The United Kingdom of Great Britain and Ireland','The Commonwealth'],2,'In 1801, Ireland became unified with England, Scotland and Wales after the Act of Union of 1800, creating the United Kingdom of Great Britain and Ireland.'),
+  S('Ch3d','Global Power & Empire','The cross of St Patrick (patron saint of Ireland) in the Union Flag is described as what?',['A red cross on a white ground','A diagonal white cross on a blue ground','A diagonal red cross on a white ground','A red dragon on a white ground'],2,'The cross of St Patrick, patron saint of Ireland, is a diagonal red cross on a white ground.'),
+  S('Ch3d','Global Power & Empire','Why does the Welsh dragon not appear on the Union Flag?',['Wales refused to join the Union','The dragon was considered too aggressive a symbol','When the first Union Flag was created in 1606 from Scotland and England\'s flags, Wales was already united with England','Wales only joined the Union in 1800'],2,'There is also an official Welsh flag, which shows a Welsh dragon. The Welsh dragon does not appear on the Union Flag because, when the first Union Flag was created in 1606, the Principality of Wales was already united with England.'),
+  S('Ch3d','Global Power & Empire','Queen Victoria became queen in which year and reigned for almost how long?',['1837, almost 64 years','1820, almost 81 years','1850, almost 51 years','1837, almost 44 years'],0,'In 1837, Queen Victoria became queen of the UK at the age of 18. She reigned until 1901, almost 64 years — at the time the longest reign of any British monarch.'),
+  S('Ch3d','Global Power & Empire','Florence Nightingale went to which country to treat soldiers during the Crimean War?',['India','Egypt','Turkey','South Africa'],2,'In 1854, Florence Nightingale went to Turkey and worked in military hospitals, treating soldiers fighting in the Crimean War. She and her fellow nurses improved conditions and reduced the mortality rate.'),
+  S('Ch3d','Global Power & Empire','Emmeline Pankhurst founded the WSPU (Women\'s Social and Political Union) in which year?',['1889','1895','1903','1918'],2,'In 1903, Emmeline Pankhurst helped found the Women\'s Social and Political Union (WSPU). This was the first group whose members were called "suffragettes".'),
+  S('Ch3d','Global Power & Empire','Isambard Kingdom Brunel is known for building which major railway?',['The East Midlands Railway from Derby to London','The Great Western Railway from Paddington to south-west England, the West Midlands and Wales','The East Coast Main Line from London to Edinburgh','The Caledonian Railway from Glasgow to Edinburgh'],1,'Brunel was responsible for constructing the Great Western Railway, which was the first major railway built in Britain. It runs from Paddington Station in London to the south-west of England, the West Midlands and Wales.'),
+  S('Ch3d','Global Power & Empire','In 1851, the Great Exhibition opened in Hyde Park in a building known as what?',['The Royal Pavilion','The Crystal Palace','The Victoria Hall','The Empire Dome'],1,'In 1851, the Great Exhibition opened in Hyde Park in the Crystal Palace, a huge building made of steel and glass. Exhibits ranged from huge machines to handmade goods.'),
+],
+ch3e:[
+  S('Ch3e','WWI, WWII & Inventions','WWI was triggered by the assassination of which figure on 28 June 1914?',['Kaiser Wilhelm II','Archduke Franz Ferdinand of Austria','The French President','Tsar Nicholas II of Russia'],1,'On 28 June 1914, Archduke Franz Ferdinand of Austria was assassinated. This set off a chain of events leading to the First World War (1914-18).'),
+  S('Ch3e','WWI, WWII & Inventions','The First World War ended on what date and at what time?',['11 November 1918 at 11.00 am','4 August 1914 at 12 noon','11 November 1918 at midnight','28 June 1919 at 11.00 am'],0,'The First World War ended at 11.00 am on 11th November 1918 with victory for Britain and its allies.'),
+  S('Ch3e','WWI, WWII & Inventions','How many British casualties were there at the Battle of the Somme on the first day alone (July 1916)?',['About 6,000','About 20,000','About 60,000','About 100,000'],2,'One battle, the British attack on the Somme in July 1916, resulted in about 60,000 British casualties on the first day alone.'),
+  S('Ch3e','WWI, WWII & Inventions','In 1922, Ireland was divided. How many counties in the north remained part of the UK?',['Three','Four','Six','Nine'],2,'In 1922, Ireland became two countries. The six counties in the north which were mainly Protestant remained part of the UK under the name Northern Ireland. The rest of Ireland became the Irish Free State.'),
+  S('Ch3e','WWI, WWII & Inventions','The Easter Rising against the British in Dublin took place in which year?',['1913','1916','1918','1921'],1,'Irish Nationalists were not willing to wait and in 1916 there was an uprising (the Easter Rising) against the British in Dublin. The leaders were executed under military law.'),
+  S('Ch3e','WWI, WWII & Inventions','When did Adolf Hitler come to power in Germany?',['1929','1931','1933','1935'],2,'Adolf Hitler came to power in Germany in 1933. He believed the conditions imposed on Germany after WWI were unfair and wanted to conquer more land for the German people.'),
+  S('Ch3e','WWI, WWII & Inventions','Britain and France declared war on Germany after Hitler invaded which country in 1939?',['Austria','Czechoslovakia','France','Poland'],3,'When Hitler invaded Poland in 1939, Britain and France declared war in order to stop his aggression.'),
+  S('Ch3e','WWI, WWII & Inventions','Winston Churchill became Prime Minister in which month and year?',['September 1939','May 1940','July 1940','January 1941'],1,'In May 1940, Winston Churchill became Prime Minister. He refused to surrender to the Nazis and was an inspirational leader to the British people in a time of great hardship.'),
+  S('Ch3e','WWI, WWII & Inventions','Approximately how many men were evacuated from Dunkirk?',['100,000','200,000','300,000','500,000'],2,'Many civilian volunteers in small pleasure and fishing boats helped the Navy to rescue more than 300,000 men from the beaches around Dunkirk.'),
+  S('Ch3e','WWI, WWII & Inventions','Which two aircraft types were most important in the Battle of Britain?',['Lancaster and Hurricane','Spitfire and Mosquito','Spitfire and Hurricane','Hurricane and Typhoon'],2,'Hitler wanted to invade Britain, but before sending in troops, Germany needed to control the air. The most important planes used by the Royal Air Force in the Battle of Britain were the Spitfire and the Hurricane.'),
+  S('Ch3e','WWI, WWII & Inventions','D-Day, when Allied forces landed in Normandy, was on which date?',['6 June 1943','6 June 1944','8 May 1945','15 August 1945'],1,'On 6 June 1944, allied forces landed in Normandy. This event is often referred to as "D-Day". Following victory on the beaches of Normandy, the allied forces pressed on through France and eventually into Germany.'),
+  S('Ch3e','WWI, WWII & Inventions','Churchill was voted the greatest Briton of all time in which year?',['1995','2000','2002','2005'],2,'He remains a much-admired figure to this day, and in 2002 was voted the greatest Briton of all time by the public.'),
+  S('Ch3e','WWI, WWII & Inventions','John Logie Baird developed the television in the 1920s. What was his nationality?',['English','Welsh','Scottish','Irish'],2,'The television was developed by Scotsman John Logie Baird (1888-1946) in the 1920s. In 1932 he made the first television broadcast between London and Glasgow.'),
+  S('Ch3e','WWI, WWII & Inventions','Radar was developed by which Scottish scientist?',['Sir Robert Watson-Watt','James Watt','John MacLeod','Bernard Lovell'],0,'Radar was developed by Scotsman Sir Robert Watson-Watt (1892-1973), who proposed that enemy aircraft could be detected by radio waves. The first successful radar test took place in 1935.'),
+  S('Ch3e','WWI, WWII & Inventions','Who is the inventor of the World Wide Web?',['Sir Tim Berners-Lee','Sir Peter Mansfield','Sir Ian Wilmut','Alan Turing'],0,'The inventor of the World Wide Web, Sir Tim Berners-Lee (1955-), is British. Information was successfully transferred via the web for the first time on 25 December 1990.'),
+  S('Ch3e','WWI, WWII & Inventions','Alexander Fleming discovered penicillin in which year?',['1918','1928','1935','1940'],1,'Born in Scotland, Fleming was researching influenza (the "flu") in 1928 when he discovered penicillin. Fleming won the Nobel Prize in Medicine in 1945.'),
+  S('Ch3e','WWI, WWII & Inventions','Who invented the jet engine in the 1930s?',['Sir Christopher Cockerell','James Goodfellow','Sir Frank Whittle','Sir Bernard Lovell'],2,'The jet engine was developed in Britain in the 1930s by Sir Frank Whittle (1907-96), a British Royal Air Force engineer officer.'),
+  S('Ch3e','WWI, WWII & Inventions','Who invented the hovercraft in the 1950s?',['Sir Tim Berners-Lee','Sir Christopher Cockerell','Alan Turing','Sir Frank Whittle'],1,'Sir Christopher Cockerell (1910-99), a British inventor, invented the hovercraft in the 1950s.'),
+  S('Ch3e','WWI, WWII & Inventions','Concorde, the world\'s only supersonic passenger aircraft, was developed jointly by Britain and which country?',['Germany','USA','France','Italy'],2,'Britain and France developed Concorde, the world\'s only supersonic passenger aircraft. It first flew in 1969 and began carrying passengers in 1976. Concorde was retired from service in 2003.'),
+  S('Ch3e','WWI, WWII & Inventions','The first ATM (cashpoint) was put into use by which bank in Enfield, north London in 1967?',['Natwest','Lloyds','HSBC','Barclays'],3,'In the 1960s, James Goodfellow (1937-) invented the cash-dispensing ATM or "cashpoint". The first of these was put into use by Barclays Bank in Enfield, north London in 1967.'),
+  S('Ch3e','WWI, WWII & Inventions','The world\'s first "test-tube baby" was born in which town and in which year?',['London, 1976','Oldham, Lancashire, 1978','Cambridge, 1980','Birmingham, 1975'],1,'IVF (in-vitro fertilisation) therapy was pioneered in Britain by Sir Robert Edwards and Patrick Steptoe. The world\'s first "test-tube baby" was born in Oldham, Lancashire in 1978.'),
+  S('Ch3e','WWI, WWII & Inventions','Who led the team that first successfully cloned a mammal (Dolly the sheep) in 1996?',['Sir Peter Mansfield and Tim Berners-Lee','Sir Ian Wilmut and Keith Campbell','Francis Crick and James Watson','Ernest Rutherford and Frederick Soddy'],1,'In 1996, two British scientists, Sir Ian Wilmut (1944-) and Keith Campbell (1954-2012), led a team which was the first to succeed in cloning a mammal, Dolly the sheep.'),
+  S('Ch3e','WWI, WWII & Inventions','Sir Peter Mansfield is known as the co-inventor of which medical technology?',['The defibrillator','CT (computed tomography) scanner','MRI (magnetic resonance imaging) scanner','Ultrasound imaging'],2,'Sir Peter Mansfield (1933-), a British scientist, is the co-inventor of the MRI (magnetic resonance imaging) scanner. This enables doctors to obtain exact and non-invasive images of human internal organs.'),
+  S('Ch3e','WWI, WWII & Inventions','The BBC started radio broadcasts in which year?',['1918','1922','1927','1936'],1,'The BBC started radio broadcasts in 1922 and began the world\'s first regular television service in 1936.'),
+  S('Ch3e','WWI, WWII & Inventions','The structure of the DNA molecule was discovered in which year?',['1948','1950','1953','1959'],2,'The structure of the DNA molecule was discovered in 1953 through work at British universities in London and Cambridge. Francis Crick (1916-2004), one of those awarded the Nobel Prize for this discovery, was British.'),
+],
+ch3f:[
+  S('Ch3f','Britain Since 1945','In 1945, which political party won the general election and who became Prime Minister?',['Conservative Party, Winston Churchill','Labour Party, Clement Attlee','Liberal Party, William Beveridge','Labour Party, Aneurin Bevan'],1,'In 1945 the British people elected a Labour government. The new Prime Minister was Clement Attlee, who promised to introduce the welfare state outlined in the Beveridge Report.'),
+  S('Ch3f','Britain Since 1945','Who established the National Health Service (NHS) in 1948?',['Clement Attlee, as Prime Minister','William Beveridge, as a social reformer','Aneurin (Nye) Bevan, as Minister for Health','Winston Churchill, as Leader of the Opposition'],2,'In 1948, Aneurin (Nye) Bevan, the Minister for Health, led the establishment of the National Health Service (NHS), which guaranteed a minimum standard of health care for all, free at the point of use.'),
+  S('Ch3f','Britain Since 1945','The Beveridge Report recommended fighting which five "Giant Evils"?',['Poverty, Illness, Ignorance, Crime and Unemployment','Want, Disease, Ignorance, Squalor and Idleness','Hunger, Debt, Crime, Homelessness and Illiteracy','Poverty, Ill Health, Poor Housing, Unemployment and Crime'],1,'The Beveridge Report recommended that the government should find ways of fighting the five "Giant Evils" of Want, Disease, Ignorance, Squalor and Idleness and provided the basis of the modern welfare state.'),
+  M('Ch3f','Britain Since 1945','Which industries did Attlee\'s post-war Labour government nationalise (take into public ownership)? (Select THREE)',['Railways','Newspapers','Coal mines','Gas, water and electricity supplies','Banking'],[0,2,3],'The government took into public ownership (nationalised) the railways, coal mines and gas, water and electricity supplies.','Select THREE'),
+  S('Ch3f','Britain Since 1945','In 1947, independence was granted to nine countries, which included:',['Canada, Australia and New Zealand','India, Pakistan and Ceylon (now Sri Lanka)','South Africa, Nigeria and Kenya','Ireland, Malta and Cyprus'],1,'In 1947, independence was granted to nine countries, including India, Pakistan and Ceylon (now Sri Lanka). Other colonies in Africa, the Caribbean and the Pacific achieved independence over the next 20 years.'),
+  S('Ch3f','Britain Since 1945','R A Butler is associated with which landmark piece of legislation?',['The NHS Act 1946','The Beveridge Report 1942','The Education Act 1944 (introducing free secondary education)','The Equal Pay Act 1970'],2,'R A Butler oversaw the introduction of the Education Act 1944 (often called "The Butler Act"), which introduced free secondary education in England and Wales.'),
+  S('Ch3f','Britain Since 1945','Dylan Thomas was a Welsh poet. His most well-known works include which radio play?',['Under Milk Wood','Do Not Go Gentle into That Good Night','The Caretaker','Look Back in Anger'],0,'Dylan Thomas was a Welsh poet and writer. His most well-known works include the radio play Under Milk Wood, first performed after his death in 1954. He died at the age of 39 in New York.'),
+  S('Ch3f','Britain Since 1945','In which decade was Britain known as "the Swinging Sixties", with growth in fashion, cinema and pop music?',['1950s','1960s','1970s','1980s'],1,'The decade of the 1960s was a period of significant social change. It was known as "the Swinging Sixties". There was growth in British fashion, cinema and popular music.'),
+  M('Ch3f','Britain Since 1945','Which TWO pop music groups were well known in the 1960s?',['The Rolling Stones','Led Zeppelin','The Beatles','Duran Duran'],[0,2],'Two well-known pop music groups at the time were The Beatles and The Rolling Stones.','Select TWO'),
+  S('Ch3f','Britain Since 1945','The UK joined the European Economic Community (EEC) in which year?',['1957','1963','1973','1979'],2,'West Germany, France, Belgium, Italy, Luxembourg and the Netherlands formed the EEC in 1957. At first the UK did not wish to join but it eventually did so in 1973.'),
+  S('Ch3f','Britain Since 1945','Margaret Thatcher became the first woman Prime Minister of the UK following which election?',['The 1975 General Election','The 1979 General Election','The 1983 General Election','The 1970 General Election'],1,'Following the Conservative victory in the General Election in 1979, Margaret Thatcher became the first woman Prime Minister of the UK.'),
+  S('Ch3f','Britain Since 1945','Margaret Thatcher was the longest-serving Prime Minister of which century?',['The 19th century','The 20th century','The 21st century','The 18th century'],1,'She was the longest-serving Prime Minister of the 20th century, remaining in office until 1990.'),
+  S('Ch3f','Britain Since 1945','In 1982, Argentina invaded which British overseas territory?',['Gibraltar','The Isle of Man','The Falkland Islands','Bermuda'],2,'In 1982, Argentina invaded the Falkland Islands, a British overseas territory in the South Atlantic. A naval taskforce was sent from the UK and military action led to the recovery of the islands.'),
+  S('Ch3f','Britain Since 1945','The Good Friday Agreement (Belfast Agreement) was signed in which year?',['1994','1996','1998','2001'],2,'The Blair government was able to build on the peace process, resulting in the Good Friday Agreement signed in 1998. The Northern Ireland Assembly was elected in 1999.'),
+  S('Ch3f','Britain Since 1945','Mary Peters won an Olympic gold medal in which event in 1972?',['100 metres sprint','Long jump','Pentathlon','Heptathlon'],2,'Born in Manchester, Mary Peters moved to Northern Ireland as a child. She was a talented athlete who won an Olympic gold medal in the pentathlon in 1972.'),
+  S('Ch3f','Britain Since 1945','In May 2010, which party or parties formed the coalition government?',['Conservative and Liberal Democrat parties','Labour and Liberal Democrat parties','Conservative and UKIP parties','All-party national government'],0,'In May 2010, no political party won an overall majority. The Conservative and Liberal Democrat parties formed a coalition and the leader of the Conservative Party, David Cameron, became Prime Minister.'),
+  S('Ch3f','Britain Since 1945','Roald Dahl was born in Wales to which nationality parents?',['Irish','Welsh','Norwegian','Swedish'],2,'Roald Dahl was born in Wales to Norwegian parents. His best-known works include Charlie and the Chocolate Factory and George\'s Marvellous Medicine.'),
+],
+ch4a:[
+  S('Ch4a','Arts, Music & Literature','The Proms is an eight-week summer season of orchestral music organised by which institution since 1927?',['The Royal Philharmonic Society','The Arts Council of England','The BBC (British Broadcasting Corporation)','The Royal Academy of Music'],2,'The Proms is an eight-week summer season of orchestral classical music. It has been organised by the British Broadcasting Corporation (BBC) since 1927. The Last Night of the Proms is the most well-known concert.'),
+  S('Ch4a','Arts, Music & Literature','Henry Purcell (1659-95) was the organist at which famous building?',['St Paul\'s Cathedral','Westminster Abbey','Canterbury Cathedral','Buckingham Palace Chapel'],1,'Henry Purcell (1659-95) was the organist at Westminster Abbey. He wrote church music, operas and other pieces, and developed a British style distinct from that elsewhere in Europe.'),
+  S('Ch4a','Arts, Music & Literature','George Frederick Handel became a British citizen in which year?',['1695','1710','1727','1759'],2,'The German-born composer George Frederick Handel (1695-1759) spent many years in the UK and became a British citizen in 1727. He wrote the Water Music for King George I and Music for the Royal Fireworks for George II.'),
+  S('Ch4a','Arts, Music & Literature','Which composer adapted Jupiter (from The Planets) as the tune for "I vow to thee my country"?',['Sir Edward Elgar','Ralph Vaughan Williams','Gustav Holst','Benjamin Britten'],2,'Gustav Holst (1874-1934) adapted Jupiter, part of his Planets suite, as the tune for I vow to thee my country, a popular hymn in British churches.'),
+  S('Ch4a','Arts, Music & Literature','Sir Edward Elgar\'s best-known work, often played at the Last Night of the Proms, is:',['The Planets','Water Music','Land of Hope and Glory (Pomp and Circumstance March No 1)','A Young Person\'s Guide to the Orchestra'],2,'Sir Edward Elgar (1857-1934) was born in Worcester, England. His best-known work is probably the Pomp and Circumstance Marches. March No 1 (Land of Hope and Glory) is usually played at the Last Night of the Proms.'),
+  S('Ch4a','Arts, Music & Literature','Benjamin Britten founded which festival in Suffolk?',['The Glastonbury Festival','The Edinburgh Festival Fringe','The Aldeburgh Festival','The National Eisteddfod'],2,'Benjamin Britten (1913-76) founded the Aldeburgh festival in Suffolk, which continues to be a popular music event of international importance.'),
+  S('Ch4a','Arts, Music & Literature','The Mousetrap, a play by Dame Agatha Christie, has been running in London\'s West End since which year?',['1935','1947','1952','1960'],2,'The Mousetrap, a murder-mystery play by Dame Agatha Christie, has been running in the West End since 1952 and has had the longest initial run of any show in history.'),
+  S('Ch4a','Arts, Music & Literature','The Edinburgh Festival Fringe is best known as a showcase of what?',['Classical music and opera','Mainly theatre and comedy performances','Traditional Scottish arts and crafts','Visual art and sculpture'],1,'The Edinburgh Festival Fringe ("the Fringe") is a showcase of mainly theatre and comedy performances. It often shows experimental work.'),
+  S('Ch4a','Arts, Music & Literature','The Turner Prize, established in 1984, is named after which artist?',['Thomas Gainsborough','Joseph Turner','John Constable','David Hockney'],1,'The Turner Prize was established in 1984 and named after Joseph Turner (1775-1851), an influential landscape painter. It is recognised as one of the most prestigious visual art awards in Europe.'),
+  S('Ch4a','Arts, Music & Literature','Andrew Lloyd Webber collaborated with Tim Rice to write which shows?',['Cats and Phantom of the Opera','Jesus Christ Superstar and Evita','The Phantom of the Opera and Cats','HMS Pinafore and The Mikado'],1,'Andrew Lloyd Webber wrote shows including, in collaboration with Tim Rice, Jesus Christ Superstar and Evita, and also Cats and The Phantom of the Opera.'),
+  S('Ch4a','Arts, Music & Literature','Nick Park has won four Oscars for his animated films, including films featuring which characters?',['Tom and Jerry','Wallace and Gromit','The Wombles','Paddington Bear'],1,'Britain continues to be particularly strong in special effects and animation. One example is the work of Nick Park, who has won four Oscars for his animated films, including three for films featuring Wallace and Gromit.'),
+  S('Ch4a','Arts, Music & Literature','The Laurence Olivier Awards are named after which British actor?',['Sir Anthony Hopkins','Sir Ian McKellen','Sir Laurence Olivier','Sir Derek Jacobi'],2,'The Laurence Olivier Awards are named after the British actor Sir Laurence Olivier, later Lord Olivier, who was best known for his roles in various Shakespeare plays.'),
+  S('Ch4a','Arts, Music & Literature','The Man Booker Prize for Fiction has been awarded since which year?',['1950','1960','1968','1975'],2,'The Man Booker Prize for Fiction is awarded annually for the best fiction novel written by an author from the Commonwealth, Ireland or Zimbabwe. It has been awarded since 1968.'),
+  S('Ch4a','Arts, Music & Literature','In 2003, which novel was voted the UK\'s best-loved?',['Harry Potter','Pride and Prejudice','The Lord of the Rings by JRR Tolkien','1984 by George Orwell'],2,'In 2003, The Lord of the Rings by JRR Tolkien was voted the country\'s best-loved novel.'),
+  S('Ch4a','Arts, Music & Literature','JK Rowling wrote which hugely successful series of children\'s books?',['The Narnia Chronicles','The Hobbit','Harry Potter','The Discworld series'],2,'JK Rowling (1965-) wrote the Harry Potter series of children\'s books, which have enjoyed huge international success. She now writes fiction for adults as well.'),
+  S('Ch4a','Arts, Music & Literature','Charles Dickens wrote which famous novels?',['Pride and Prejudice and Sense and Sensibility','Treasure Island and Dr Jekyll and Mr Hyde','Oliver Twist and Great Expectations','Far from the Madding Crowd and Jude the Obscure'],2,'Charles Dickens (1812-70) wrote a number of very famous novels, including Oliver Twist and Great Expectations.'),
+  S('Ch4a','Arts, Music & Literature','Sir Arthur Conan Doyle was a Scottish doctor who created which fictional character?',['James Bond','Hercule Poirot','Sherlock Holmes','Miss Marple'],2,'Sir Arthur Conan Doyle (1859-1930) was a Scottish doctor and writer. He was best known for his stories about Sherlock Holmes, who was one of the first fictional detectives.'),
+  S('Ch4a','Arts, Music & Literature','Films were first shown publicly in the UK in which year?',['1889','1896','1905','1920'],1,'Films were first shown publicly in the UK in 1896 and film screenings very quickly became popular.'),
+  S('Ch4a','Arts, Music & Literature','Sir Charles (Charlie) Chaplin became famous in silent movies for which character?',['A policeman','A tramp character','A Victorian gentleman','A soldier'],1,'Sir Charles (Charlie) Chaplin became famous in silent movies for his tramp character and was one of many British actors to make a career in Hollywood.'),
+  S('Ch4a','Arts, Music & Literature','BAFTA stands for what?',['British Academy of Film and Television Arts','British Association for Film and Theatre Awards','Broadcasting Awards for Film and Television Achievements','British Academy of Film and Television Awards'],0,'The annual British Academy Film Awards, hosted by the British Academy of Film and Television Arts (BAFTA), are the British equivalent of the Oscars.'),
+],
+ch4b:[
+  S('Ch4b','Sport','The UK has hosted the Olympic Games on how many occasions?',['Once','Twice','Three times','Four times'],2,'The UK has hosted the Olympic Games on three occasions: 1908, 1948 and 2012. The main Olympic site for the 2012 Games was in Stratford, East London.'),
+  S('Ch4b','Sport','Sir Roger Bannister was the first man to run a mile in under four minutes. In which year?',['1948','1954','1960','1968'],1,'Sir Roger Bannister (1929-2018) was the first man in the world to run a mile in under four minutes, in 1954.'),
+  S('Ch4b','Sport','Sir Jackie Stewart is a Scottish former racing driver. How many Formula 1 world championships did he win?',['One','Two','Three','Four'],2,'Sir Jackie Stewart (1939-) is a Scottish former racing driver who won the Formula 1 world championship three times.'),
+  S('Ch4b','Sport','Bobby Moore captained the English football team that won the World Cup in which year?',['1958','1962','1966','1970'],2,'Bobby Moore (1941-93) captained the English football team that won the World Cup in 1966, hosted in the UK.'),
+  S('Ch4b','Sport','Jayne Torvill and Christopher Dean won gold medals for ice dancing at which Olympics?',['1980 Moscow','1984 Los Angeles','1988 Seoul','1992 Barcelona'],1,'Jayne Torvill (1957-) and Christopher Dean (1958-) won gold medals for ice dancing at the Olympic Games in 1984 and in four consecutive world championships.'),
+  S('Ch4b','Sport','Sir Steve Redgrave won gold medals in rowing in how many consecutive Olympic Games?',['Three','Four','Five','Six'],2,'Sir Steve Redgrave (1962-) won gold medals in rowing in five consecutive Olympic Games and is one of Britain\'s greatest Olympians.'),
+  S('Ch4b','Sport','Baroness Tanni Grey-Thompson won how many Paralympic medals in total?',['8','11','16','20'],2,'Baroness Tanni Grey-Thompson (1969-) won 16 Paralympic medals, including 11 gold medals, in races over five Paralympic Games. She won the London Marathon six times and broke a total of 30 world records.'),
+  S('Ch4b','Sport','Dame Kelly Holmes won two gold medals for running at which Olympic Games?',['Sydney 2000','Athens 2004','Beijing 2008','London 2012'],1,'Dame Kelly Holmes (1970-) won two gold medals for running in the 2004 Olympic Games. She has held a number of British and European records.'),
+  S('Ch4b','Sport','In 2004, Dame Ellen MacArthur became famous for which achievement?',['Winning Wimbledon','Winning gold at the 2004 Olympics','Becoming the fastest person to sail around the world single-handed','Being the first woman to sail solo across the Atlantic'],2,'Dame Ellen MacArthur (1976-) is a yachtswoman and in 2004 became the fastest person to sail around the world single-handed.'),
+  S('Ch4b','Sport','Sir Chris Hoy is a Scottish cyclist. How many Olympic gold medals has he won?',['Three','Four','Five','Six'],3,'Sir Chris Hoy (1976-) is a Scottish cyclist who has won six gold and one silver Olympic medals. He has also won 11 world championship titles.'),
+  S('Ch4b','Sport','In 2012, Sir Bradley Wiggins became the first Briton to win which race?',['The Formula 1 World Championship','The Grand National','The Tour de France','The FA Cup'],2,'Bradley Wiggins (1980-) is a cyclist. In 2012, he became the first Briton to win the Tour de France.'),
+  S('Ch4b','Sport','Sir Mo Farah won gold medals at the 2012 Olympics for which distances?',['100m and 200m','400m and 800m','1500m and 5000m','5000m and 10000m'],3,'Mo Farah (1983-) is a British distance runner, born in Somalia. He won gold medals in the 2012 Olympics for the 5,000 and 10,000 metres and is the first Briton to win the Olympic gold medal in the 10,000 metres.'),
+  S('Ch4b','Sport','Sir Andy Murray was the first British man to win a Grand Slam singles title since which year?',['1909','1936','1952','1977'],1,'Andy Murray (1987-) won the men\'s singles in the US Open in 2012. He is the first British man to win a singles title in a Grand Slam tournament since 1936.'),
+  S('Ch4b','Sport','Ellie Simmonds was notable at the 2008 Paralympic Games for which reason?',['She won five gold medals','She set 30 world records','She was the youngest member of the British team','She was the first British woman to win Paralympic gold'],2,'Ellie Simmonds (1994-) won gold medals for swimming at the 2008 and 2012 Paralympic Games. She was the youngest member of the British team at the 2008 Games.'),
+  S('Ch4b','Sport','The most famous cricket competition between England and Australia is called what?',['The World Cup','The Champions Trophy','The Ashes','The Six Nations'],2,'The most famous competition is the Ashes, which is a series of Test matches played between England and Australia.'),
+  S('Ch4b','Sport','St Andrews in Scotland is known as the home of which sport?',['Curling','Football','Golf','Rugby'],2,'The modern game of golf can be traced back to 15th century Scotland. St Andrews in Scotland is known as the home of golf.'),
+  S('Ch4b','Sport','The first tennis club in Britain was founded in Leamington Spa in which year?',['1862','1872','1877','1882'],1,'Modern tennis evolved in England in the late 19th century. The first tennis club was founded in Leamington Spa in 1872.'),
+  S('Ch4b','Sport','The Wimbledon Championships is which type of Grand Slam tournament?',['The only one played on clay','The only one played on grass','The only one played indoors','The only one played on hard courts'],1,'The Wimbledon Championships is the oldest tennis tournament in the world and the only "Grand Slam" event played on grass.'),
+  S('Ch4b','Sport','Who was the first person to sail single-handed around the world (in 1966/67)?',['Sir Robin Knox-Johnston','Sir Francis Drake','Sir Francis Chichester','Sir Ben Ainslie'],2,'A British sailor, Sir Francis Chichester, was the first person to sail single-handed around the world, passing the Cape of Good Hope and Cape Horn, in 1966/67.'),
+  S('Ch4b','Sport','The Paralympics have their origin in the work of Dr Sir Ludwig Guttman at which hospital?',['St Thomas\' Hospital, London','Addenbrooke\'s Hospital, Cambridge','Stoke Mandeville Hospital, Buckinghamshire','The Royal Victoria Hospital, Belfast'],2,'The Paralympics have their origin in the work of Dr Sir Ludwig Guttman, a German refugee, at the Stoke Mandeville hospital in Buckinghamshire. Dr Guttman developed new methods of treatment for people with spinal injuries.'),
+],
+ch4c:[
+  S('Ch4c','Festivals & Customs','Christmas Day (25 December) celebrates which event?',['The birth of Jesus Christ','The resurrection of Jesus Christ','The visit of the Three Wise Men','The founding of the Church of England'],0,'Christmas Day, 25 December, celebrates the birth of Jesus Christ. It is a public holiday.'),
+  S('Ch4c','Festivals & Customs','Boxing Day (26 December) is what?',['A national sports day','A public holiday','A religious feast day only','A working day in most of the UK'],1,'Boxing Day is the day after Christmas Day and is a public holiday.'),
+  S('Ch4c','Festivals & Customs','What are the 40 days before Easter known as?',['Advent','Lent','Pentecost','Epiphany'],1,'The 40 days before Easter are known as Lent. It is a time when Christians take time to reflect and prepare for Easter.'),
+  S('Ch4c','Festivals & Customs','What is Shrove Tuesday also called?',['Ash Wednesday','Good Friday','Pancake Day','Easter Sunday'],2,'The day before Lent starts is called Shrove Tuesday, or Pancake Day. People eat pancakes, which were traditionally made to use up foods such as eggs, fat and milk before fasting.'),
+  S('Ch4c','Festivals & Customs','Lent begins on which day?',['Shrove Tuesday','Ash Wednesday','Good Friday','Palm Sunday'],1,'Lent begins on Ash Wednesday. There are church services where Christians are marked with an ash cross on their forehead as a symbol of death and sorrow for sin.'),
+  M('Ch4c','Festivals & Customs','Diwali is celebrated by which TWO religions?',['Muslims','Hindus','Sikhs','Buddhists'],[1,2],'Diwali normally falls in October or November and lasts for five days. It is often called the Festival of Lights. It is celebrated by Hindus and Sikhs.','Select TWO'),
+  S('Ch4c','Festivals & Customs','Hannukah is celebrated for how many days?',['Three','Five','Seven','Eight'],3,'Hannukah is in November or December and is celebrated for eight days. On each day of the festival a candle is lit on a stand of eight candles (called a menorah).'),
+  S('Ch4c','Festivals & Customs','Vaisakhi is a Sikh festival celebrated on which date each year?',['1 March','14 April','23 April','30 November'],1,'Vaisakhi (also spelled Baisakhi) is a Sikh festival which celebrates the founding of the Sikh community known as the Khalsa. It is celebrated on 14 April each year with parades, dancing and singing.'),
+  S('Ch4c','Festivals & Customs','Eid al-Fitr celebrates the end of which Muslim observance?',['Hajj (pilgrimage to Mecca)','Ramadan (a month of fasting)','Muharram (the Islamic New Year)','Mawlid (the Prophet\'s birthday)'],1,'Eid al-Fitr celebrates the end of Ramadan, when Muslims have fasted for a month. They thank Allah for giving them the strength to complete the fast.'),
+  S('Ch4c','Festivals & Customs','In Scotland, 31 December is called what?',['Burns Night','Hogmanay','The Gathering','Caledonian Night'],1,'In Scotland, 31 December is called Hogmanay and 2 January is also a public holiday. For some Scottish people, Hogmanay is a bigger holiday than Christmas.'),
+  S('Ch4c','Festivals & Customs','Bonfire Night on 5 November commemorates which event?',['Celebrating the Battle of Trafalgar in 1805','Guy Fawkes\' failed plot to kill the Protestant king with a bomb in the Houses of Parliament in 1605','The burning of London in the Great Fire of 1666','The defeat of the Spanish Armada in 1588'],1,'Bonfire Night is an occasion when people in Great Britain set off fireworks. The origin was an event in 1605, when a group of Catholics led by Guy Fawkes failed in their plan to kill the Protestant king with a bomb in the Houses of Parliament.'),
+  S('Ch4c','Festivals & Customs','Remembrance Day on 11 November commemorates those who died fighting for the UK. What flower do people wear?',['White lilies','Yellow daffodils','Red poppies','Purple thistles'],2,'People wear poppies (the red flower found on the battlefields of the First World War). At 11.00 am there is a two-minute silence and wreaths are laid at the Cenotaph in Whitehall.'),
+  M('Ch4c','Festivals & Customs','Which TWO patron saints\' days are official public holidays in their nations?',['St George (England, 23 April)','St David (Wales, 1 March)','St Patrick (Northern Ireland, 17 March)','St Andrew (Scotland, 30 November)'],[2,3],'Only Scotland and Northern Ireland have their patron saint\'s day as an official holiday (although in Scotland not all businesses and offices will close).','Select TWO'),
+  S('Ch4c','Festivals & Customs','On which date is St George\'s Day (patron saint of England) celebrated?',['1 March','17 March','23 April','30 November'],2,'The patron saints\' special days are: 1 March (St David, Wales), 17 March (St Patrick, Northern Ireland), 23 April (St George, England), 30 November (St Andrew, Scotland).'),
+  S('Ch4c','Festivals & Customs','What is Mothering Sunday?',['The last Sunday before Christmas','The Sunday three weeks before Easter, when children send cards or gifts to mothers','The Sunday after Good Friday','The first Sunday in June'],1,'Mothering Sunday (or Mother\'s Day) is the Sunday three weeks before Easter. Children send cards or buy gifts for their mothers.'),
+  S('Ch4c','Festivals & Customs','When is Father\'s Day celebrated?',['The first Sunday in June','The second Sunday in June','The third Sunday in June','The last Sunday in June'],2,'Father\'s Day is the third Sunday in June. Children send cards or buy gifts for their fathers.'),
+  S('Ch4c','Festivals & Customs','April Fool\'s Day is on 1 April. Jokes can be played until when?',['Noon (midday)','3pm','6pm','Midnight'],0,'April Fool\'s Day, 1 April, is a day when people play jokes on each other until midday. The television and newspapers often have stories that are April Fool jokes.'),
+  S('Ch4c','Festivals & Customs','What traditional Christmas meal often includes which items?',['Roast lamb, Christmas pudding and mince pies','Roast turkey, Christmas pudding and mince pies','Roast beef, Yorkshire pudding and Christmas cake','Roast goose, Yule log and Christmas pudding'],1,'Christmas is celebrated in a traditional way. People usually eat a special meal which often includes roast turkey, Christmas pudding and mince pies.'),
+],
+ch4d:[
+  S('Ch4d','UK Today','In the 2011 Census, what percentage of people identified as Christian?',['45%','59%','70%','81%'],1,'In the 2011 Census, 59% of people identified themselves as Christian. 25% said they had no religion.'),
+  S('Ch4d','UK Today','Who is the head of the Church of England?',['The Archbishop of Canterbury','The Prime Minister','The Monarch','The Pope'],2,'The monarch is the head of the Church of England. The spiritual leader (not the head) is the Archbishop of Canterbury.'),
+  S('Ch4d','UK Today','What is the national Church of Scotland?',['The Church of England','The Roman Catholic Church','The Church of Scotland — a Presbyterian Church','The Methodist Church'],2,'In Scotland, the national Church is the Church of Scotland, which is a Presbyterian Church governed by ministers and elders.'),
+  S('Ch4d','UK Today','There is no established national Church in Wales or Northern Ireland.',['True','False'],0,'TRUE. There is no established Church in Wales or Northern Ireland. England has the Church of England; Scotland has the Church of Scotland.'),
+  S('Ch4d','UK Today','What is the currency of the UK?',['Euro','Pound Sterling','British Dollar','Crown'],1,'The currency in the UK is the pound sterling (symbol £). There are 100 pence in a pound. Coins: 1p, 2p, 5p, 10p, 20p, 50p, £1 and £2. Notes: £5, £10, £20, £50.'),
+  S('Ch4d','UK Today','Scottish and Northern Irish banknotes are valid everywhere in the UK. Must all shops accept them?',['Yes, by law all shops must accept them','No — they are valid but shops do not have to accept them'],1,'Northern Ireland and Scotland have their own banknotes, which are valid everywhere in the UK. However, shops and businesses do not have to accept them.'),
+  S('Ch4d','UK Today','England makes up approximately what percentage of the UK\'s total population?',['72%','78%','84%','91%'],2,'England more or less consistently makes up 84% of the total population. Wales is around 5%, Scotland just over 8% and Northern Ireland less than 3%.'),
+  S('Ch4d','UK Today','Women in Britain today make up approximately what proportion of the workforce?',['One quarter','One third','One half','Two thirds'],2,'Women in Britain today make up about half of the workforce. On average, girls leave school with better qualifications than boys and more women than men study at university.'),
+  S('Ch4d','UK Today','Everyone in the UK with a TV must have a television licence. What is the fine for watching without one?',['Up to £250','Up to £500','Up to £1,000','Up to £5,000'],2,'You will receive a fine of up to £1,000 if you watch TV but do not have a TV licence.'),
+  S('Ch4d','UK Today','What does the TV licence fee fund?',['All UK television channels','The British Broadcasting Corporation (BBC) — the world\'s largest broadcaster','Only BBC Radio services','ITV and Channel 4'],1,'The money from TV licences is used to pay for the BBC (British Broadcasting Corporation). The BBC is the largest broadcaster in the world and is the only wholly state-funded media organisation that is independent of government.'),
+  S('Ch4d','UK Today','What is the traditional food of Scotland?',['Roast beef and Yorkshire pudding','Welsh cakes','Haggis (a sheep\'s stomach stuffed with offal, suet, onions and oatmeal)','Ulster fry'],2,'Scotland: Haggis — a sheep\'s stomach stuffed with offal, suet, onions and oatmeal.'),
+  S('Ch4d','UK Today','What is the Ulster fry, traditionally associated with Northern Ireland?',['A fried bread with bacon and sausage','A fried meal with bacon, eggs, sausage, black pudding, white pudding, tomatoes, mushrooms, soda bread and potato bread','A potato cake with smoked salmon','A cooked breakfast with black pudding and potato scones'],1,'Northern Ireland: Ulster fry — a fried meal with bacon, eggs, sausage, black pudding, white pudding, tomatoes, mushrooms, soda bread and potato bread.'),
+  S('Ch4d','UK Today','What is the longest distance on the UK mainland (from John O\'Groats to Land\'s End)?',['About 500 miles (800 km)','About 700 miles (1,100 km)','About 870 miles (1,400 km)','About 1,000 miles (1,600 km)'],2,'The longest distance on the mainland is from John O\'Groats on the north coast of Scotland to Land\'s End in the south-west corner of England — about 870 miles (approximately 1,400 kilometres).'),
+  S('Ch4d','UK Today','The National Trust was founded in which year?',['1875','1885','1895','1905'],2,'Many parts of the countryside and places of interest are kept open by the National Trust. The National Trust was founded in 1895 by three volunteers.'),
+  S('Ch4d','UK Today','What is Big Ben actually?',['The clock tower at the Houses of Parliament','The great bell of the clock at the Houses of Parliament','A famous statue on the Thames Embankment','The Houses of Parliament building itself'],1,'Big Ben is the nickname for the great bell of the clock at the Houses of Parliament in London. Many people call the clock Big Ben as well. The clock tower is named "Elizabeth Tower".'),
+  S('Ch4d','UK Today','The London Eye on the River Thames is how tall?',['135 feet (41 metres)','240 feet (73 metres)','443 feet (135 metres)','600 feet (183 metres)'],2,'The London Eye is situated on the southern bank of the River Thames and is a Ferris wheel that is 443 feet (135 metres) tall. It was originally built as part of the UK\'s celebration of the new millennium.'),
+  S('Ch4d','UK Today','The Lake District is England\'s largest national park. What is the biggest stretch of water?',['Lake Windermere','Ullswater','Thirlmere','Bassenthwaite Lake'],0,'The Lake District covers 885 square miles. The biggest stretch of water is Windermere. In 2007, television viewers voted Wastwater as Britain\'s favourite view.'),
+  S('Ch4d','UK Today','The Giant\'s Causeway on the north-east coast of Northern Ireland is made of what?',['Ancient coral formations','Columns made from volcanic lava, formed about 50 million years ago','Limestone formations carved by glaciers','Iron-rich sandstone formations'],1,'The Giant\'s Causeway is a land formation of columns made from volcanic lava. It was formed about 50 million years ago.'),
+  S('Ch4d','UK Today','The minimum age to buy National Lottery tickets is:',['14','16','18','21'],2,'People under 18 are not allowed to participate in the National Lottery (minimum age rose from 16 to 18 from April 2021).'),
+  S('Ch4d','UK Today','Pub opening hours in England are generally:',['Open from 9.00 am — any time','Usually open from 11.00 am (12 noon on Sundays)','Fixed at 12 noon to 11.00 pm daily','Open from 10.00 am to midnight'],1,'Pubs are usually open during the day from 11.00 am (12 noon on Sundays). The licensee decides the hours that the pub or night club is open.'),
+],
+ch5a:[
+  S('Ch5a','Government & Parliament','The British constitution is described as "unwritten". What does this mean?',['There are no laws in the UK','It is not written down in any single document','It is written in secret and not available to the public','It only applies to the monarchy'],1,'The British constitution is not written down in any single document, and therefore it is described as "unwritten". This is mainly because the UK has never had a revolution which led to a totally new system of government.'),
+  S('Ch5a','Government & Parliament','What type of system of government does the UK have?',['A presidential republic','A constitutional monarchy with parliamentary democracy','A federal state','A constitutional republic'],1,'The UK is a parliamentary democracy with the monarch as head of state. The UK has a constitutional monarchy.'),
+  S('Ch5a','Government & Parliament','King Charles III became monarch in which year?',['2020','2021','2022','2023'],2,'King Charles III has reigned since his mother\'s death in September 2022. He is married to Queen Camilla. His eldest son, Prince William (the Prince of Wales), is the heir to the throne.'),
+  S('Ch5a','Government & Parliament','What role does the monarch play in forming a government?',['The monarch chooses all government ministers','The monarch invites the leader of the party with the most MPs to become Prime Minister','The monarch chairs cabinet meetings weekly','The monarch writes all legislation before it goes to Parliament'],1,'The monarch invites the leader of the party with the largest number of MPs, or the leader of a coalition between more than one party, to become the Prime Minister.'),
+  S('Ch5a','Government & Parliament','The House of Commons is regarded as the more important chamber. Why?',['Its members are appointed by the monarch','It has more members than the House of Lords','Its members are democratically elected','It has been in existence for longer than the House of Lords'],2,'The House of Commons is regarded as the more important of the two chambers in Parliament because its members are democratically elected.'),
+  S('Ch5a','Government & Parliament','How are MPs elected?',['By proportional representation','By first past the post — the candidate with the most votes wins','By the monarch on advice of the Prime Minister','By a system of ranked voting'],1,'MPs are elected through a system called "first past the post". In each constituency, the candidate who gets the most votes is elected.'),
+  S('Ch5a','Government & Parliament','A General Election must be held at least every how many years?',['Three years','Four years','Five years','Seven years'],2,'MPs are elected at a General Election, which is held at least every five years. If an MP dies or resigns, there will be a fresh election called a by-election.'),
+  S('Ch5a','Government & Parliament','How is the Speaker of the House of Commons chosen?',['Appointed by the Prime Minister','Elected by other MPs in a secret ballot','Appointed by the monarch','Nominated by the House of Lords'],1,'The Speaker is chosen by other MPs in a secret ballot. The Speaker is neutral and does not represent a political party.'),
+  S('Ch5a','Government & Parliament','Where is the official residence of the Prime Minister?',['Buckingham Palace, London','Windsor Castle, Berkshire','10 Downing Street, London','Chequers, Buckinghamshire'],2,'The official home of the Prime Minister is 10 Downing Street, in central London, near the Houses of Parliament. He or she also has a country house outside London called Chequers.'),
+  S('Ch5a','Government & Parliament','Who in the cabinet is responsible for the economy?',['The Home Secretary','The Foreign Secretary','The Chancellor of the Exchequer','The Secretary of State for Education'],2,'The Chancellor of the Exchequer is responsible for the economy. The Home Secretary is responsible for crime, policing and immigration. The Foreign Secretary is responsible for managing relationships with foreign countries.'),
+  S('Ch5a','Government & Parliament','Prime Minister\'s Questions takes place how often?',['Daily','Weekly while Parliament is sitting','Monthly','Only when requested by the opposition'],1,'Prime Minister\'s Questions takes place every week while Parliament is sitting. It is an important opportunity for the leader of the opposition to challenge the PM.'),
+  S('Ch5a','Government & Parliament','The Conservative Party is also sometimes referred to as which name?',['The Whigs','The Roundheads','The Tories','The Liberals'],2,'The modern Conservative Party is still sometimes referred to as the Tories. (The two main historical groups in Parliament were called the Whigs and the Tories.)'),
+  S('Ch5a','Government & Parliament','Civil servants must be politically neutral. Which of these is NOT one of their core values?',['Integrity','Honesty','Political loyalty to the governing party','Impartiality'],2,'Civil servants\' core values are: integrity, honesty, objectivity and impartiality (including being politically neutral). Political loyalty is NOT a core value.'),
+  S('Ch5a','Government & Parliament','How many members does the Welsh Senedd have, and how often are elections held?',['40 members, every five years','60 members, every four years','80 members, every five years','100 members, every four years'],1,'The Welsh government and the Senedd are based in Cardiff. There are 60 members of the Senedd (SMs) and elections are held every four years using a form of proportional representation.'),
+  S('Ch5a','Government & Parliament','When was the Scottish Parliament formed?',['1997','1999','2001','2004'],1,'The Scottish Parliament was formed in 1999. It sits in Edinburgh, the capital city of Scotland.'),
+  S('Ch5a','Government & Parliament','How many members does the Scottish Parliament have?',['60','90','109','129'],3,'There are 129 members of the Scottish Parliament (MSPs), elected by a form of proportional representation.'),
+  S('Ch5a','Government & Parliament','How many elected members (MLAs) does the Northern Ireland Assembly have?',['60','80','90','120'],2,'The Northern Ireland Assembly has 90 elected members, known as MLAs (members of the Legislative Assembly). They are elected with a form of proportional representation. The Assembly building is known as Stormont.'),
+  S('Ch5a','Government & Parliament','The Chartists campaigned for reform in the 1830s and 1840s. How many changes did they want?',['Four','Five','Six','Seven'],2,'A group called the Chartists campaigned for reform. They wanted six changes including every man having the vote, secret ballots, and MPs to be paid.'),
+  S('Ch5a','Government & Parliament','Members of the House of Lords are known as what?',['MPs (Members of Parliament)','MEPs (Members of the European Parliament)','Peers','Envoys'],2,'Members of the House of Lords, known as peers, are not elected by the people and do not represent a constituency.'),
+  S('Ch5a','Government & Parliament','Since 1958, what type of peer has the Prime Minister been able to nominate?',['Hereditary peers whose title passes to their children','Life peers — nominated just for their own lifetime','Royal peers appointed by the monarch','Political peers chosen by all parties in Parliament'],1,'Since 1958, the Prime Minister has had the power to nominate peers just for their own lifetime. These are called life peers.'),
+  S('Ch5a','Government & Parliament','Who can vote in all public elections in the UK?',['Only UK citizens born in the UK','All residents regardless of nationality','UK citizens, and citizens of the Commonwealth and Irish Republic resident in the UK','All adults over the age of 18 who live in the UK regardless of citizenship'],2,'Adult citizens of the UK, and citizens of the Commonwealth and the Irish Republic who are resident in the UK, can vote in all public elections.'),
+  S('Ch5a','Government & Parliament','What hours are polling stations open on election day?',['8am to 6pm','7am to 10pm','9am to 9pm','6am to 8pm'],1,'On election day, the polling station or place will be open from 7.00 am until 10.00 pm.'),
+  S('Ch5a','Government & Parliament','How many permanent members does the UN Security Council have?',['3','5','7','15'],1,'There are 15 members on the UN Security Council, which recommends action when there are international crises. The UK is one of five permanent members of the Security Council.'),
+  S('Ch5a','Government & Parliament','The Commonwealth currently has how many member states?',['47','54','70','190'],1,'The Commonwealth currently has 54 member states. The King is the ceremonial head of the Commonwealth. Membership is voluntary and based on core values of democracy, good government and the rule of law.'),
+  S('Ch5a','Government & Parliament','The Council of Europe has how many member countries?',['27','47','54','190'],1,'The Council of Europe has 47 member countries, including the UK. It is responsible for the protection and promotion of human rights in those countries.'),
+],
+ch5b:[
+  S('Ch5b','Law, Courts & Rights','Criminal law relates to which of the following?',['Disputes between individuals over money or property','Crimes usually investigated by the police and punished by the courts','Disagreements about employment contracts','Family disputes such as divorce'],1,'Criminal law relates to crimes, which are usually investigated by the police or another authority and which are punished by the courts.'),
+  S('Ch5b','Law, Courts & Rights','Which type of court deals with minor criminal cases in England and Wales?',['Crown Court','High Court','Magistrates\' Court','Youth Court'],2,'In England, Wales and Northern Ireland, most minor criminal cases are dealt with in a Magistrates\' Court. In Scotland, minor criminal offences go to a Justice of the Peace Court.'),
+  S('Ch5b','Law, Courts & Rights','How many members does a jury have in England, Wales and Northern Ireland?',['9','10','12','15'],2,'In England, Wales and Northern Ireland a jury has 12 members. In Scotland a jury has 15 members.'),
+  S('Ch5b','Law, Courts & Rights','In Scotland, what is the unique third possible jury verdict not available in England?',['Not responsible','Not proven','Case dismissed','Insufficient evidence'],1,'In Scotland, a third verdict of "not proven" is also possible alongside "guilty" and "not guilty".'),
+  S('Ch5b','Law, Courts & Rights','The small claims procedure is used for claims of less than how much in England and Wales?',['£5,000','£10,000','£25,000','£50,000'],1,'The small claims procedure is used for claims of less than £10,000 in England and Wales and £5,000 in Scotland and Northern Ireland.'),
+  S('Ch5b','Law, Courts & Rights','What did the Habeas Corpus Act (1679) guarantee?',['The right to vote in all elections','That no one could be held prisoner unlawfully — every prisoner has a right to a court hearing','Freedom of the press from government control','Equal rights for men and women before the law'],1,'The Habeas Corpus Act guaranteed that no one could be held prisoner unlawfully. Every prisoner has a right to a court hearing. "Habeas corpus" is Latin for "you must present the person in court".'),
+  S('Ch5b','Law, Courts & Rights','The Human Rights Act incorporated the European Convention on Human Rights into UK law in which year?',['1950','1989','1998','2000'],2,'The Human Rights Act 1998 incorporated the European Convention on Human Rights into UK law. The government, public bodies and the courts must follow the principles of the Convention.'),
+  S('Ch5b','Law, Courts & Rights','Female genital mutilation (FGM) in the UK is:',['Legal if done by a licensed medical practitioner','Legal only if the family consent','Illegal — it is a criminal offence including taking a girl abroad for FGM','Legal under certain religious traditions'],2,'Female genital mutilation (FGM), also known as cutting or female circumcision, is illegal in the UK. Practising FGM or taking a girl or woman abroad for FGM is a criminal offence.'),
+  S('Ch5b','Law, Courts & Rights','Forced marriage is which of the following?',['Acceptable if both families agree','The same as an arranged marriage','A criminal offence in the UK','Only illegal if the person is under 16'],2,'A marriage should be entered into with the full and free consent of both people involved. Forced marriage is a criminal offence. This is different from arranged marriages, where both parties agree.'),
+  S('Ch5b','Law, Courts & Rights','What is the minimum age to drive a car or motorbike in the UK?',['14','16','17','18'],2,'In the UK, you must be at least 17 years old to drive a car or motor cycle and you must have a driving licence to drive on public roads.'),
+  S('Ch5b','Law, Courts & Rights','From what age can you ride a moped in the UK?',['14','15','16','17'],2,'You need to be at least 16 years old to ride a moped.'),
+  S('Ch5b','Law, Courts & Rights','After what age does a driving licence have to be renewed every three years?',['60','65','70','75'],2,'Drivers can use their driving licence until they are 70 years old. After that, the licence is valid for three years at a time.'),
+  S('Ch5b','Law, Courts & Rights','An MOT test is required for vehicles over how many years old?',['One year','Two years','Three years','Five years'],2,'If your vehicle is over three years old, you must take it for a Ministry of Transport (MOT) test every year. It is an offence not to have an MOT certificate if your vehicle is more than three years old.'),
+  S('Ch5b','Law, Courts & Rights','What does PAYE stand for and what is it?',['Pay As You Earn — the income tax system for employees whereby the employer deducts tax directly','Pay As You Earn — a voluntary savings scheme','Pay As You Earn — a system for self-employed workers','Pay As You Enter — the customs system for goods brought into the UK'],0,'For most people, the right amount of income tax is automatically taken from their income by their employer. This system is called "Pay As You Earn" (PAYE).'),
+  S('Ch5b','Law, Courts & Rights','National Insurance numbers are sent to young people in the UK just before their:',['14th birthday','16th birthday','18th birthday','21st birthday'],1,'A National Insurance number is a unique personal account number. All young people in the UK are sent a National Insurance number just before their 16th birthday.'),
+  S('Ch5b','Law, Courts & Rights','Jury service is for people aged between 18 and what age?',['60','65','70','75'],2,'Anyone who is on the electoral register and is aged 18 to 70 can be asked to do jury service.'),
+  S('Ch5b','Law, Courts & Rights','In England, Wales and Northern Ireland, if an accused person is aged 10 to 17, their case is normally heard in which court?',['Magistrates\' Court','Crown Court','Youth Court','Family Court'],2,'In England, Wales and Northern Ireland, if an accused person is aged 10 to 17, the case is normally heard in a Youth Court in front of up to three specially trained magistrates or a District Judge.'),
+  S('Ch5b','Law, Courts & Rights','Anyone can make a complaint about the police by contacting whom?',['The Prime Minister\'s office','The Chief Constable of the relevant police force','The Mayor of London only','The Home Secretary'],1,'Anyone can make a complaint about the police by going to a police station or writing to the Chief Constable of the police force involved.'),
+  S('Ch5b','Law, Courts & Rights','Solicitors\' charges are usually based on what?',['The importance of the case','How much time they spend on a case','A fixed government-set rate','The client\'s income'],1,'Solicitors\' charges are usually based on how much time they spend on a case. It is very important to find out at the start how much a case is likely to cost.'),
+  S('Ch5b','Law, Courts & Rights','The legal age to purchase alcohol in a pub or off-licence in the UK is:',['16','17','18','21'],2,'To buy alcohol in a pub or night club you must be 18 or over. It is a criminal offence to sell alcohol to anyone under 18 or to buy alcohol for people under the age of 18.'),
+  S('Ch5b','Law, Courts & Rights','At what age can someone drink wine or beer with a meal in a hotel or restaurant?',['14 if accompanied by a parent','16 if accompanied by someone over 18','17 if they look old enough','18 in all circumstances'],1,'When they are 16, people can drink wine or beer with a meal in a hotel or restaurant (including eating areas in pubs) as long as they are with someone over 18.'),
+]
+};
+
+// ── BUILD ALL-QUESTIONS ARRAY ──────────────────────────────────────────────────
+const allQ=[];
+Object.entries(qBank).forEach(([key,qs])=>qs.forEach(q=>{q.topicKey=key;allQ.push(q)}));
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+let activeQ=[],cur=0,score=0,answered=false,wrongs=[],isMock=false,timerInterval=null,timeLeft=0,lastTopicKey='';
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('statTotal').textContent=allQ.length;
+  buildTopicGrid();
+});
+
+function buildTopicGrid(){
+  const grid=document.getElementById('topicGrid');
+  grid.innerHTML='';
+  Object.entries(TOPICS).forEach(([key,t])=>{
+    const count=qBank[key]?.length||0;
+    const card=document.createElement('div');
+    card.className='topic-card';
+    card.onclick=()=>startTopic(key);
+    card.innerHTML=`<div class="tco">${t.icon}</div><div class="tinf"><div class="ttitle">${t.label}</div><div class="tsub">Click to practice</div></div><div class="tcount">${count} Qs</div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── START MODES ────────────────────────────────────────────────────────────────
+function startTopic(key){
+  lastTopicKey=key;
+  isMock=false;
+  activeQ=shuffle([...qBank[key]]);
+  launch();
+}
+
+function startMockExam(examNum){
+  isMock=true;
+  lastTopicKey='mock'+examNum;
+
+  // 3 curated mock exams — each 24 questions, balanced across all chapters
+  // Format: [topicKey, indexInTopic]
+  const mockSets={
+    1:[
+      ['ch1',0],['ch1',4],
+      ['ch2',0],['ch2',3],
+      ['ch3a',6],['ch3a',8],['ch3b',0],['ch3b',6],
+      ['ch3c',0],['ch3c',4],['ch3d',0],['ch3d',8],
+      ['ch3e',0],['ch3e',14],['ch3f',0],['ch3f',2],
+      ['ch4a',0],['ch4b',2],['ch4b',5],
+      ['ch4c',2],['ch4c',10],
+      ['ch4d',4],
+      ['ch5a',4],['ch5b',0]
+    ],
+    2:[
+      ['ch1',1],['ch1',8],
+      ['ch2',1],['ch2',5],
+      ['ch3a',1],['ch3a',11],['ch3b',2],['ch3b',8],
+      ['ch3c',2],['ch3c',7],['ch3d',2],['ch3d',9],
+      ['ch3e',2],['ch3e',10],['ch3f',1],['ch3f',9],
+      ['ch4a',2],['ch4b',0],['ch4b',11],
+      ['ch4c',0],['ch4c',11],
+      ['ch4d',0],
+      ['ch5a',5],['ch5b',5]
+    ],
+    3:[
+      ['ch1',2],['ch1',9],
+      ['ch2',2],['ch2',6],
+      ['ch3a',3],['ch3a',9],['ch3b',3],['ch3b',11],
+      ['ch3c',3],['ch3c',8],['ch3d',3],['ch3d',10],
+      ['ch3e',1],['ch3e',12],['ch3f',3],['ch3f',11],
+      ['ch4a',3],['ch4b',1],['ch4b',13],
+      ['ch4c',3],['ch4c',12],
+      ['ch4d',6],
+      ['ch5a',6],['ch5b',7]
+    ]
+  };
+
+  const set=mockSets[examNum]||mockSets[1];
+  activeQ=shuffle(set.map(([k,i])=>qBank[k][i]).filter(Boolean));
+  launch();
+
+  // Start 45-min timer
+  timeLeft=45*60;
+  document.getElementById('timerBadge').style.background='#ef4444';
+  document.getElementById('timerBadge').style.display='flex';
+  updateTimer();
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    updateTimer();
+    if(timeLeft<=0){clearInterval(timerInterval);showResults();}
+  },1000);
+}
+
+function updateTimer(){
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  document.getElementById('timerBadge').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  if(timeLeft<=300) document.getElementById('timerBadge').style.background='#dc2626';
+  if(timeLeft<=60) document.getElementById('timerBadge').style.background='#7f1d1d';
+}
+
+function launch(){
+  cur=0;score=0;answered=false;wrongs=[];
+  document.getElementById('home').style.display='none';
+  document.getElementById('results').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  document.getElementById('scoreBadge').style.display='flex';
+  document.getElementById('hdrHomeBtn').style.display='flex';
+  document.getElementById('timelineLink').style.display='none';
+  renderQ();
+}
+
+// ── RENDER QUESTION ────────────────────────────────────────────────────────────
+function renderQ(){
+  answered=false;
+  const q=activeQ[cur],tot=activeQ.length;
+  document.getElementById('progressFill').style.width=((cur/tot)*100)+'%';
+  document.getElementById('progressLbl').textContent=(cur+1)+'/'+tot;
+  document.getElementById('scoreBadge').textContent=score+'/'+cur;
+  document.getElementById('qSrc').textContent=q.t;
+  document.getElementById('qTop').textContent=q.tp;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qHint').textContent=q.hint||'';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('explanation').classList.remove('show');
+  const od=document.getElementById('options');
+  od.innerHTML='';
+  const it=q.type==='multi'?'checkbox':'radio';
+  q.opts.forEach((o,i)=>{
+    const l=document.createElement('label');l.className='opt';
+    l.innerHTML=`<input type="${it}" name="opt" value="${i}"><span>${o}</span>`;
+    od.appendChild(l);
+  });
+  document.getElementById('checkBtn').style.display='inline-block';
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('nextBtn').style.display='none';
+  const card=document.getElementById('qCard');
+  card.style.animation='none';void card.offsetHeight;card.style.animation='slideIn .3s ease';
+}
+
+// ── CHECK ANSWER ───────────────────────────────────────────────────────────────
+function checkAnswer(){
+  if(answered) return;
+  const q=activeQ[cur];
+  const sel=Array.from(document.querySelectorAll('input[name="opt"]:checked')).map(i=>parseInt(i.value));
+  if(!sel.length) return;
+  answered=true;
+  const ok=arrEq(sel.sort(),[...q.c].sort());
+  if(ok) score++; else wrongs.push({q,sel});
+  document.querySelectorAll('.opt').forEach((l,i)=>{
+    l.querySelector('input').disabled=true;
+    const isCo=q.c.includes(i),isSel=sel.includes(i);
+    if(isCo&&isSel) l.classList.add('correct');
+    else if(isCo&&!isSel) l.classList.add('missed');
+    else if(!isCo&&isSel) l.classList.add('wrong');
+  });
+  const ex=document.getElementById('explanation');
+  ex.textContent='💡 '+q.exp;ex.classList.add('show');
+  document.getElementById('checkBtn').style.display='none';
+  document.getElementById('nextBtn').style.display='inline-block';
+  document.getElementById('nextBtn').textContent=cur+1<activeQ.length?'Next Question →':'See Results →';
+  document.getElementById('scoreBadge').textContent=score+'/'+(cur+1);
+}
+
+function nextQ(){cur++;if(cur<activeQ.length) renderQ();else showResults()}
+
+// ── RESULTS ────────────────────────────────────────────────────────────────────
+function showResults(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('results').style.display='block';
+  document.getElementById('scoreBadge').style.display='none';
+  document.getElementById('timerBadge').style.display='none';
+  document.getElementById('hdrHomeBtn').style.display='flex'; // keep visible on results
+  const tot=activeQ.length,pct=Math.round((score/tot)*100);
+  const passScore=isMock?18:Math.ceil(tot*.75);
+  const passed=score>=passScore;
+  const circle=document.getElementById('resultCircle');
+  circle.className='result-circle '+(passed?'pass':'fail');
+  document.getElementById('resultScore').textContent=score+'/'+tot;
+  document.getElementById('resultLabel').textContent=passed?'PASS':'FAIL';
+  document.getElementById('resultHeading').textContent=passed?'🎉 Well done!':'📚 Keep studying';
+  const passMsg=isMock?`You scored ${pct}% — above the 75% pass mark (18/24). You\'re ready for the real test!`:`You scored ${pct}% — great topic practice!`;
+  const failMsg=isMock?`You scored ${pct}%. You need 75% (18/24) to pass the real test. Review the explanations and try again.`:`You scored ${pct}%. Review the explanations below and retry this topic.`;
+  document.getElementById('resultMsg').textContent=passed?passMsg:failMsg;
+  document.getElementById('rC').textContent=score;
+  document.getElementById('rW').textContent=tot-score;
+  document.getElementById('rP').textContent=pct+'%';
+  const wr=document.getElementById('wrongReview');
+  if(!wrongs.length){
+    wr.innerHTML='<p style="color:var(--correct);font-weight:600;text-align:center;padding:14px 0">🏆 Perfect score! Every answer was correct.</p>';
+  } else {
+    wr.innerHTML='<h3>Review Your Incorrect Answers</h3>';
+    wrongs.forEach(({q,sel})=>{
+      const ct=q.c.map(i=>q.opts[i]).join(', '),st=sel.map(i=>q.opts[i]).join(', ');
+      const d=document.createElement('div');d.className='review-item';
+      d.innerHTML=`<div class="rq">Q: ${q.q}</div><div style="color:var(--wrong);margin-bottom:2px">✗ Your answer: ${st}</div><div class="ra">✓ Correct answer: ${ct}</div><div style="color:#64748b;font-size:.79rem;margin-top:4px;line-height:1.5">📖 ${q.exp}</div>`;
+      wr.appendChild(d);
+    });
+  }
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────────────
+function restartSame(){
+  document.getElementById('results').style.display='none';
+  document.getElementById('timerBadge').style.background='#ef4444';
+  if(isMock){
+    const num=parseInt(lastTopicKey.replace('mock',''))||1;
+    startMockExam(num);
+  } else {
+    startTopic(lastTopicKey);
+  }
+}
+
+function goHome(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  document.getElementById('results').style.display='none';
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('scoreBadge').style.display='none';
+  document.getElementById('timerBadge').style.display='none';
+  document.getElementById('timerBadge').style.background='#ef4444';
+  document.getElementById('hdrHomeBtn').style.display='none';
+  document.getElementById('timelineLink').style.display='inline-flex';
+  document.getElementById('home').style.display='block';
+}
+
+function confirmHome(){
+  // Use inline modal instead of confirm() — works on all mobile browsers
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.innerHTML=`
+    <div style="background:#fff;border-radius:14px;padding:24px 20px;max-width:320px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3)">
+      <div style="font-size:1.8rem;margin-bottom:10px">🏠</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;color:#0d1b2a;margin-bottom:6px">Exit to Home?</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:.83rem;color:#64748b;margin-bottom:20px">Your progress on this session will be lost.</div>
+      <div style="display:flex;gap:10px">
+        <button id="modalCancel" style="flex:1;padding:11px;background:#f4f0e6;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#64748b;cursor:pointer">Keep going</button>
+        <button id="modalConfirm" style="flex:1;padding:11px;background:#00247d;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:#fff;cursor:pointer">Yes, go home</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  document.getElementById('modalCancel').onclick=()=>overlay.remove();
+  document.getElementById('modalConfirm').onclick=()=>{overlay.remove();goHome();};
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function arrEq(a,b){return a.length===b.length&&a.every((v,i)=>v===b[i])}
+</script>
+</body>
+</html>

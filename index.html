@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>British History Timeline — Life in the UK</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --navy:#0d1b2a;
+  --cream:#f4f0e6;
+  --pale:#e8e2d6;
+  --white:#fff;
+  --ink:#1a1a2e;
+  --muted:#6b7280;
+  --rail:#d8d1c2;
+  --gold:#c9a84c;
+  --radius:11px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* ── SCROLL PROGRESS ── */
+#scrollProgress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gold);z-index:200;transition:width .1s linear}
+
+/* ── HEADER ── */
+header{background:var(--navy);padding:16px 18px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+.hdr-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.hdr-top h1{font-family:'Playfair Display',serif;font-size:1.28rem;color:#fff;font-weight:700;line-height:1.15;flex:1}
+.hdr-top h1 em{display:block;font-family:'DM Sans',sans-serif;font-style:normal;font-size:.7rem;font-weight:400;color:var(--gold);letter-spacing:.05em;margin-top:3px}
+.date-toggle{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:8px;padding:7px 11px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;flex-shrink:0}
+.date-toggle:hover{background:rgba(255,255,255,.22)}
+.date-toggle.on{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.switch-link{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--navy);text-decoration:none;border-radius:8px;padding:7px 12px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:700;white-space:nowrap;flex-shrink:0;transition:filter .15s}
+.switch-link:hover{filter:brightness(1.08)}
+.hdr-actions{display:flex;gap:6px;flex-shrink:0}
+
+/* era nav */
+.era-nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+.era-nav::-webkit-scrollbar{display:none}
+.era-chip{background:rgba(255,255,255,.1);border:none;border-left:3px solid;color:rgba(255,255,255,.85);padding:6px 11px;border-radius:0 7px 7px 0;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.era-chip:hover{background:rgba(255,255,255,.2);color:#fff}
+
+/* ── LAYOUT ── */
+main{max-width:640px;margin:0 auto;padding:0 16px 80px}
+
+.intro{padding:22px 2px 8px;font-size:.86rem;line-height:1.65;color:var(--muted)}
+.intro strong{color:var(--ink);font-weight:600}
+
+/* ── ERA SECTION ── */
+.era{padding-top:26px}
+.era-head{display:flex;align-items:baseline;gap:10px;padding:8px 0 4px;margin-bottom:4px;border-bottom:2px solid var(--rail)}
+.era-head h2{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:700;color:var(--navy)}
+.era-head .span{font-size:.74rem;color:var(--muted);font-weight:500;margin-left:auto;white-space:nowrap}
+
+/* ── RAIL + ENTRIES ── */
+.rail{position:relative;padding-left:26px}
+.rail::before{content:'';position:absolute;left:6px;top:6px;bottom:14px;width:3px;border-radius:2px;background:var(--eraColor,var(--rail))}
+
+.entry{position:relative;padding:14px 0 4px}
+.entry::before{content:'';position:absolute;left:-24px;top:22px;width:11px;height:11px;border-radius:50%;background:var(--eraColor,var(--rail));border:2.5px solid var(--cream)}
+
+.entry .date{display:inline-block;font-family:'Playfair Display',serif;font-size:1.02rem;font-weight:700;color:var(--eraColor,var(--navy));letter-spacing:-.01em;margin-bottom:1px}
+.entry .date.masked{background:var(--eraColor,var(--navy));color:transparent;border-radius:5px;cursor:pointer;user-select:none;min-width:74px;text-align:center;position:relative;opacity:.22}
+.entry .date.masked::after{content:'tap to reveal';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:600;color:var(--navy);letter-spacing:.02em}
+.entry .date.revealed{animation:pop .25s ease}
+@keyframes pop{from{transform:scale(.94);opacity:.4}to{transform:scale(1);opacity:1}}
+
+.entry h3{font-size:.94rem;font-weight:700;color:var(--navy);line-height:1.35;margin:2px 0 5px}
+.entry p{font-size:.855rem;line-height:1.62;color:#41465a}
+.entry .tag{display:inline-block;font-size:.65rem;font-weight:600;color:var(--eraColor,var(--navy));background:var(--tagBg,rgba(0,0,0,.05));padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:2px}
+
+/* ── FOOTER ── */
+.foot{margin-top:44px;padding:20px 16px;background:var(--white);border-radius:var(--radius);font-size:.8rem;line-height:1.6;color:var(--muted);text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.foot strong{color:var(--navy)}
+
+.top-btn{position:fixed;right:16px;bottom:18px;width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;border:none;font-size:1.1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);display:none;align-items:center;justify-content:center;z-index:90}
+.top-btn.show{display:flex}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media(max-width:420px){main{padding:0 12px 80px}.hdr-top h1{font-size:1.15rem}}
+</style>
+</head>
+<body>
+
+<div id="scrollProgress"></div>
+
+<header>
+  <div class="hdr-top">
+    <h1>British History<em>Every date the handbook can test you on</em></h1>
+    <div class="hdr-actions">
+      <button class="date-toggle" id="dateToggle">Hide dates</button>
+      <a class="switch-link" href="practice.html">Practice →</a>
+    </div>
+  </div>
+  <div class="era-nav" id="eraNav"></div>
+</header>
+
+<main>
+  <p class="intro">
+    Every dated event from Chapter 3 of the official handbook, in order. Each era has its own colour — the colour is the memory hook, so you learn <strong>where</strong> something sits before you learn exactly when. Once an era feels familiar, hit <strong>Hide dates</strong> and work down the page testing yourself.
+  </p>
+  <div id="timeline"></div>
+
+  <div class="foot">
+    Built from <strong>Life in the UK: A Guide for New Residents, 3rd Edition</strong>.<br>
+    <span id="entryCount"></span>
+  </div>
+</main>
+
+<button class="top-btn" id="topBtn" aria-label="Back to top">↑</button>
+
+<script>
+const ERAS = [
+{
+  id:"prehistoric", name:"Prehistoric Britain", span:"to 55 BC", color:"#7c6a4f",
+  items:[
+    {d:"c.10,000 years ago", t:"Britain is cut off from Europe", x:"For most of the Stone Age a land bridge joined Britain to the continent, and the first people here were hunter-gatherers who followed the herds they hunted. The Channel separated Britain permanently about 10,000 years ago."},
+    {d:"c.6,000 years ago", t:"The first farmers arrive", x:"Their ancestors probably came from south-east Europe. They built houses, tombs and monuments — including Stonehenge in Wiltshire, probably a gathering place for seasonal ceremonies. Skara Brae on Orkney is the best-preserved prehistoric village in northern Europe."},
+    {d:"c.4,000 years ago", t:"The Bronze Age begins", x:"People lived in roundhouses and buried their dead in tombs called round barrows. They were accomplished metalworkers, making tools, ornaments and weapons in bronze and gold."},
+    {d:"The Iron Age", t:"Hill forts and the first British coins", x:"People learned to make tools and weapons from iron and defended settlements called hill forts — a very impressive one survives at Maiden Castle in Dorset. They spoke a Celtic language, and made the first coins minted in Britain, some inscribed with the names of Iron Age kings. This marks the beginning of British history.", tag:"Maiden Castle"}
+  ]
+},
+{
+  id:"roman", name:"Roman Britain", span:"55 BC – AD 410", color:"#9c2c2c",
+  items:[
+    {d:"55 BC", t:"Julius Caesar invades — and fails", x:"Caesar led a Roman invasion of Britain that was unsuccessful. For nearly 100 years afterwards Britain remained separate from the Roman Empire."},
+    {d:"AD 43", t:"Emperor Claudius invades successfully", x:"Claudius led the Roman army in a new invasion. Some British tribes resisted, but the Romans succeeded in occupying almost all of Britain."},
+    {d:"During the occupation", t:"Boudicca leads a revolt", x:"Boudicca was queen of the Iceni in what is now eastern England, and fought against the Romans. There is a statue of her on Westminster Bridge in London, near the Houses of Parliament.", tag:"person"},
+    {d:"During the occupation", t:"Hadrian's Wall is built", x:"The Emperor Hadrian built a wall across the north of England to keep out the Picts, the ancestors of the Scottish people. Parts survive, including the forts of Housesteads and Vindolanda. It is a UNESCO World Heritage Site."},
+    {d:"3rd–4th centuries AD", t:"The first Christian communities appear", x:"Christianity began to take root in Britain during the later part of the Roman occupation."},
+    {d:"AD 410", t:"The Roman army leaves", x:"After 400 years in Britain, the army left to defend other parts of the Roman Empire and never returned. The Romans had built roads and public buildings, created a structure of law, and introduced new plants and animals."}
+  ]
+},
+{
+  id:"saxon", name:"Anglo-Saxons & Vikings", span:"AD 410 – 1066", color:"#1d6b53",
+  items:[
+    {d:"After AD 410", t:"The Jutes, Angles and Saxons invade", x:"Tribes from northern Europe invaded Britain. The languages they spoke are the basis of modern-day English."},
+    {d:"By c. AD 600", t:"Anglo-Saxon kingdoms are established", x:"These kingdoms were mainly in what is now England. One king's burial place was at Sutton Hoo in modern Suffolk — buried with treasure and armour in a ship covered by a mound of earth. Much of what is now Wales, and Scotland, remained free of Anglo-Saxon rule."},
+    {d:"During this period", t:"Missionaries spread Christianity", x:"St Patrick, who became the patron saint of Ireland, and St Columba, who founded the monastery on Iona off the coast of what is now Scotland, spread the religion in the north. St Augustine led missionaries from Rome in the south and became the first Archbishop of Canterbury.", tag:"3 saints"},
+    {d:"AD 789", t:"The first Viking raids", x:"The Vikings came from Denmark and Norway, raiding coastal towns for goods and slaves. They later settled, especially in the east and north of England in an area known as the Danelaw — place names such as Grimsby and Scunthorpe come from the Viking languages."},
+    {d:"9th century", t:"Alfred the Great defeats the Vikings", x:"The Anglo-Saxon kingdoms in England united under King Alfred the Great, who defeated the Vikings.", tag:"person"},
+    {d:"11th century", t:"Cnut becomes the first Danish king", x:"Anglo-Saxon kings continued to rule England except for a short period of Danish kings. The first of these was Cnut, also called Canute."},
+    {d:"9th century", t:"Kenneth MacAlpin unites the north", x:"The threat of Viking attack encouraged the people of the north to unite under one king, Kenneth MacAlpin. The term Scotland began to be used to describe that country."}
+  ]
+},
+{
+  id:"medieval", name:"Norman Conquest & Middle Ages", span:"1066 – 1485", color:"#7a4a17",
+  items:[
+    {d:"1066", t:"The Battle of Hastings", x:"William, Duke of Normandy defeated Harold, the Saxon king of England, who was killed in the battle. William became known as William the Conqueror. The battle is commemorated in the Bayeux Tapestry, which can still be seen in France. This was the last successful foreign invasion of England.", tag:"battle"},
+    {d:"After 1066", t:"The Domesday Book", x:"William sent people all over England to list all the towns and villages, who lived there, who owned the land and what animals they owned. It still exists and gives a picture of English society just after the Conquest."},
+    {d:"By 1200", t:"The English rule the Pale in Ireland", x:"The English first went to Ireland as troops to help the Irish king, and remained to build their own settlements. By 1200 they ruled an area of Ireland around Dublin known as the Pale."},
+    {d:"1215", t:"Magna Carta", x:"King John was forced by his noblemen to agree to a charter of rights — the Great Charter. It established that even the king was subject to the law, protected the rights of the nobility, and restricted the king's power to collect taxes or change laws.", tag:"key law"},
+    {d:"1284", t:"The Statute of Rhuddlan annexes Wales", x:"King Edward I introduced the Statute, which annexed Wales to the Crown of England. Huge castles including Conwy and Caernarvon were built to maintain this power. By the middle of the 15th century the last Welsh rebellions had been defeated."},
+    {d:"1314", t:"The Battle of Bannockburn", x:"The Scottish, led by Robert the Bruce, defeated the English. Scotland remained unconquered by the English.", tag:"battle"},
+    {d:"1348", t:"The Black Death", x:"A disease, probably a form of plague, came to Britain. One third of the population of England died, and a similar proportion in Scotland and Wales — one of the worst disasters ever to strike Britain. Labour shortages followed, peasants demanded higher wages, and new social classes appeared."},
+    {d:"1415", t:"The Battle of Agincourt", x:"King Henry V's vastly outnumbered English army defeated the French in one of the most famous battles of the Hundred Years War — which actually lasted 116 years. The English left France in the 1450s.", tag:"battle"},
+    {d:"c.1400", t:"Chaucer writes The Canterbury Tales", x:"Geoffrey Chaucer wrote a series of poems in English about a group of pilgrims travelling to Canterbury. Around the same time, English became the preferred language of the royal court and Parliament, and official documents began to be written in English."},
+    {d:"Late 15th century", t:"William Caxton brings printing to England", x:"Caxton was the first person in England to print books using a printing press. The Canterbury Tales was one of the first books he printed.", tag:"person"},
+    {d:"1455", t:"The Wars of the Roses begin", x:"A civil war began to decide who should be king of England, fought between the House of Lancaster, whose symbol was a red rose, and the House of York, whose symbol was a white rose."},
+    {d:"1485", t:"The Battle of Bosworth Field", x:"King Richard III of the House of York was killed and Henry Tudor, leader of the House of Lancaster, became King Henry VII. He married Richard's niece Elizabeth of York, uniting the two families. The symbol of the House of Tudor was a red rose with a white rose inside it.", tag:"battle"}
+  ]
+},
+{
+  id:"tudor", name:"The Tudors", span:"1485 – 1603", color:"#8c1e4f",
+  items:[
+    {d:"1485 onwards", t:"Henry VII secures the throne", x:"He deliberately strengthened the central administration of England, reduced the power of the nobles, and built up the monarchy's financial reserves."},
+    {d:"Reign of Henry VIII", t:"England breaks with the Church of Rome", x:"Henry needed the Pope's approval to divorce his first wife. When the Pope refused, Henry established the Church of England, in which the king — not the Pope — had the power to appoint bishops and order how people worship."},
+    {d:"Reign of Henry VIII", t:"Six wives, in order", x:"Catherine of Aragon, Anne Boleyn, Jane Seymour, Anne of Cleves, Catherine Howard, Catherine Parr. Anne Boleyn and Catherine Howard were both executed. Jane Seymour gave Henry his son Edward but died shortly after the birth. Catherine Parr survived him.", tag:"memorise"},
+    {d:"Reign of Henry VIII", t:"Wales is formally united with England", x:"The Act for the Government of Wales united Wales with England. The Welsh sent representatives to the House of Commons and the Welsh legal system was reformed."},
+    {d:"1547–1553", t:"Edward VI and the Book of Common Prayer", x:"Henry's son Edward VI was strongly Protestant. During his reign the Book of Common Prayer was written for use in the Church of England; a version is still used in some churches today. He died at the age of 15 after ruling for just over six years."},
+    {d:"1553–1558", t:"Mary I — 'Bloody Mary'", x:"Edward's half-sister Mary was a devout Catholic who persecuted Protestants during her reign, which is why she became known as Bloody Mary. She also died after a short reign."},
+    {d:"1558 onwards", t:"Elizabeth I re-establishes the Church of England", x:"Elizabeth was a Protestant. She found a balance between the views of Catholics and the more extreme Protestants, and so avoided serious religious conflict within England."},
+    {d:"1560", t:"The Reformation in Scotland", x:"The predominantly Protestant Scottish Parliament abolished the authority of the Pope in Scotland, and Roman Catholic religious services became illegal. A Protestant Church of Scotland was established — but unlike in England, this was not a state Church."},
+    {d:"Reign of Elizabeth I", t:"Mary, Queen of Scots is executed", x:"The Catholic queen of Scotland fled to England after her husband was murdered. Elizabeth suspected her of wanting the English throne and kept her prisoner for 20 years. Mary was eventually executed, accused of plotting against Elizabeth I."},
+    {d:"1588", t:"The Spanish Armada is defeated", x:"Spain sent a large fleet to conquer England and restore Catholicism. Its defeat made Elizabeth I one of the most popular monarchs in English history. Sir Francis Drake was one of the commanders; his ship the Golden Hind was one of the first to sail right around the world.", tag:"battle"},
+    {d:"1564–1616", t:"William Shakespeare", x:"Born in Stratford-upon-Avon, he was a playwright and actor. His most famous plays include A Midsummer Night's Dream, Hamlet, Macbeth and Romeo and Juliet. The Globe Theatre in London is a modern copy of the theatres where his plays were first performed.", tag:"person"}
+  ]
+},
+{
+  id:"stuart", name:"Stuarts, Civil War & Revolution", span:"1603 – 1714", color:"#2c4a7c",
+  items:[
+    {d:"1603", t:"James VI of Scotland becomes James I of England", x:"Elizabeth I never married and had no children. Her heir was her cousin James VI of Scotland, who became King James I of England, Wales and Ireland — but Scotland remained a separate country."},
+    {d:"Reign of James I", t:"The King James Bible", x:"A new translation of the Bible into English, known as the King James Version or the Authorised Version. It was not the first English Bible, but it continues to be used in many Protestant churches today."},
+    {d:"James I & Charles I", t:"The Divine Right of Kings", x:"Both believed the king was directly appointed by God to rule and should be able to act without seeking Parliament's approval. Charles I found ways to raise money without Parliament for 11 years."},
+    {d:"1642", t:"The Civil War begins", x:"Charles I entered the House of Commons and tried to arrest five parliamentary leaders, who had been warned and were not there — no monarch has set foot in the Commons since. The country split into those who supported the king, the Cavaliers, and those who supported Parliament, the Roundheads."},
+    {d:"1646", t:"Parliament wins the war", x:"The king's army was defeated at the Battles of Marston Moor and Naseby. Charles was held prisoner by the parliamentary army."},
+    {d:"1649", t:"Charles I is executed", x:"He was still unwilling to reach any agreement with Parliament. England declared itself a republic, called the Commonwealth, and no longer had a monarch."},
+    {d:"1653–1658", t:"Oliver Cromwell rules as Lord Protector", x:"After his campaign in Ireland and victory over Charles II at Worcester, Cromwell was recognised as leader of the new republic and given the title of Lord Protector. He ruled until his death in 1658. His son Richard succeeded him but could not control the army or the government.", tag:"person"},
+    {d:"1660", t:"The Restoration", x:"Parliament invited Charles II to come back from exile in the Netherlands. He was crowned King of England, Wales, Scotland and Ireland, and understood he would sometimes need to reach agreement with Parliament."},
+    {d:"1665", t:"The Great Plague of London", x:"A major outbreak of plague. Thousands of people died, especially in poorer areas."},
+    {d:"1666", t:"The Great Fire of London", x:"A great fire destroyed much of the city, including many churches and St Paul's Cathedral. London was rebuilt with a new St Paul's designed by Sir Christopher Wren. Samuel Pepys wrote about these events in a diary that is still read today."},
+    {d:"1679", t:"The Habeas Corpus Act", x:"Habeas corpus is Latin for 'you must present the person in court'. The Act guaranteed that no one could be held prisoner unlawfully — every prisoner has a right to a court hearing. It remains relevant today.", tag:"key law"},
+    {d:"Reign of Charles II", t:"The Royal Society is formed", x:"Formed to promote 'natural knowledge', it is the oldest surviving scientific society in the world. Early members included Sir Edmund Halley, who predicted the return of the comet now named after him, and Sir Isaac Newton."},
+    {d:"1688", t:"The Glorious Revolution", x:"Important Protestants in England asked William of Orange, husband of James II's daughter Mary, to invade. There was no resistance and James fled to France. It was called glorious because there was no fighting in England, and it guaranteed the power of Parliament."},
+    {d:"1689", t:"The Bill of Rights", x:"Confirmed the rights of Parliament and the limits of the king's power. Parliament took control of who could be monarch and declared that the king or queen must be a Protestant. Every year the monarch had to ask Parliament to renew funding for the army and navy.", tag:"key law"},
+    {d:"1690", t:"The Battle of the Boyne", x:"James II invaded Ireland with the help of a French army. William defeated him in Ireland — an event still commemorated by some in Northern Ireland today. Supporters of James became known as Jacobites.", tag:"battle"},
+    {d:"1695", t:"A free press begins", x:"Newspapers were allowed to operate without a government licence, and increasing numbers began to be published."}
+  ]
+},
+{
+  id:"empire", name:"Union, Empire & Industry", span:"1707 – 1837", color:"#0f5f78",
+  items:[
+    {d:"1707", t:"The Act of Union creates Great Britain", x:"Known as the Treaty of Union in Scotland, it created the Kingdom of Great Britain. Although Scotland was no longer an independent country, it kept its own legal and education systems and its Presbyterian Church.", tag:"key law"},
+    {d:"1721–1742", t:"Sir Robert Walpole, the first Prime Minister", x:"George I, chosen by Parliament in 1714 as Queen Anne's nearest Protestant relative, did not speak very good English and relied heavily on his ministers. The most important minister became known as the Prime Minister, and Walpole was the first man to be called this.", tag:"person"},
+    {d:"1746", t:"The Battle of Culloden", x:"Charles Edward Stuart — Bonnie Prince Charlie — landed in Scotland in 1745 and raised an army of Highland clansmen. He was defeated by George II's army at Culloden and escaped to Europe. The clans lost much of their power, and the Highland Clearances followed.", tag:"battle"},
+    {d:"18th century", t:"The Enlightenment", x:"New ideas about politics, philosophy and science. Many of the great thinkers were Scottish: Adam Smith on economics, David Hume on human nature, James Watt on steam power. A key principle was that everyone should have the right to their own political and religious beliefs."},
+    {d:"18th–19th centuries", t:"The Industrial Revolution", x:"The rapid development of industry in Britain, driven by machinery and the use of steam power. Britain was the first country to industrialise on a large scale. Richard Arkwright, who originally trained as a barber, is remembered for running efficient and profitable factories."},
+    {d:"1776", t:"American colonies declare independence", x:"The British government wanted to tax the colonies; the colonists argued there should be no taxation without representation in Parliament. Thirteen colonies declared independence, and Britain recognised it in 1783."},
+    {d:"1805", t:"The Battle of Trafalgar", x:"Britain's navy defeated combined French and Spanish fleets. Admiral Nelson was in charge of the British fleet and was killed in the battle. Nelson's Column in Trafalgar Square is a monument to him, and his ship HMS Victory can be visited in Portsmouth.", tag:"battle"},
+    {d:"1807", t:"The slave trade is banned in British ships and ports", x:"The first formal anti-slavery groups were set up by the Quakers in the late 1700s. William Wilberforce, an evangelical Christian and MP, played an important part alongside other abolitionists in turning public opinion against the trade."},
+    {d:"1810", t:"Britain's first curry house opens", x:"Sake Dean Mahomet, born in the Bengal region of India, opened the Hindoostane Coffee House in George Street, London. He and his wife also introduced 'shampooing', the Indian art of head massage, to Britain.", tag:"person"},
+    {d:"1815", t:"The Battle of Waterloo", x:"The French Wars ended with the defeat of Emperor Napoleon by the Duke of Wellington. Wellington was known as the Iron Duke and later became Prime Minister.", tag:"battle"},
+    {d:"1801", t:"The Act of Union with Ireland", x:"Following the Act of Union of 1800, Ireland became unified with England, Scotland and Wales, creating the United Kingdom of Great Britain and Ireland. A new Union Flag combined the crosses of St George, St Andrew and St Patrick. The Welsh dragon does not appear, because Wales was already united with England when the first Union Flag was created in 1606.", tag:"key law"},
+    {d:"1832", t:"The Reform Act", x:"Greatly increased the number of people with the right to vote, abolished the old 'pocket' and 'rotten' boroughs, and gave more parliamentary seats to towns and cities. Voting was still based on ownership of property, so the working class still could not vote."},
+    {d:"1833", t:"The Emancipation Act abolishes slavery", x:"Slavery was abolished throughout the British Empire. The Royal Navy stopped slave ships from other countries, freed the slaves and punished the traders. After 1833, 2 million Indian and Chinese workers were employed to replace the freed slaves.", tag:"key law"}
+  ]
+},
+{
+  id:"victorian", name:"The Victorian Age", span:"1837 – 1901", color:"#5b3a86",
+  items:[
+    {d:"1837–1901", t:"The reign of Queen Victoria", x:"Victoria became queen at the age of 18 and reigned for almost 64 years. It was a time when Britain increased in power and influence abroad, the middle classes became increasingly significant, and reformers improved conditions for the poor."},
+    {d:"Victorian period", t:"The British Empire at its height", x:"The Empire grew to cover all of India, Australia and large parts of Africa, becoming the largest empire the world has ever seen, with an estimated population of more than 400 million people. Between 1853 and 1913, as many as 13 million British citizens left the country to settle overseas."},
+    {d:"1846", t:"The Corn Laws are repealed", x:"Part of the government's move towards free trade. The Corn Laws had prevented the import of cheap grain; repealing them helped British industry, because raw materials could be imported more cheaply."},
+    {d:"1847", t:"Factory working hours are limited", x:"The number of hours that women and children could work was limited by law to 10 hours per day. Better housing began to be built for workers."},
+    {d:"1851", t:"The Great Exhibition", x:"Opened in Hyde Park in the Crystal Palace, a huge building made of steel and glass. Exhibits ranged from huge machines to handmade goods, and countries from all over the world showed their products — though most objects were made in Britain."},
+    {d:"1853–1856", t:"The Crimean War", x:"Britain fought with Turkey and France against Russia. It was the first war extensively covered by the media through news stories and photographs. Many soldiers died from illness rather than wounds. Queen Victoria introduced the Victoria Cross medal during this war."},
+    {d:"1854", t:"Florence Nightingale goes to Turkey", x:"She worked in military hospitals treating soldiers in the Crimean War, and she and her fellow nurses reduced the mortality rate. In 1860 she established the Nightingale Training School for nurses at St Thomas' Hospital in London. She is often regarded as the founder of modern nursing.", tag:"person"},
+    {d:"Mid-century", t:"The Irish famine", x:"The potato crop failed and Ireland suffered a famine. A million people died from disease and starvation, and another million and a half left Ireland. By 1861 there were large Irish populations in Liverpool, London, Manchester and Glasgow."},
+    {d:"1867", t:"The second Reform Act", x:"Created many more urban seats in Parliament and reduced the amount of property people needed before they could vote. The majority of men still could not vote, and no women could."},
+    {d:"1870 & 1882", t:"Married women win property rights", x:"Until 1870, when a woman married, her earnings, property and money automatically belonged to her husband. Acts of Parliament in 1870 and 1882 gave wives the right to keep their own earnings and property."},
+    {d:"1806–1859", t:"Isambard Kingdom Brunel", x:"An engineer from Portsmouth who built tunnels, bridges, railway lines and ships. He was responsible for the Great Western Railway, the first major railway built in Britain, running from Paddington Station to the south-west of England, the West Midlands and Wales.", tag:"person"},
+    {d:"1899–1902", t:"The Boer War", x:"Britain went to war in South Africa with settlers from the Netherlands called the Boers. The Boers fought fiercely and the war lasted over three years. There was some public sympathy for the Boers and people began to question whether the Empire could continue."}
+  ]
+},
+{
+  id:"wars", name:"The World Wars", span:"1903 – 1945", color:"#3f4756",
+  items:[
+    {d:"1903", t:"The suffragettes are founded", x:"Emmeline Pankhurst, who had set up the Women's Franchise League in 1889, helped found the Women's Social and Political Union. This was the first group whose members were called suffragettes. They used civil disobedience — chaining themselves to railings, smashing windows, and going on hunger strike.", tag:"person"},
+    {d:"28 June 1914", t:"Archduke Franz Ferdinand is assassinated", x:"The assassination in Austria set off a chain of events leading to the First World War. Other factors — growing nationalism, militarism, imperialism and the division of Europe into two camps — had already set the conditions for war."},
+    {d:"1914–1918", t:"The First World War", x:"Britain was part of the Allied Powers. The whole British Empire was involved: more than a million Indians fought on behalf of Britain and around 40,000 were killed. There were more than 2 million British casualties."},
+    {d:"July 1916", t:"The Battle of the Somme", x:"The British attack on the Somme resulted in about 60,000 British casualties on the first day alone.", tag:"battle"},
+    {d:"1916", t:"The Easter Rising in Dublin", x:"Britain had promised Home Rule for Ireland in 1913, but the outbreak of war postponed it. Irish Nationalists were not willing to wait and rose against the British in Dublin. The leaders were executed under military law, and a guerrilla war followed."},
+    {d:"11 November 1918, 11.00 am", t:"The First World War ends", x:"The war ended with victory for Britain and its allies. Remembrance Day on 11 November originally commemorated the dead of this war.", tag:"memorise"},
+    {d:"1918", t:"Women over 30 get the vote", x:"Women over the age of 30 were given voting rights and the right to stand for Parliament, partly in recognition of the contribution women made to the war effort."},
+    {d:"1922", t:"Ireland is divided", x:"A peace treaty was signed in 1921, and in 1922 Ireland became two countries. The six mainly Protestant counties in the north remained part of the UK as Northern Ireland. The rest became the Irish Free State, which became a republic in 1949."},
+    {d:"1922 & 1936", t:"The BBC begins broadcasting", x:"The BBC started radio broadcasts in 1922 and began the world's first regular television service in 1936."},
+    {d:"1928", t:"Women get the vote at 21", x:"Shortly before Emmeline Pankhurst's death, women were given the right to vote at the age of 21 — the same as men."},
+    {d:"1929", t:"The Great Depression", x:"The world entered the Great Depression and some parts of the UK suffered mass unemployment. Traditional heavy industries such as shipbuilding were badly affected, but new automobile and aviation industries developed. Car ownership doubled from 1 million to 2 million between 1930 and 1939."},
+    {d:"1933", t:"Hitler comes to power in Germany", x:"He believed the conditions imposed on Germany after the First World War were unfair and wanted to conquer more land. He renegotiated treaties, built up arms, and tested Germany's military strength in nearby countries."},
+    {d:"1939", t:"Britain and France declare war", x:"The British government had tried to avoid another war, but when Hitler invaded Poland in 1939, Britain and France declared war in order to stop his aggression."},
+    {d:"May 1940", t:"Churchill becomes Prime Minister", x:"At a time of national crisis Winston Churchill became Prime Minister and Britain's war leader. He refused to surrender to the Nazis and was an inspirational leader. He lost the 1945 election but returned as Prime Minister in 1951.", tag:"person"},
+    {d:"1940", t:"The evacuation of Dunkirk", x:"As France fell, the British decided to evacuate British and French soldiers. Many civilian volunteers in small pleasure and fishing boats helped the Navy rescue more than 300,000 men from the beaches. The evacuation gave rise to the phrase 'the Dunkirk spirit'."},
+    {d:"Summer 1940", t:"The Battle of Britain", x:"Germany needed to control the air before invading. The British resisted with their fighter planes and won the crucial aerial battle. The most important RAF planes were the Spitfire and the Hurricane, both designed and built in Britain. The night bombing that followed was called the Blitz; Coventry was almost totally destroyed."},
+    {d:"December 1941", t:"The United States enters the war", x:"The US entered the war when the Japanese bombed its naval base at Pearl Harbour. That same year Hitler attacked the Soviet Union — a fierce conflict that proved a pivotal point in the war."},
+    {d:"6 June 1944", t:"D-Day", x:"Allied forces landed in Normandy. Following victory on the beaches, the allied forces pressed on through France and eventually into Germany.", tag:"memorise"},
+    {d:"May 1945", t:"Germany is defeated", x:"The Allies comprehensively defeated Germany in May 1945."},
+    {d:"August 1945", t:"The war with Japan ends", x:"The United States dropped its newly developed atom bombs on Hiroshima and Nagasaki. Scientists led by Ernest Rutherford, working at Manchester and then Cambridge University, were the first to split the atom and took part in the Manhattan Project."}
+  ]
+},
+{
+  id:"modern", name:"Modern Britain", span:"1945 – today", color:"#1d6b7c",
+  items:[
+    {d:"1942", t:"The Beveridge Report", x:"William Beveridge's report, commissioned by the wartime government in 1941, recommended fighting the five 'Giant Evils' of Want, Disease, Ignorance, Squalor and Idleness. It provided the basis of the modern welfare state.", tag:"memorise"},
+    {d:"1944", t:"The Education Act", x:"R A Butler oversaw the Education Act 1944, often called the Butler Act, which introduced free secondary education in England and Wales. The division between primary and secondary schools it enforced still remains in most areas."},
+    {d:"1945", t:"Labour wins; Clement Attlee becomes Prime Minister", x:"Attlee promised to introduce the welfare state outlined in the Beveridge Report. His government nationalised the railways, coal mines, and gas, water and electricity supplies. He was Prime Minister from 1945 to 1951 and led the Labour Party for 20 years.", tag:"person"},
+    {d:"1947", t:"Independence for nine countries", x:"Independence was granted to nine countries, including India, Pakistan and Ceylon (now Sri Lanka). Other colonies in Africa, the Caribbean and the Pacific achieved independence over the next 20 years."},
+    {d:"1948", t:"The NHS is founded", x:"Aneurin (Nye) Bevan, the Minister for Health, led the establishment of the National Health Service, which guaranteed a minimum standard of health care for all, free at the point of use. The same year, people from the West Indies were invited to come and work.", tag:"memorise"},
+    {d:"1951–1964", t:"Conservative government and recovery", x:"The 1950s were a period of economic recovery and increasing prosperity. Prime Minister Harold Macmillan was famous for his 'wind of change' speech about decolonisation and independence for the countries of the Empire."},
+    {d:"The 1960s", t:"The Swinging Sixties", x:"A period of significant social change, with growth in British fashion, cinema and popular music — The Beatles and The Rolling Stones. Social laws were liberalised, and Parliament gave women the right to equal pay and made gender discrimination by employers illegal."},
+    {d:"1969", t:"The voting age is reduced to 18", x:"The present voting age of 18 was set in 1969, for men and women. The same year Concorde first flew, and serious unrest broke out in Northern Ireland — the start of the period known as the Troubles."},
+    {d:"1972", t:"Northern Ireland comes under direct rule", x:"The Northern Ireland Parliament was suspended and Northern Ireland was directly ruled by the UK government. Some 3,000 people lost their lives in the decades after 1969 in the violence."},
+    {d:"1973", t:"The UK joins the EEC", x:"The European Economic Community had been formed in 1957 by six western European countries. At first the UK did not wish to join, but it eventually did so in 1973."},
+    {d:"1979", t:"Margaret Thatcher becomes the first woman Prime Minister", x:"The daughter of a grocer from Grantham, she trained as a chemist and lawyer. She was the longest-serving Prime Minister of the 20th century, remaining in office until 1990. Her government privatised nationalised industries and imposed legal controls on trade union powers.", tag:"person"},
+    {d:"1982", t:"The Falklands conflict", x:"Argentina invaded the Falkland Islands, a British overseas territory in the South Atlantic. A naval taskforce was sent from the UK and military action led to the recovery of the islands."},
+    {d:"1997", t:"Tony Blair's Labour government is elected", x:"The Blair government introduced a Scottish Parliament and a Welsh Assembly, and built on the Northern Ireland peace process."},
+    {d:"1998", t:"The Good Friday Agreement", x:"Also called the Belfast Agreement, it led to the establishment of the Northern Ireland Assembly. Most paramilitary groups in Northern Ireland have since decommissioned their arms.", tag:"memorise"},
+    {d:"1999", t:"Devolution takes effect", x:"The Scottish Parliament and the Welsh Assembly were formed. The Northern Ireland Assembly was elected in 1999 but suspended in 2002, and was not reinstated until 2007."},
+    {d:"2010", t:"A coalition government is formed", x:"For the first time since February 1974, no political party won an overall majority in the General Election. The Conservative and Liberal Democrat parties formed a coalition and David Cameron became Prime Minister."},
+    {d:"2012", t:"London hosts the Olympics", x:"The main Olympic site was in Stratford, East London. The British team finished third in the medal table. The same year Queen Elizabeth II celebrated her Diamond Jubilee — 60 years as queen."},
+    {d:"31 January 2020", t:"Brexit", x:"Following the 2016 EU membership referendum, the UK formally left the European Union at 23:00 GMT.", tag:"memorise"},
+    {d:"8 September 2022", t:"Queen Elizabeth II dies; Charles III becomes king", x:"Elizabeth II had reigned since her father's death in 1952. Her eldest son Charles became King Charles III. His heir apparent is his elder son William, Prince of Wales.", tag:"memorise"},
+    {d:"2024", t:"Labour wins under Keir Starmer", x:"The Conservative government had run from 2015 to 2024 under Cameron, May, Johnson, Truss and Sunak. Labour won the majority in the 2024 general election and formed the government."}
+  ]
+},
+{
+  id:"inventions", name:"British Inventions", span:"20th century", color:"#8a6d1f",
+  items:[
+    {d:"1920s", t:"Television", x:"Developed by the Scotsman John Logie Baird. In 1932 he made the first television broadcast between London and Glasgow.", tag:"person"},
+    {d:"1928", t:"Penicillin", x:"Alexander Fleming, born in Scotland, discovered penicillin while researching influenza. It was developed into a usable drug by Howard Florey and Ernst Chain, and was in mass production by the 1940s. Fleming won the Nobel Prize in Medicine in 1945.", tag:"person"},
+    {d:"1930s", t:"The jet engine and the Turing machine", x:"The jet engine was developed by Sir Frank Whittle, a Royal Air Force engineer officer. The Turing machine, a theoretical device invented by mathematician Alan Turing, was influential in the development of computer science."},
+    {d:"1935", t:"Radar", x:"Developed by the Scotsman Sir Robert Watson-Watt, who proposed that enemy aircraft could be detected by radio waves. The first successful test took place in 1935. Working with radar led Sir Bernard Lovell to build the radio telescope at Jodrell Bank."},
+    {d:"1950s", t:"The hovercraft", x:"Invented by the British inventor Sir Christopher Cockerell."},
+    {d:"1953", t:"The structure of DNA", x:"Discovered through work at British universities in London and Cambridge. Francis Crick, one of those awarded the Nobel Prize for the discovery, was British."},
+    {d:"1967", t:"The cash machine", x:"James Goodfellow invented the cash-dispensing ATM, or cashpoint. The first was put into use by Barclays Bank in Enfield, north London.", tag:"memorise"},
+    {d:"1969 & 1976", t:"Concorde", x:"Britain and France developed Concorde, the world's only supersonic passenger aircraft. It first flew in 1969 and began carrying passengers in 1976. It was retired from service in 2003."},
+    {d:"1978", t:"The first test-tube baby", x:"IVF therapy for the treatment of infertility was pioneered in Britain by physiologist Sir Robert Edwards and gynaecologist Patrick Steptoe. The world's first test-tube baby was born in Oldham, Lancashire.", tag:"memorise"},
+    {d:"25 December 1990", t:"The World Wide Web", x:"Invented by the Briton Sir Tim Berners-Lee. Information was successfully transferred via the web for the first time on Christmas Day 1990.", tag:"memorise"},
+    {d:"1996", t:"Dolly the sheep", x:"Two British scientists, Sir Ian Wilmut and Keith Campbell, led the team that was the first to succeed in cloning a mammal."},
+    {d:"Also British", t:"MRI and insulin", x:"Sir Peter Mansfield is the co-inventor of the MRI scanner, which revolutionised diagnostic medicine. The Scottish physician John MacLeod was the co-discoverer of insulin, used to treat diabetes."}
+  ]
+}
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+const tl = document.getElementById("timeline");
+const nav = document.getElementById("eraNav");
+let total = 0;
+
+ERAS.forEach(era => {
+  // nav chip
+  const chip = document.createElement("button");
+  chip.className = "era-chip";
+  chip.style.borderLeftColor = era.color;
+  chip.textContent = era.name;
+  chip.onclick = () => {
+    const el = document.getElementById(era.id);
+    const y = el.getBoundingClientRect().top + window.scrollY - 112;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+  nav.appendChild(chip);
+
+  // section
+  const sec = document.createElement("section");
+  sec.className = "era";
+  sec.id = era.id;
+  sec.style.setProperty("--eraColor", era.color);
+  sec.style.setProperty("--tagBg", era.color + "18");
+
+  const head = document.createElement("div");
+  head.className = "era-head";
+  head.innerHTML = `<h2>${era.name}</h2><span class="span">${era.span}</span>`;
+  sec.appendChild(head);
+
+  const rail = document.createElement("div");
+  rail.className = "rail";
+
+  era.items.forEach(it => {
+    total++;
+    const e = document.createElement("article");
+    e.className = "entry";
+    const tag = it.tag ? `<span class="tag">${it.tag}</span>` : "";
+    e.innerHTML =
+      `<div class="date" data-date="${it.d}">${it.d}</div>` +
+      `<h3>${it.t}${tag}</h3>` +
+      `<p>${it.x}</p>`;
+    rail.appendChild(e);
+  });
+
+  sec.appendChild(rail);
+  tl.appendChild(sec);
+});
+
+document.getElementById("entryCount").textContent =
+  total + " events across " + ERAS.length + " eras.";
+
+// ── HIDE DATES MODE ───────────────────────────────────────────────────────
+let hidden = false;
+const toggle = document.getElementById("dateToggle");
+
+toggle.onclick = () => {
+  hidden = !hidden;
+  toggle.textContent = hidden ? "Show dates" : "Hide dates";
+  toggle.classList.toggle("on", hidden);
+  document.querySelectorAll(".date").forEach(d => {
+    d.classList.remove("revealed");
+    d.classList.toggle("masked", hidden);
+  });
+};
+
+// tap a masked date to reveal just that one
+tl.addEventListener("click", ev => {
+  const d = ev.target.closest(".date");
+  if (d && d.classList.contains("masked")) {
+    d.classList.remove("masked");
+    d.classList.add("revealed");
+  }
+});
+
+// ── SCROLL PROGRESS + TOP BUTTON ──────────────────────────────────────────
+const bar = document.getElementById("scrollProgress");
+const topBtn = document.getElementById("topBtn");
+
+window.addEventListener("scroll", () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+  topBtn.classList.toggle("show", window.scrollY > 600);
+}, { passive: true });
+
+topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+</script>
+</body>
+</html>

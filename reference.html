@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facts &amp; Figures — Life in the UK</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --navy:#0d1b2a;--cream:#f4f0e6;--pale:#e8e2d6;--white:#fff;
+  --ink:#1a1a2e;--muted:#4f5465;--rail:#d8d1c2;--gold:#c9a84c;--radius:11px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+#scrollProgress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gold);z-index:200;transition:width .1s linear}
+
+header{background:var(--navy);padding:16px 18px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 18px rgba(0,0,0,.35)}
+.hdr-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.hdr-top h1{font-family:'Playfair Display',serif;font-size:1.28rem;color:#fff;font-weight:700;line-height:1.15;flex:1}
+.hdr-top h1 em{display:block;font-family:'DM Sans',sans-serif;font-style:normal;font-size:.7rem;font-weight:400;color:var(--gold);letter-spacing:.05em;margin-top:3px}
+.hdr-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.mask-toggle{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:8px;padding:7px 11px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.mask-toggle:hover{background:rgba(255,255,255,.22)}
+.mask-toggle.on{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.switch-link{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;border-radius:8px;padding:7px 11px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;white-space:nowrap;transition:background .15s}
+.switch-link:hover{background:rgba(255,255,255,.24)}
+
+.sec-nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+.sec-nav::-webkit-scrollbar{display:none}
+.sec-chip{background:rgba(255,255,255,.1);border:none;border-left:3px solid;color:rgba(255,255,255,.85);padding:6px 11px;border-radius:0 7px 7px 0;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.sec-chip:hover{background:rgba(255,255,255,.2);color:#fff}
+
+main{max-width:680px;margin:0 auto;padding:0 16px 80px}
+.intro{padding:22px 2px 6px;font-size:.88rem;line-height:1.65;color:var(--muted)}
+.intro strong{color:var(--ink);font-weight:600}
+
+.sec{padding-top:28px}
+.sec-head{display:flex;align-items:baseline;gap:10px;padding:8px 0 6px;margin-bottom:10px;border-bottom:2px solid var(--rail)}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:700;color:var(--secColor,var(--navy))}
+.sec-head .count{font-size:.74rem;color:var(--muted);font-weight:500;margin-left:auto;white-space:nowrap}
+
+.fact{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.055)}
+.fact:last-child{border-bottom:none}
+.fact .q{flex:1 1 55%;font-size:.875rem;line-height:1.5;color:#23263a;font-weight:500}
+.fact .a{flex:1 1 45%;font-size:.875rem;line-height:1.5;color:var(--secColor,var(--navy));font-weight:700;text-align:right}
+.fact .a.masked{background:var(--secColor,var(--navy));color:transparent;border-radius:5px;cursor:pointer;user-select:none;opacity:.2;position:relative;min-height:1.3em}
+.fact .a.masked::after{content:'tap';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:var(--navy);opacity:.9}
+.fact .a.revealed{animation:pop .22s ease}
+@keyframes pop{from{transform:scale(.95);opacity:.4}to{transform:scale(1);opacity:1}}
+.fact .note{display:block;font-weight:400;font-size:.78rem;color:var(--muted);margin-top:2px}
+
+.callout{background:var(--white);border-left:4px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;padding:12px 15px;margin:14px 0 4px;font-size:.84rem;line-height:1.6;color:#23263a;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.callout b{color:var(--navy)}
+
+.foot{margin-top:46px;padding:20px 16px;background:var(--white);border-radius:var(--radius);font-size:.82rem;line-height:1.6;color:var(--muted);text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.foot strong{color:var(--navy)}
+
+.top-btn{position:fixed;right:16px;bottom:18px;width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;border:none;font-size:1.1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);display:none;align-items:center;justify-content:center;z-index:90}
+.top-btn.show{display:flex}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media(min-width:760px){
+  main{max-width:780px}
+  .intro{font-size:.98rem;line-height:1.7}
+  .sec-head h2{font-size:1.5rem}
+  .fact .q,.fact .a{font-size:.98rem;line-height:1.55}
+  .fact{padding:11px 0}
+  .callout{font-size:.94rem}
+}
+@media(max-width:520px){
+  .fact{flex-direction:column;gap:3px}
+  .fact .a{text-align:left;flex:none;align-self:flex-start;min-width:80px;padding:1px 0}
+  .fact .a.masked{padding:1px 14px}
+}
+</style>
+</head>
+<body>
+<div id="scrollProgress"></div>
+
+<header>
+  <div class="hdr-top">
+    <h1>Facts &amp; Figures<em>The numbers, ages and rules you just have to know</em></h1>
+    <div class="hdr-actions">
+      <button class="mask-toggle" id="maskToggle">Hide answers</button>
+      <a class="switch-link" href="index.html">📜 Timeline</a>
+      <a class="switch-link" href="practice.html">✓ Practice</a>
+    </div>
+  </div>
+  <div class="sec-nav" id="secNav"></div>
+</header>
+
+<main>
+  <p class="intro">
+    The timeline covers history. This page covers everything else the handbook can test you on that has no date attached — <strong>numbers, legal ages, institutions, everyday rules and landmarks</strong>. These are pure recall, so hit <strong>Hide answers</strong> and work down the page.
+  </p>
+  <div id="sheet"></div>
+  <div class="foot">
+    Built from <strong>Life in the UK: A Guide for New Residents, 3rd Edition</strong>.<br>
+    <span id="factCount"></span>
+  </div>
+</main>
+
+<button class="top-btn" id="topBtn" aria-label="Back to top">↑</button>
+
+<script>
+const SECTIONS=[
+{
+  id:"ages", name:"Legal Ages", color:"#9f1239",
+  facts:[
+    {q:"Ride a moped",a:"16"},
+    {q:"Drink wine or beer with a meal in a hotel or restaurant",a:"16",n:"Only if with someone over 18"},
+    {q:"National Insurance number is sent to you",a:"Just before 16th birthday"},
+    {q:"Drive a car or motor cycle",a:"17"},
+    {q:"Vote in an election",a:"18",n:"Set in 1969"},
+    {q:"Buy alcohol in a pub or shop",a:"18"},
+    {q:"Buy tobacco products",a:"18"},
+    {q:"Enter a betting shop or gambling club",a:"18"},
+    {q:"Play the National Lottery",a:"18"},
+    {q:"Stand for public office",a:"18"},
+    {q:"Become a school governor",a:"18",n:"No upper age limit"},
+    {q:"Serve on a jury",a:"18 to 70"},
+    {q:"Driving licence must then be renewed every 3 years",a:"70"},
+    {q:"Can apply for a free TV licence",a:"75"}
+  ]
+},
+{
+  id:"test", name:"The Test Itself", color:"#00247d",
+  facts:[
+    {q:"Number of questions",a:"24"},
+    {q:"Pass mark",a:"75%",n:"18 out of 24"},
+    {q:"Approximate number of test centres in the UK",a:"About 60"},
+    {q:"Where you book the test",a:"Online only",n:"www.lifeintheuktest.gov.uk"},
+    {q:"English language level required alongside the test",a:"B1",n:"Equivalent to ESOL Entry Level 3"},
+    {q:"Languages the test can be taken in",a:"English, Welsh or Scottish Gaelic"},
+    {q:"What the questions are based on",a:"The whole handbook",n:"Including the introductory chapter"}
+  ]
+},
+{
+  id:"values", name:"Values & Responsibilities", color:"#0f766e",
+  facts:[
+    {q:"The five fundamental principles of British life",a:"Democracy · Rule of law · Individual liberty · Tolerance of different faiths and beliefs · Participation in community life"},
+    {q:"What the UK offers residents in return",a:"Freedom of belief and religion · Freedom of speech · Freedom from unfair discrimination · A right to a fair trial · A right to join in electing a government"},
+    {q:"What you should do as a permanent resident",a:"Respect and obey the law · Respect the rights of others · Treat others with fairness · Look after yourself and your family · Look after your area and the environment"},
+    {q:"Who new citizens swear allegiance to at the ceremony",a:"The King"}
+  ]
+},
+{
+  id:"govt", name:"Government & Parliament", color:"#2c4a7c",
+  facts:[
+    {q:"Members of the Scottish Parliament (MSPs)",a:"129"},
+    {q:"Members of the Welsh Senedd",a:"60",n:"Elections every 4 years"},
+    {q:"Members of the Northern Ireland Assembly (MLAs)",a:"90",n:"Assembly building: Stormont"},
+    {q:"Maximum gap between General Elections",a:"5 years"},
+    {q:"How MPs are elected",a:"First past the post"},
+    {q:"How MSPs, SMs and MLAs are elected",a:"Proportional representation"},
+    {q:"Number of senior MPs the PM appoints to the cabinet",a:"About 20"},
+    {q:"Responsible for the economy",a:"Chancellor of the Exchequer"},
+    {q:"Responsible for crime, policing and immigration",a:"Home Secretary"},
+    {q:"Responsible for relations with foreign countries",a:"Foreign Secretary"},
+    {q:"PM's official residence and country house",a:"10 Downing Street · Chequers"},
+    {q:"Who chairs debates in the Commons",a:"The Speaker",n:"Neutral; chosen by MPs in a secret ballot"},
+    {q:"Members of the House of Lords are called",a:"Peers",n:"Not elected, no constituency"},
+    {q:"Who else sits in the House of Lords",a:"Several Church of England bishops"},
+    {q:"Life peers have been appointed since",a:"1958"},
+    {q:"Hereditary peers lost the automatic right to attend in",a:"1999"},
+    {q:"The second-largest party in the Commons is called",a:"The Opposition",n:"Its senior MPs form the shadow cabinet"},
+    {q:"Official report of parliamentary proceedings",a:"Hansard"},
+    {q:"Local authorities in London",a:"33",n:"Plus the Greater London Authority and Mayor of London"},
+    {q:"When most local elections are held",a:"May, every year"},
+    {q:"Media legally required to give balanced election coverage",a:"Television and radio",n:"Newspapers are not"},
+    {q:"Civil service core values",a:"Integrity · Honesty · Objectivity · Impartiality"},
+    {q:"Polling station opening hours",a:"7.00 am to 10.00 pm"},
+    {q:"When the electoral register is updated",a:"September or October each year"}
+  ]
+},
+{
+  id:"intl", name:"International Institutions", color:"#0f5f78",
+  facts:[
+    {q:"Commonwealth member states",a:"54",n:"King Charles III is ceremonial head; membership is voluntary"},
+    {q:"Can the Commonwealth suspend a member?",a:"Yes",n:"It has no other power over members"},
+    {q:"Council of Europe member countries",a:"47",n:"Protects and promotes human rights; cannot make laws"},
+    {q:"United Nations member countries",a:"More than 190"},
+    {q:"Members of the UN Security Council",a:"15",n:"UK is one of 5 permanent members"},
+    {q:"What NATO is",a:"European and North American countries agreeing to help each other if attacked"},
+    {q:"EU member states today",a:"27"},
+    {q:"Treaty that set up the EEC",a:"Treaty of Rome, 25 March 1957",n:"Six founding countries"}
+  ]
+},
+{
+  id:"law", name:"Law, Courts & Police", color:"#991b1b",
+  facts:[
+    {q:"Jury members in England, Wales and Northern Ireland",a:"12"},
+    {q:"Jury members in Scotland",a:"15"},
+    {q:"Third verdict available only in Scotland",a:"Not proven"},
+    {q:"Minor criminal cases in England, Wales and NI",a:"Magistrates' Court"},
+    {q:"Minor criminal cases in Scotland",a:"Justice of the Peace Court"},
+    {q:"Serious criminal cases in England, Wales and NI",a:"Crown Court",n:"Judge and jury"},
+    {q:"Serious criminal cases in Scotland",a:"Sheriff Court",n:"Most serious, such as murder: High Court"},
+    {q:"Cases against accused aged 10 to 17",a:"Youth Court",n:"Public not admitted; no names or photos published"},
+    {q:"Scotland's system for young offenders",a:"Children's Hearings System"},
+    {q:"Northern Ireland's system for young offenders",a:"Youth conferencing"},
+    {q:"Civil disputes such as debt, divorce, personal injury",a:"County Court",n:"Scotland: Sheriff Court"},
+    {q:"Larger civil cases in Scotland",a:"Court of Session, Edinburgh"},
+    {q:"Small claims limit in England and Wales",a:"Under £10,000"},
+    {q:"Small claims limit in Scotland and Northern Ireland",a:"Under £5,000"},
+    {q:"How solicitors' charges are calculated",a:"By time spent on the case"},
+    {q:"The three duties of the police",a:"Protect life and property · Prevent disturbances · Prevent and detect crime"},
+    {q:"Who heads each police force",a:"A Chief Constable",n:"Forces are independent of government"},
+    {q:"Who sets local police priorities and budget",a:"Police and Crime Commissioner",n:"Directly elected; appoints the Chief Constable"},
+    {q:"Who supports police officers on patrol",a:"PCSOs",n:"Police Community Support Officers"},
+    {q:"Year the UK signed the European Convention on Human Rights",a:"1950"},
+    {q:"Act that brought the Convention into UK law",a:"Human Rights Act 1998"},
+    {q:"Penalty for breaching a Forced Marriage Protection Order",a:"Up to 2 years",n:"For contempt of court"}
+  ]
+},
+{
+  id:"daily", name:"Everyday Life & Money", color:"#7a4a17",
+  facts:[
+    {q:"UK currency and subdivisions",a:"Pound sterling · 100 pence"},
+    {q:"Coin denominations",a:"1p, 2p, 5p, 10p, 20p, 50p, £1, £2"},
+    {q:"Note denominations",a:"£5, £10, £20, £50"},
+    {q:"Must shops accept Scottish and NI banknotes?",a:"No",n:"They are valid everywhere, but acceptance is not compulsory"},
+    {q:"Income tax system for employees",a:"PAYE",n:"Pay As You Earn"},
+    {q:"Income tax system for the self-employed",a:"Self-assessment"},
+    {q:"Government department that collects taxes",a:"HM Revenue & Customs"},
+    {q:"What National Insurance pays for",a:"State benefits, the state pension and the NHS"},
+    {q:"Maximum fine for watching TV without a licence",a:"£1,000"},
+    {q:"What the TV licence fee funds",a:"The BBC",n:"World's largest broadcaster; state-funded but independent of government"},
+    {q:"TV licences in a shared house with separate tenancies",a:"One each"},
+    {q:"Pub opening time",a:"11.00 am",n:"12 noon on Sundays; the licensee sets the hours"},
+    {q:"Traditional pub games",a:"Pool and darts"},
+    {q:"A dog in a public place must wear",a:"A collar with the owner's name and address"},
+    {q:"The dog owner is also responsible for",a:"Keeping it under control and cleaning up after it"},
+    {q:"Rented land for growing fruit and vegetables",a:"An allotment"},
+    {q:"Traditional food of England",a:"Roast beef",n:"With potatoes, vegetables and Yorkshire puddings; fish and chips also popular"},
+    {q:"Traditional food of Wales",a:"Welsh cakes"},
+    {q:"Traditional food of Scotland",a:"Haggis"},
+    {q:"Traditional food of Northern Ireland",a:"Ulster fry"}
+  ]
+},
+{
+  id:"driving", name:"Driving", color:"#4338ca",
+  facts:[
+    {q:"Where vehicles must be registered",a:"DVLA",n:"Driver and Vehicle Licensing Agency"},
+    {q:"The two tests needed for a full licence",a:"Theory test and practical test",n:"Theory = multiple choice + hazard perception"},
+    {q:"Age a vehicle needs an annual MOT from",a:"Over 3 years old"},
+    {q:"Driving without insurance",a:"A serious criminal offence"},
+    {q:"Plate a newly qualified driver displays in Northern Ireland",a:"'R' plate",n:"For one year after passing"},
+    {q:"How long a non-EU licence can be used in the UK",a:"Up to 12 months"},
+    {q:"How long an EU, Iceland, Liechtenstein or Norway licence can be used",a:"As long as it is valid"}
+  ]
+},
+{
+  id:"society", name:"Religion & Society", color:"#5b3a86",
+  facts:[
+    {q:"Christian in the 2011 Census",a:"59%"},
+    {q:"No religion in the 2011 Census",a:"25%"},
+    {q:"Head of the Church of England",a:"The monarch"},
+    {q:"Spiritual leader of the Church of England",a:"The Archbishop of Canterbury"},
+    {q:"National Church of Scotland",a:"Church of Scotland",n:"Presbyterian; governed by ministers and elders"},
+    {q:"Chairperson of the Church of Scotland General Assembly",a:"The Moderator",n:"Appointed for one year only"},
+    {q:"Countries with no established Church",a:"Wales and Northern Ireland"},
+    {q:"England's share of the UK population",a:"84%"},
+    {q:"Wales · Scotland · Northern Ireland shares",a:"~5% · just over 8% · under 3%"},
+    {q:"Women's share of the UK workforce",a:"About half"},
+    {q:"Longest distance on the UK mainland",a:"About 870 miles",n:"John O'Groats to Land's End; ~1,400 km"}
+  ]
+},
+{
+  id:"dates", name:"Festivals & Key Dates", color:"#be185d",
+  facts:[
+    {q:"New Year",a:"1 January"},
+    {q:"Valentine's Day",a:"14 February"},
+    {q:"St David's Day — Wales",a:"1 March"},
+    {q:"St Patrick's Day — Northern Ireland",a:"17 March",n:"A public holiday"},
+    {q:"April Fool's Day",a:"1 April",n:"Jokes until midday only"},
+    {q:"Vaisakhi — Sikh",a:"14 April"},
+    {q:"St George's Day — England",a:"23 April"},
+    {q:"Father's Day",a:"Third Sunday in June"},
+    {q:"Mothering Sunday",a:"Three weeks before Easter"},
+    {q:"Halloween",a:"31 October"},
+    {q:"Bonfire Night",a:"5 November"},
+    {q:"Remembrance Day",a:"11 November",n:"Two-minute silence at 11.00 am; poppies worn"},
+    {q:"St Andrew's Day — Scotland",a:"30 November",n:"A public holiday"},
+    {q:"Christmas Eve · Christmas Day · Boxing Day",a:"24 · 25 · 26 December"},
+    {q:"Hogmanay",a:"31 December",n:"In Scotland, 2 January is also a public holiday"},
+    {q:"Diwali — Hindus and Sikhs",a:"October or November",n:"Lasts five days; famous celebration in Leicester"},
+    {q:"Hannukah — Jewish",a:"November or December",n:"Eight days; a candle lit each day on a menorah"},
+    {q:"Bank holidays fall in",a:"Early May · late May or early June · August",n:"Northern Ireland also has the Battle of the Boyne in July"}
+  ]
+},
+{
+  id:"places", name:"Landmarks & Places", color:"#047857",
+  facts:[
+    {q:"Big Ben",a:"The great bell of the clock at the Houses of Parliament",n:"Tower renamed Elizabeth Tower in 2012"},
+    {q:"The Eden Project",a:"Cornwall",n:"Biomes housing plants from around the world"},
+    {q:"The Giant's Causeway",a:"North-east coast of Northern Ireland",n:"Volcanic lava columns, formed ~50 million years ago"},
+    {q:"The London Eye height",a:"443 feet / 135 metres",n:"Built for the millennium"},
+    {q:"Snowdonia",a:"North Wales",n:"838 sq miles; Snowdon is the highest mountain in Wales"},
+    {q:"Tower of London guides",a:"Yeoman Warders (Beefeaters)",n:"First built by William the Conqueror; houses the Crown Jewels"},
+    {q:"Edinburgh Castle is looked after by",a:"Historic Scotland"},
+    {q:"England's largest national park",a:"The Lake District",n:"885 sq miles; Windermere is the biggest stretch of water"},
+    {q:"Voted Britain's favourite view in 2007",a:"Wastwater"},
+    {q:"Largest expanse of fresh water in mainland Britain",a:"Loch Lomond"},
+    {q:"National parks in England, Wales and Scotland",a:"15"},
+    {q:"National Trust founded",a:"1895, by three volunteers",n:"Now over 61,000 volunteers"},
+    {q:"Famous garden in Northern Ireland",a:"Mount Stewart"},
+    {q:"Annual garden design showcase",a:"The Chelsea Flower Show"}
+  ]
+},
+{
+  id:"sport", name:"Sport & Arts", color:"#8a6d1f",
+  facts:[
+    {q:"Times the UK has hosted the Olympics",a:"Three",n:"1908, 1948 and 2012"},
+    {q:"Main site of the 2012 Olympics",a:"Stratford, East London"},
+    {q:"England vs Australia cricket series",a:"The Ashes"},
+    {q:"Home of golf",a:"St Andrews, Scotland"},
+    {q:"Only Grand Slam tennis event played on grass",a:"Wimbledon",n:"Oldest tennis tournament in the world"},
+    {q:"First tennis club in Britain",a:"Leamington Spa, 1872"},
+    {q:"Most famous rugby union competition",a:"The Six Nations Championship",n:"England, Ireland, Scotland, Wales, France, Italy"},
+    {q:"The Proms is organised by",a:"The BBC",n:"Since 1927; eight-week summer season"},
+    {q:"Longest-running show in history",a:"The Mousetrap",n:"Agatha Christie, in the West End since 1952"},
+    {q:"Contemporary art prize named after Joseph Turner",a:"The Turner Prize",n:"Established 1984; shown at Tate Britain"},
+    {q:"Welsh annual cultural festival",a:"The National Eisteddfod"},
+    {q:"The British equivalent of the Oscars",a:"The BAFTAs"},
+    {q:"Voted the UK's best-loved novel in 2003",a:"The Lord of the Rings"}
+  ]
+},
+{
+  id:"community", name:"Your Role in the Community", color:"#a16207",
+  facts:[
+    {q:"The three key roles of school governors",a:"Setting strategic direction · Ensuring accountability · Monitoring and evaluating performance"},
+    {q:"How long giving blood takes",a:"About an hour"},
+    {q:"Age range for the National Citizen Service",a:"16 and 17"},
+    {q:"Persuading voters door-to-door at election time",a:"Canvassing"},
+    {q:"Cannot stand for public office",a:"Armed forces · Civil servants · People guilty of certain criminal offences"},
+    {q:"Charity working with the homeless",a:"Crisis",n:"Shelter also"},
+    {q:"Environmental charities",a:"The National Trust · Friends of the Earth"},
+    {q:"Charity for sick animals of people in need",a:"PDSA"},
+    {q:"Charity working with children",a:"NSPCC"},
+    {q:"Charity working with older people",a:"Age UK"}
+  ]
+}
+];
+
+const sheet=document.getElementById("sheet");
+const nav=document.getElementById("secNav");
+let total=0;
+
+SECTIONS.forEach(s=>{
+  const chip=document.createElement("button");
+  chip.className="sec-chip";
+  chip.style.borderLeftColor=s.color;
+  chip.textContent=s.name;
+  chip.onclick=()=>{
+    const el=document.getElementById(s.id);
+    window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-112,behavior:"smooth"});
+  };
+  nav.appendChild(chip);
+
+  const sec=document.createElement("section");
+  sec.className="sec";
+  sec.id=s.id;
+  sec.style.setProperty("--secColor",s.color);
+
+  const head=document.createElement("div");
+  head.className="sec-head";
+  head.innerHTML=`<h2>${s.name}</h2><span class="count">${s.facts.length} facts</span>`;
+  sec.appendChild(head);
+
+  s.facts.forEach(f=>{
+    total++;
+    const row=document.createElement("div");
+    row.className="fact";
+    const note=f.n?`<span class="note">${f.n}</span>`:"";
+    row.innerHTML=`<div class="q">${f.q}</div><div class="a">${f.a}${note}</div>`;
+    sec.appendChild(row);
+  });
+
+  sheet.appendChild(sec);
+});
+
+document.getElementById("factCount").textContent=
+  total+" facts across "+SECTIONS.length+" sections.";
+
+let hidden=false;
+const toggle=document.getElementById("maskToggle");
+toggle.onclick=()=>{
+  hidden=!hidden;
+  toggle.textContent=hidden?"Show answers":"Hide answers";
+  toggle.classList.toggle("on",hidden);
+  document.querySelectorAll(".fact .a").forEach(a=>{
+    a.classList.remove("revealed");
+    a.classList.toggle("masked",hidden);
+  });
+};
+
+sheet.addEventListener("click",ev=>{
+  const a=ev.target.closest(".a");
+  if(a&&a.classList.contains("masked")){
+    a.classList.remove("masked");
+    a.classList.add("revealed");
+  }
+});
+
+const bar=document.getElementById("scrollProgress");
+const topBtn=document.getElementById("topBtn");
+window.addEventListener("scroll",()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.width=(h>0?(window.scrollY/h)*100:0)+"%";
+  topBtn.classList.toggle("show",window.scrollY>600);
+},{passive:true});
+topBtn.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+</script>
+</body>
+</html>

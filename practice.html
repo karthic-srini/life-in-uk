@@ -20,7 +20,7 @@ header{background:var(--navy);padding:13px 20px;display:flex;align-items:center;
 .flag-svg{width:46px;height:29px;border-radius:3px;flex-shrink:0}
 .hdr-txt h1{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;font-weight:700}
 .hdr-txt p{font-size:.68rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-weight:500;margin-top:1px}
-.switch-link{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;border-radius:8px;padding:5px 11px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;white-space:nowrap;flex-shrink:0;transition:background .15s}
+.switch-link{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;border-radius:8px;padding:5px 11px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;white-space:nowrap;flex-shrink:0;transition:background .15s}
 .switch-link:hover{background:rgba(255,255,255,.26)}
 .score-badge{margin-left:auto;background:var(--gold);color:var(--navy);font-weight:700;font-size:.8rem;padding:5px 13px;border-radius:20px;display:none;white-space:nowrap}
 .timer-badge{margin-left:8px;background:#ef4444;color:#fff;font-weight:700;font-size:.8rem;padding:5px 13px;border-radius:20px;display:none;white-space:nowrap}
@@ -132,7 +132,10 @@ main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
     <rect x="26" y="0" width="8" height="36" fill="#cf142b"/><rect x="0" y="14" width="60" height="8" fill="#cf142b"/>
   </svg>
   <div class="hdr-txt"><h1>Life in the UK</h1><p>Official 3rd Edition Practice</p></div>
-  <a class="switch-link" id="timelineLink" href="index.html">📜 Timeline</a>
+  <span id="navLinks" style="margin-left:auto;display:flex;gap:6px">
+    <a class="switch-link" href="index.html">📜 Timeline</a>
+    <a class="switch-link" href="reference.html">📋 Facts</a>
+  </span>
   <div class="score-badge" id="scoreBadge">0/0</div>
   <div class="timer-badge" id="timerBadge">45:00</div>
   <button class="hdr-home-btn" id="hdrHomeBtn" onclick="goHome()">🏠 Home</button>
@@ -146,7 +149,7 @@ main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
     <p>Questions written directly from the <strong>official Home Office 3rd Edition handbook</strong>. Practice by topic or simulate the real exam.</p>
     <div class="stats-row">
       <div class="stat-card"><div class="num" id="statTotal">—</div><div class="lbl">Questions</div></div>
-      <div class="stat-card"><div class="num">14</div><div class="lbl">Topics</div></div>
+      <div class="stat-card"><div class="num" id="statTopics">—</div><div class="lbl">Topics</div></div>
       <div class="stat-card"><div class="num">75%</div><div class="lbl">Pass Mark</div></div>
       <div class="stat-card"><div class="num">24</div><div class="lbl">Real Test Qs</div></div>
     </div>
@@ -233,6 +236,11 @@ const TOPICS={
   ch4d:{label:'Ch 4 · UK Today',icon:'🇬🇧',color:'#0369a1'},
   ch5a:{label:'Ch 5 · Government & Parliament',icon:'⚖️',color:'#00247d'},
   ch5b:{label:'Ch 5 · Law, Courts & Rights',icon:'🔒',color:'#991b1b'},
+  ev1:{label:'Everyday Life & Money',icon:'🏠',color:'#0f766e'},
+  ev2:{label:'Driving & Police',icon:'🚗',color:'#4338ca'},
+  ev3:{label:'Courts & Your Rights',icon:'⚖️',color:'#9f1239'},
+  ev4:{label:'Landmarks & Places',icon:'🗼',color:'#047857'},
+  ev5:{label:'Community & Volunteering',icon:'🤝',color:'#a16207'},
 };
 
 const qBank={
@@ -524,6 +532,113 @@ ch5b:[
   S('Ch5b','Law, Courts & Rights','Solicitors\' charges are usually based on what?',['The importance of the case','How much time they spend on a case','A fixed government-set rate','The client\'s income'],1,'Solicitors\' charges are usually based on how much time they spend on a case. It is very important to find out at the start how much a case is likely to cost.'),
   S('Ch5b','Law, Courts & Rights','The legal age to purchase alcohol in a pub or off-licence in the UK is:',['16','17','18','21'],2,'To buy alcohol in a pub or night club you must be 18 or over. It is a criminal offence to sell alcohol to anyone under 18 or to buy alcohol for people under the age of 18.'),
   S('Ch5b','Law, Courts & Rights','At what age can someone drink wine or beer with a meal in a hotel or restaurant?',['14 if accompanied by a parent','16 if accompanied by someone over 18','17 if they look old enough','18 in all circumstances'],1,'When they are 16, people can drink wine or beer with a meal in a hotel or restaurant (including eating areas in pubs) as long as they are with someone over 18.'),
+],
+ev1:[
+  S("Everyday","Pets","When walking your dog in a public place, what must you ensure?",["Only that it is on a lead at all times","It wears a collar showing the owner's name and address, is kept under control, and you clean up after it","That it has been vaccinated within the last year","That it is muzzled if it weighs over 10kg"],1,"All dogs in public places must wear a collar showing the name and address of the owner. The owner is responsible for keeping the dog under control and for cleaning up after the animal in a public place."),
+  S("Everyday","Pets","Treating a pet cruelly or neglecting it is:",["A civil matter between the owner and the RSPCA","Against the law","Only an offence if the animal dies","Permitted if the owner cannot afford care"],1,"It is against the law to treat a pet cruelly or to neglect it. Vaccinations and medical treatment for animals are available from veterinary surgeons (vets), and there are charities which may help people who cannot afford to pay a vet."),
+  S("Everyday","TV Licence","Who needs a television licence?",["Only households that watch BBC channels","Only households with a traditional television set","Everyone with a TV, computer or other medium that can be used for watching TV","Only households where someone is under 75"],2,"Everyone in the UK with a TV, computer or other medium which can be used for watching TV must have a television licence. One licence covers all of the equipment in one home."),
+  S("Everyday","TV Licence","In a shared house where each person has a separate tenancy agreement:",["One licence covers the whole house","Each person must buy a separate licence","The landlord buys a single licence","No licence is needed for shared housing"],1,"One licence covers all of the equipment in one home, except when people rent different rooms in a shared house and each has a separate tenancy agreement — those people must each buy a separate licence."),
+  S("Everyday","TV Licence","What is the maximum fine for watching TV without a licence?",["£250","£500","£1,000","£2,500"],2,"You will receive a fine of up to £1,000 if you watch TV but do not have a TV licence."),
+  M("Everyday","TV Licence","Which TWO groups get a free or discounted TV licence?",["People over 75 can apply for a free licence","Students in full-time education","Blind people can get a 50% discount","People receiving Jobseeker's Allowance"],[0,2],"People over 75 can apply for a free TV licence and blind people can get a 50% discount.","Select TWO"),
+  S("Everyday","TV & Radio","What does the money from TV licences pay for?",["All UK television channels","The British Broadcasting Corporation (BBC)","Ofcom, the broadcasting regulator","ITV and Channel 4"],1,"The money from TV licences is used to pay for the BBC. It is the largest broadcaster in the world and the only wholly state-funded media organisation that is independent of government. Other UK channels are funded primarily through advertisements and subscriptions."),
+  S("Everyday","Pubs","What is the minimum age to buy alcohol in a pub or night club?",["16","17","18","21"],2,"To buy alcohol in a pub or night club you must be 18 or over, but people under that age may be allowed in some pubs with an adult."),
+  S("Everyday","Pubs","At 16, a person may drink wine or beer in which circumstance?",["Anywhere, if a parent is present","With a meal in a hotel or restaurant, if with someone over 18","In a pub, if they do not buy it themselves","At a private party only"],1,"When they are 16, people can drink wine or beer with a meal in a hotel or restaurant (including eating areas in pubs) as long as they are with someone over 18."),
+  S("Everyday","Pubs","Pubs in the UK are usually open from what time?",["9.00 am (10.00 am on Sundays)","10.00 am (11.00 am on Sundays)","11.00 am (12 noon on Sundays)","12 noon every day"],2,"Pubs are usually open during the day from 11.00 am (12 noon on Sundays). Night clubs usually open and close later than pubs. The licensee decides the hours that the pub or night club is open."),
+  M("Everyday","Pubs","Which TWO are traditional pub games?",["Pool","Bowls","Darts","Croquet"],[0,2],"Pool and darts are traditional pub games. Pub quizzes are also popular.","Select TWO"),
+  S("Everyday","Gambling","What is the minimum age to enter a betting shop or gambling club?",["16","17","18","21"],2,"You have to be 18 to go into betting shops or gambling clubs. There is also a National Lottery, and people under 18 are not allowed to participate."),
+  S("Everyday","Money","What is the currency of the UK and how many pence are in a pound?",["Pound sterling, 50 pence","Pound sterling, 100 pence","Pound sterling, 20 pence","Euro, 100 cents"],1,"The currency in the UK is the pound sterling (symbol £). There are 100 pence in a pound. Coins: 1p, 2p, 5p, 10p, 20p, 50p, £1 and £2. Notes: £5, £10, £20, £50."),
+  S("Everyday","Money","Must shops accept Scottish and Northern Irish banknotes?",["Yes, refusing them is illegal","No — they are valid everywhere in the UK, but shops do not have to accept them","Only in Scotland and Northern Ireland","Only for amounts over £20"],1,"Northern Ireland and Scotland have their own banknotes, which are valid everywhere in the UK. However, shops and businesses do not have to accept them."),
+  M("Everyday","Tax","Which of these count as income you must pay tax on?",["Wages from paid employment","Profits from self-employment","Pensions","Income from property, savings and dividends","Gifts from family members"],[0,1,2,3],"People in the UK pay tax on income including wages from paid employment, profits from self-employment, taxable benefits, pensions, and income from property, savings and dividends.","Select FOUR"),
+  S("Everyday","Tax","What does PAYE stand for?",["Pay As You Enter","Pay As You Earn","Payment At Year End","Personal Annual Yield Estimate"],1,"For most people the right amount of income tax is automatically taken from their income by their employer and paid directly to HM Revenue & Customs. This system is called Pay As You Earn (PAYE)."),
+  S("Everyday","Tax","How do self-employed people pay their tax?",["Through PAYE, like employees","Through a system called self-assessment, which includes completing a tax return","Their clients deduct it at source","They pay National Insurance only"],1,"If you are self-employed, you need to pay your own tax through a system called self-assessment, which includes completing a tax return."),
+  S("Everyday","Tax","What does money raised from National Insurance Contributions pay for?",["Only the state retirement pension","Local council services","State benefits and services such as the state retirement pension and the NHS","Defence and foreign aid"],2,"The money raised from National Insurance Contributions is used to pay for state benefits and services such as the state retirement pension and the National Health Service (NHS)."),
+  S("Everyday","Tax","When are young people in the UK sent their National Insurance number?",["Just before their 14th birthday","Just before their 16th birthday","On their 18th birthday","When they start their first job"],1,"A National Insurance number is a unique personal account number. All young people in the UK are sent a National Insurance number just before their 16th birthday."),
+  S("Everyday","Tax","What happens if someone does not pay enough National Insurance Contributions?",["They are automatically fined by HMRC","They will not be able to receive certain contributory benefits such as Jobseeker's Allowance or a full state pension","Their employer becomes liable for the shortfall","Nothing — contributions are voluntary"],1,"Anyone who does not pay enough National Insurance Contributions will not be able to receive certain contributory benefits such as Jobseeker's Allowance or a full state retirement pension."),
+  S("Everyday","Food","Haggis is traditionally associated with which part of the UK?",["England","Wales","Scotland","Northern Ireland"],2,"Scotland: Haggis — a sheep's stomach stuffed with offal, suet, onions and oatmeal."),
+  S("Everyday","Food","What is an Ulster fry?",["A Welsh snack made from flour, dried fruits and spices","A fried meal with bacon, eggs, sausage, black and white pudding, tomatoes, mushrooms, soda bread and potato bread","Roast beef served with Yorkshire puddings","A Scottish dish of offal, suet, onions and oatmeal"],1,"Northern Ireland: Ulster fry — a fried meal with bacon, eggs, sausage, black pudding, white pudding, tomatoes, mushrooms, soda bread and potato bread."),
+  S("Everyday","Gardening","What is an allotment?",["A plot of land given free to every household","Additional land people rent to grow fruit and vegetables","A council-managed public park","A share of a community garden's produce"],1,"A lot of people have gardens at home. Some people rent additional land called an allotment, where they grow fruit and vegetables.")
+],
+ev2:[
+  S("Driving","Driving","What is the minimum age to drive a car or motor cycle in the UK?",["16","17","18","21"],1,"In the UK, you must be at least 17 years old to drive a car or motor cycle and you must have a driving licence to drive on public roads."),
+  S("Driving","Driving","What is the minimum age to ride a moped?",["14","15","16","17"],2,"You need to be at least 16 years old to ride a moped. There are other age requirements and special tests for driving large vehicles."),
+  M("Driving","Driving","What two tests must you pass to get a full UK driving licence?",["A driving theory test (multiple choice plus hazard perception)","A practical driving test","A written highway code essay","A vehicle maintenance test"],[0,1],"After applying for a provisional licence and finding an instructor, you must pass a driving theory test — which consists of a multiple choice theory test and a hazard perception test — and a practical driving test.","Select TWO"),
+  S("Driving","Driving","Drivers can use their driving licence until what age, after which it must be renewed every three years?",["65","70","75","80"],1,"Drivers can use their driving licence until they are 70 years old. After that, the licence is valid for three years at a time."),
+  S("Driving","Driving","In Northern Ireland, what must a newly qualified driver display, and for how long?",["A green 'P' plate for six months","An 'R' plate (restricted driver) for one year","An 'L' plate for one year","A yellow 'N' plate for two years"],1,"In Northern Ireland, a newly qualified driver must display an 'R' plate (for restricted driver) for one year after passing the test."),
+  S("Driving","Driving","If you hold a driving licence from a country outside the EU, Iceland, Liechtenstein or Norway, how long may you use it in the UK?",["Three months","Six months","Up to 12 months","Indefinitely, while it remains valid"],2,"If your driving licence is from a country in the EU, Iceland, Liechtenstein or Norway, you can drive in the UK for as long as your licence is valid. If you have a licence from any other country, you may use it for up to 12 months — to continue after that you must get a UK full driving licence."),
+  S("Driving","Driving","Where must a resident register their car or motor cycle?",["At their local council","At the Driver and Vehicle Licensing Agency (DVLA)","At a Post Office","With their insurance company"],1,"If you are resident in the UK, your car or motor cycle must be registered at the Driver and Vehicle Licensing Agency (DVLA). You must pay an annual road tax and have valid motor insurance."),
+  S("Driving","Driving","Driving without insurance is:",["A civil matter settled between drivers","A minor traffic offence with a fixed penalty","A serious criminal offence","Permitted for up to 14 days after buying a vehicle"],2,"You must have valid motor insurance. It is a serious criminal offence to drive without insurance."),
+  S("Driving","Driving","How old must a vehicle be before it needs an annual MOT test?",["Over one year old","Over two years old","Over three years old","Over five years old"],2,"If your vehicle is over three years old, you must take it for a Ministry of Transport (MOT) test every year. It is an offence not to have an MOT certificate if your vehicle is more than three years old."),
+  S("Law","Criminal Law","Carrying a weapon for self-defence is:",["Legal if it is not a firearm","Legal if you can prove a genuine threat","A criminal offence — it is an offence to carry a weapon of any kind, even for self-defence","Legal between the hours of 6am and 10pm"],2,"It is a criminal offence to carry a weapon of any kind, even if it is for self-defence. This includes a gun, a knife or anything that is made or adapted to cause injury."),
+  S("Law","Criminal Law","Selling tobacco products to anyone under what age is illegal?",["16","17","18","21"],2,"It is illegal to sell tobacco products — for example, cigarettes, cigars, roll-up tobacco — to anyone under the age of 18."),
+  S("Law","Criminal Law","Smoking tobacco products in enclosed public places is:",["Allowed in designated areas of all venues","Against the law in nearly every enclosed public place in the UK","Allowed before 11am","A matter for each business to decide"],1,"It is against the law to smoke tobacco products in nearly every enclosed public place in the UK. There are signs displayed to tell you where you cannot smoke."),
+  M("Law","Civil Law","Which of these are examples of civil law?",["Housing law, such as disputes between landlords and tenants","Consumer rights, such as a dispute about faulty goods","Carrying a weapon in public","Employment law, such as unfair dismissal","Debt — being taken to court over money owed"],[0,1,3,4],"Civil law is used to settle disputes between individuals or groups. Examples include housing law, consumer rights, employment law and debt. Carrying a weapon is criminal law.","Select FOUR"),
+  M("Law","Police","What are the three duties of the police in the UK?",["Protect life and property","Prevent disturbances (keeping the peace)","Prevent and detect crime","Collect fines and taxes"],[0,1,2],"The job of the police in the UK is to protect life and property, prevent disturbances (also known as keeping the peace), and prevent and detect crime.","Select THREE"),
+  S("Law","Police","How is the police service organised in the UK?",["As one single national force under the Home Secretary","Into a number of separate police forces headed by Chief Constables, independent of the government","Under the direct control of local councils","Under the Ministry of Justice"],1,"The police are organised into a number of separate police forces headed by Chief Constables. They are independent of the government."),
+  S("Law","Police","What do Police and Crime Commissioners (PCCs) do?",["They investigate complaints against officers","They set local police priorities and the local policing budget, and appoint the Chief Constable","They prosecute criminal cases in court","They train new police recruits"],1,"PCCs are directly elected individuals responsible for the delivery of an efficient and effective police force reflecting local community needs. They set local police priorities and the local policing budget, and appoint the Chief Constable."),
+  S("Law","Police","What does PCSO stand for?",["Police Chief Support Officer","Police Community Support Officer","Public Crime and Safety Officer","Police Civilian Service Operative"],1,"Police officers are supported by police community support officers (PCSOs). They usually patrol the streets, work with the public, and support police officers at crime scenes and major events."),
+  S("Law","Police","How can anyone make a complaint about the police?",["Only through a solicitor","By going to a police station or writing to the Chief Constable of the force involved","By contacting their MP","Only through the courts"],1,"Anyone can make a complaint about the police by going to a police station or writing to the Chief Constable of the police force involved. Complaints can also be made to an independent body."),
+  S("Law","Police","In Northern Ireland, complaints about the police can be made to which independent body?",["The Independent Police Complaints Commission","The Police Complaints Commissioner for Scotland","The Police Ombudsman for Northern Ireland","The Northern Ireland Human Rights Commission"],2,"Complaints can be made to an independent body: the Independent Police Complaints Commission in England and Wales, the Police Complaints Commissioner for Scotland, or the Police Ombudsman for Northern Ireland."),
+  S("Law","Police","What must a police officer tell you if you are arrested and taken to a police station?",["Nothing until a solicitor arrives","The reason for your arrest — and you will be able to seek legal advice","Only the name of the arresting officer","The likely sentence for the offence"],1,"If you are arrested and taken to a police station, a police officer will tell you the reason for your arrest and you will be able to seek legal advice.")
+],
+ev3:[
+  S("Courts","The Judiciary","What are judges responsible for?",["Making new laws","Interpreting the law and ensuring that trials are conducted fairly","Deciding government policy","Prosecuting criminal cases"],1,"Judges, together called the judiciary, are responsible for interpreting the law and ensuring that trials are conducted fairly. The government cannot interfere with this."),
+  S("Courts","The Judiciary","If judges find that the government has acted illegally, what happens?",["The government must either change its policies or ask Parliament to change the law","The judges are overruled by Parliament","The matter is referred to the monarch","Nothing — judges cannot rule against the government"],0,"Sometimes the actions of the government are claimed to be illegal. If the judges agree, then the government must either change its policies or ask Parliament to change the law."),
+  S("Courts","Criminal Courts","Where are most minor criminal cases heard in England, Wales and Northern Ireland?",["Crown Court","Magistrates' Court","County Court","High Court"],1,"In England, Wales and Northern Ireland, most minor criminal cases are dealt with in a Magistrates' Court. In Scotland, minor criminal offences go to a Justice of the Peace Court."),
+  S("Courts","Criminal Courts","In England, Wales and Scotland, magistrates and Justices of the Peace usually:",["Are paid professionals with legal qualifications","Work unpaid and do not need legal qualifications, but receive training and a legal adviser","Are appointed by the Home Secretary","Are elected by the local community"],1,"In England, Wales and Scotland magistrates and JPs usually work unpaid and do not need legal qualifications. They receive training and are supported by a legal adviser. In Northern Ireland, cases are heard by a District Judge or Deputy District Judge, who is legally qualified and paid."),
+  S("Courts","Criminal Courts","Where are serious criminal offences tried in Scotland?",["Magistrates' Court","Crown Court","Sheriff Court, or the High Court for the most serious cases","County Court"],2,"In Scotland, serious cases are heard in a Sheriff Court with either a sheriff or a sheriff with a jury. The most serious cases, such as murder, are heard at a High Court with a judge and jury."),
+  S("Courts","Juries","How many members are on a jury in England, Wales and Northern Ireland, and in Scotland?",["10 and 12","12 and 15","12 and 12","15 and 12"],1,"In England, Wales and Northern Ireland a jury has 12 members, and in Scotland a jury has 15 members."),
+  S("Courts","Juries","Who can be asked to serve on a jury?",["Anyone over 18 who volunteers","Anyone on the electoral register aged 18 to 70, selected at random","Only people who own property","Anyone aged 21 to 65 selected by the court"],1,"People on the electoral register are randomly selected to serve on a jury. Anyone who is on the electoral register and is aged 18 to 70 can be asked to do this."),
+  S("Courts","Juries","Everyone summoned for jury service must do it unless:",["They are self-employed","They are not eligible, or provide a good reason to be excused such as ill health","They have served before","Their employer objects"],1,"Everyone who is summoned to do jury service must do it unless they are not eligible — for example, because they have a criminal conviction — or they provide a good reason to be excused, such as ill health."),
+  S("Courts","Juries","In Scotland, what third verdict is possible in addition to guilty and not guilty?",["Not responsible","Not proven","Case dismissed","Insufficient evidence"],1,"The jury has to listen to the evidence and then decide a verdict of guilty or not guilty. In Scotland, a third verdict of not proven is also possible."),
+  S("Courts","Youth Courts","In England, Wales and Northern Ireland, cases against an accused person aged 10 to 17 are normally heard where?",["Crown Court","Magistrates' Court","A Youth Court, before up to three specially trained magistrates or a District Judge","A Family Court"],2,"If an accused person is aged 10 to 17, the case is normally heard in a Youth Court in front of up to three specially trained magistrates or a District Judge. The most serious cases go to the Crown Court."),
+  M("Courts","Youth Courts","Which TWO rules apply to Youth Courts?",["Members of the public are not allowed in","The parents or carers of the young person are expected to attend","The hearing must be held on a weekend","Juries of six are used"],[0,1],"The parents or carers of the young person are expected to attend the hearing. Members of the public are not allowed in Youth Courts, and the name or photographs of the accused young person cannot be published in newspapers or used by the media.","Select TWO"),
+  S("Courts","Youth Courts","What system does Scotland use to deal with children and young people who have committed an offence?",["Youth Courts","The Children's Hearings System","Youth conferencing","Juvenile Sheriff Courts"],1,"In Scotland a system called the Children's Hearings System is used to deal with children and young people who have committed an offence. Northern Ireland has a system of youth conferencing."),
+  S("Courts","Civil Courts","Which court deals with civil disputes such as debt, personal injury, family matters and divorce in England and Wales?",["Magistrates' Court","County Court","Crown Court","Tribunal Service"],1,"County Courts deal with a wide range of civil disputes, including people trying to get back money owed to them, personal injury, family matters, breaches of contract, and divorce. In Scotland, most of these matters are dealt with in the Sheriff Court."),
+  S("Courts","Civil Courts","Where are more serious civil cases heard in Scotland?",["The High Court","The Court of Session in Edinburgh","The Sheriff Court","The Supreme Court"],1,"More serious civil cases are dealt with in the High Court in England, Wales and Northern Ireland. In Scotland, they are dealt with in the Court of Session in Edinburgh."),
+  S("Courts","Small Claims","The small claims procedure is used for claims of less than how much in England and Wales?",["£5,000","£10,000","£25,000","£50,000"],1,"The small claims procedure is used for claims of less than £10,000 in England and Wales and £5,000 in Scotland and Northern Ireland. The hearing is held in front of a judge in an ordinary room."),
+  S("Courts","Legal Advice","Solicitors' charges are usually based on what?",["The value of the claim","How much time they spend on a case","A fixed national scale","The outcome of the case"],1,"Solicitors are trained lawyers who give advice on legal matters, take action for their clients and represent them in court. Solicitors' charges are usually based on how much time they spend on a case."),
+  S("Rights","Human Rights","In which year did the UK sign the European Convention on Human Rights?",["1945","1950","1973","1998"],1,"British diplomats and lawyers had an important role in drafting the European Convention on Human Rights and Fundamental Freedoms. The UK was one of the first countries to sign the Convention in 1950."),
+  M("Rights","Human Rights","Which of these are principles in the European Convention on Human Rights?",["Right to life","Prohibition of torture","Prohibition of slavery and forced labour","Right to a fair trial","Right to free housing"],[0,1,2,3],"Principles include the right to life, prohibition of torture, prohibition of slavery and forced labour, right to liberty and security, right to a fair trial, freedom of thought, conscience and religion, and freedom of expression.","Select FOUR"),
+  S("Rights","Human Rights","What did the Human Rights Act 1998 do?",["Created the European Court of Human Rights","Incorporated the European Convention on Human Rights into UK law","Replaced the Bill of Rights of 1689","Gave the UK an written constitution"],1,"The Human Rights Act 1998 incorporated the European Convention on Human Rights into UK law. The government, public bodies and the courts must follow the principles of the Convention."),
+  S("Rights","Equality","UK law protects people from unfair treatment on which grounds?",["Only race and sex","Age, disability, sex, pregnancy and maternity, race, religion or belief, sexuality and marital status","Only those listed in the Human Rights Act","Only in the workplace"],1,"UK laws ensure that people are not treated unfairly in any area of life or work because of their age, disability, sex, pregnancy and maternity, race, religion or belief, sexuality or marital status."),
+  S("Rights","Domestic Violence","Which statement about domestic violence in the UK is correct?",["It is a civil matter between partners","Anyone violent towards their partner can be prosecuted, whether man or woman, married or living together","It can only be prosecuted if the couple are married","Police can only act if there are visible injuries"],1,"In the UK, brutality and violence in the home is a serious crime. Anyone who is violent towards their partner — whether they are a man or woman, married or living together — can be prosecuted. Any man who forces a woman to have sex, including a woman's husband, can be charged with rape."),
+  S("Rights","FGM","Female genital mutilation (FGM) in the UK is:",["Legal if performed by a doctor","Legal with the consent of the family","Illegal — practising FGM or taking a girl or woman abroad for FGM is a criminal offence","Legal for adults over 18"],2,"Female genital mutilation, also known as cutting or female circumcision, is illegal in the UK. Practising FGM or taking a girl or woman abroad for FGM is a criminal offence."),
+  S("Rights","Forced Marriage","What is the difference between an arranged marriage and a forced marriage?",["There is no legal difference","In an arranged marriage both parties agree; in a forced marriage one or both cannot give consent — forcing someone to marry is a criminal offence","Arranged marriages are illegal in the UK","Forced marriage is legal if both families agree"],1,"Arranged marriages, where both parties agree to the marriage, are acceptable in the UK. Forced marriage is where one or both parties do not or cannot give their consent. Forcing another person to marry is a criminal offence."),
+  S("Rights","Forced Marriage","Someone who breaches a Forced Marriage Protection Order can be jailed for up to how long?",["Six months","One year","Two years for contempt of court","Five years"],2,"Forced Marriage Protection Orders were introduced in 2008 for England, Wales and Northern Ireland, and in Scotland in November 2011. Anyone found to have breached an order can be jailed for up to two years for contempt of court.")
+],
+ev4:[
+  S("Places","Landmarks","What is Big Ben?",["The clock tower at the Houses of Parliament","The great bell of the clock at the Houses of Parliament","The Houses of Parliament building","A statue on Westminster Bridge"],1,"Big Ben is the nickname for the great bell of the clock at the Houses of Parliament in London. Many people call the clock Big Ben as well. The clock is over 150 years old and is a popular tourist attraction."),
+  S("Places","Landmarks","The clock tower at the Houses of Parliament was renamed in 2012. What is it called?",["Victoria Tower","Jubilee Tower","Elizabeth Tower","Westminster Tower"],2,"The clock tower is named Elizabeth Tower in honour of Queen Elizabeth II's Diamond Jubilee in 2012."),
+  S("Places","Landmarks","Where is the Eden Project located?",["Devon","Cornwall","Somerset","Dorset"],1,"The Eden Project is located in Cornwall, in the south west of England. Its biomes, which are like giant greenhouses, house plants from all over the world. It is also a charity which runs environmental and social projects internationally."),
+  S("Places","Landmarks","The Giant's Causeway is located where, and what is it?",["North-east coast of Northern Ireland — columns made from volcanic lava","West coast of Scotland — basalt sea caves","North Wales — a glacial rock formation","Cornwall — a limestone arch"],0,"Located on the north-east coast of Northern Ireland, the Giant's Causeway is a land formation of columns made from volcanic lava. It was formed about 50 million years ago, and there are many legends about how it was formed."),
+  S("Places","Landmarks","How tall is the London Eye?",["135 feet (41 metres)","240 feet (73 metres)","443 feet (135 metres)","620 feet (189 metres)"],2,"The London Eye is situated on the southern bank of the River Thames and is a Ferris wheel that is 443 feet (135 metres) tall. It was originally built as part of the UK's celebration of the new millennium and continues to be an important part of New Year celebrations."),
+  S("Places","Landmarks","Snowdonia is a national park in which part of the UK, and what is its best-known landmark?",["South Wales — Pen y Fan","North Wales — Snowdon, the highest mountain in Wales","The Scottish Highlands — Ben Nevis","Northern Ireland — Slieve Donard"],1,"Snowdonia is a national park in North Wales covering 838 square miles (2,170 square kilometres). Its most well-known landmark is Snowdon, which is the highest mountain in Wales."),
+  S("Places","Landmarks","Who gives tours at the Tower of London?",["Chelsea Pensioners","Yeoman Warders, also known as Beefeaters","Royal Guards","National Trust volunteers"],1,"The Tower of London was first built by William the Conqueror after he became king in 1066. Tours are given by the Yeoman Warders, also known as Beefeaters, who tell visitors about the building's history. People can also see the Crown Jewels there."),
+  S("Places","Landmarks","Edinburgh Castle is looked after by which organisation?",["The National Trust for Scotland","Historic Scotland, a Scottish government agency","English Heritage","The Scottish Parliament"],1,"The Castle is a dominant feature of the skyline in Edinburgh, Scotland. It has a long history dating back to the early Middle Ages, and is looked after by Historic Scotland, a Scottish government agency."),
+  S("Places","National Parks","What is England's largest national park?",["Snowdonia","The Lake District","The Peak District","Loch Lomond and the Trossachs"],1,"The Lake District is England's largest national park. It covers 885 square miles (2,292 square kilometres) and is famous for its lakes and mountains. The biggest stretch of water is Windermere."),
+  S("Places","National Parks","In 2007, television viewers voted which Lake District location Britain's favourite view?",["Windermere","Derwentwater","Wastwater","Ullswater"],2,"The biggest stretch of water in the Lake District is Windermere. In 2007, television viewers voted Wastwater as Britain's favourite view."),
+  S("Places","National Parks","Loch Lomond is notable for being what?",["The deepest loch in Scotland","The largest expanse of fresh water in mainland Britain","The site of the Battle of Bannockburn","Scotland's only national park"],1,"Loch Lomond and the Trossachs National Park covers 720 square miles in the west of Scotland. Loch Lomond is the largest expanse of fresh water in mainland Britain and probably the best-known part of the park."),
+  S("Places","National Parks","How many national parks are there in England, Wales and Scotland?",["10","12","15","20"],2,"There are 15 national parks in England, Wales and Scotland. They are areas of protected countryside that everyone can visit, and where people live, work and look after the landscape."),
+  S("Places","National Trust","When was the National Trust founded, and by whom?",["1895, by three volunteers","1920, by an Act of Parliament","1875, by Queen Victoria","1945, by the post-war government"],0,"The National Trust was founded in 1895 by three volunteers. There are now more than 61,000 volunteers helping to keep the organisation running. It is a charity that works to preserve important buildings, coastline and countryside."),
+  S("Places","Gardens","Which famous garden is in Northern Ireland?",["Kew Gardens","Bodnant Garden","Mount Stewart","Crathes Castle"],2,"There are famous gardens throughout the UK, including Kew Gardens, Sissinghurst and Hidcote in England, Crathes Castle and Inveraray Castle in Scotland, Bodnant Garden in Wales, and Mount Stewart in Northern Ireland."),
+  S("Places","Gardens","The annual Chelsea Flower Show showcases what?",["Only British wildflowers","Garden design from Britain and around the world","Fruit and vegetable growing competitions","Historic landscape paintings"],1,"Gardens continue to be an important part of homes in the UK. The annual Chelsea Flower Show showcases garden design from Britain and around the world.")
+],
+ev5:[
+  M("Community","Responsibilities","Which of these are shared values and responsibilities expected of everyone in the UK?",["To obey and respect the law","To treat others with fairness","To respect and preserve the environment","To vote in local and national government elections","To join a political party"],[0,1,2,3],"Shared values and responsibilities include: to obey and respect the law, be aware of the rights of others and respect those rights, treat others with fairness, behave responsibly, help and protect your family, respect and preserve the environment, treat everyone equally, work to provide for yourself and your family, help others, and vote in local and national government elections.","Select FOUR"),
+  S("Community","Good Neighbour","How can you help prevent problems with neighbours?",["By keeping entirely to yourself","By respecting their privacy, limiting noise, keeping your garden tidy, and only putting bins out when due for collection","By installing security cameras","By agreeing a written contract with them"],1,"You can help prevent problems and conflicts with your neighbours by respecting their privacy and limiting how much noise you make. Also try to keep your garden tidy, and only put your refuse bags and bins on the street or in communal areas if they are due to be collected."),
+  S("Community","School Governors","What is the minimum age to be a school governor or school board member?",["16","18 at the date of election or appointment, with no upper age limit","21","25, with an upper limit of 70"],1,"School governors, or members of the school board in Scotland, must be aged 18 or over at the date of their election or appointment. There is no upper age limit."),
+  M("Community","School Governors","What are the three key roles of school governors?",["Setting the strategic direction of the school","Ensuring accountability","Monitoring and evaluating school performance","Teaching classes when staff are absent"],[0,1,2],"Governors and school boards have an important part to play in raising school standards. They have three key roles: setting the strategic direction of the school, ensuring accountability, and monitoring and evaluating school performance.","Select THREE"),
+  S("Community","School Governors","In England, where can you apply online to become a school governor?",["The Department for Education website","The School Governors' One-Stop Shop","Gov.uk careers portal","The local council website only"],1,"You can contact your local school to ask if they need a new governor or school board member. In England, you can also apply online at the School Governors' One-Stop Shop."),
+  S("Community","Politics","What is canvassing?",["Counting votes at a polling station","Members of political parties handing out leaflets or knocking on doors to ask for support","Registering new voters","Conducting an opinion poll"],1,"Political parties are particularly busy at election times. Members work hard to persuade people to vote for their candidates — by handing out leaflets in the street or knocking on people's doors and asking for their support. This is called canvassing. You don't have to tell a canvasser how you intend to vote."),
+  S("Community","Politics","Who can stand for office as an MP in the UK?",["Only British citizens","British citizens, and in some cases Irish citizens and eligible Commonwealth citizens","Any UK resident over 18","Only those nominated by a major party"],1,"British citizens can stand for office as a local councillor, MP or member of the European Parliament. You may also be able to stand if you are an Irish citizen, an eligible Commonwealth citizen or — except for standing to be an MP — a citizen of another EU country."),
+  M("Community","Standing for Office","Which groups cannot stand for public office?",["Members of the armed forces","Civil servants","People found guilty of certain criminal offences","People aged over 70"],[0,1,2],"Most citizens of the UK, the Irish Republic or the Commonwealth aged 18 or over can stand for public office. Exceptions include members of the armed forces, civil servants, and people found guilty of certain criminal offences.","Select THREE"),
+  S("Community","Volunteering","Roughly how long does giving blood take?",["About 15 minutes","About an hour","About three hours","A full morning"],1,"Donated blood is used by hospitals to help people with a wide range of injuries and illnesses. Giving blood only takes about an hour to do."),
+  S("Community","Volunteering","Why is registering as an organ donor helpful?",["It guarantees priority if you need a transplant","It makes it easier for your family to decide whether to donate your organs when you die","It is legally required for all adults","It reduces your NHS prescription charges"],1,"Many people in the UK are waiting for organ transplants. If you register to be an organ donor, it can make it easier for your family to decide whether to donate your organs when you die. Living people can also donate a kidney."),
+  S("Community","Volunteering","The National Citizen Service programme is for which age group?",["14- and 15-year-olds","16- and 17-year-olds","18- to 21-year-olds","All ages"],1,"The National Citizen Service programme gives 16- and 17-year-olds the opportunity to enjoy outdoor activities, develop their skills and take part in a community project."),
+  S("Community","Charities","Which of these is a charity working with the homeless?",["PDSA","Age UK","Crisis","Cancer Research UK"],2,"Charities include those working with older people (Age UK), with children (the NSPCC), and with the homeless (Crisis and Shelter). There are also medical research charities (Cancer Research UK), environmental charities (the National Trust and Friends of the Earth) and animal charities (PDSA)."),
+  M("Community","Charities","Which TWO of these are environmental charities?",["Crisis","The National Trust","Friends of the Earth","NSPCC"],[1,2],"Environmental charities include the National Trust and Friends of the Earth. Crisis works with the homeless and the NSPCC works with children.","Select TWO"),
+  S("Community","Environment","Why is shopping for products locally a good way to support your community?",["It is always cheaper","It helps local businesses and farmers and reduces your carbon footprint","It is required by law in some areas","It qualifies you for a council tax discount"],1,"A good way to support your local community is to shop for products locally where you can. This will help businesses and farmers in your area and in Britain. It will also reduce your carbon footprint, because the products will not have had to travel as far."),
+  S("Community","Environment","Why is recycling beneficial?",["It is the only legal way to dispose of waste","Using recycled materials uses less energy, means fewer raw materials are extracted, and reduces landfill","It generates income for households","It is required to obtain a council tax rebate"],1,"It is important to recycle as much of your waste as you can. Using recycled materials to make new products uses less energy and means that we do not need to extract more raw materials from the earth. It also means less rubbish is created, so the amount going to landfill is reduced.")
 ]
 };
 
@@ -537,6 +652,7 @@ let activeQ=[],cur=0,score=0,answered=false,wrongs=[],isMock=false,timerInterval
 // ── INIT ───────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('statTotal').textContent=allQ.length;
+  document.getElementById('statTopics').textContent=Object.keys(TOPICS).length;
   buildTopicGrid();
 });
 
@@ -565,46 +681,39 @@ function startMockExam(examNum){
   isMock=true;
   lastTopicKey='mock'+examNum;
 
-  // 3 curated mock exams — each 24 questions, balanced across all chapters
-  // Format: [topicKey, indexInTopic]
-  const mockSets={
-    1:[
-      ['ch1',0],['ch1',4],
-      ['ch2',0],['ch2',3],
-      ['ch3a',6],['ch3a',8],['ch3b',0],['ch3b',6],
-      ['ch3c',0],['ch3c',4],['ch3d',0],['ch3d',8],
-      ['ch3e',0],['ch3e',14],['ch3f',0],['ch3f',2],
-      ['ch4a',0],['ch4b',2],['ch4b',5],
-      ['ch4c',2],['ch4c',10],
-      ['ch4d',4],
-      ['ch5a',4],['ch5b',0]
-    ],
-    2:[
-      ['ch1',1],['ch1',8],
-      ['ch2',1],['ch2',5],
-      ['ch3a',1],['ch3a',11],['ch3b',2],['ch3b',8],
-      ['ch3c',2],['ch3c',7],['ch3d',2],['ch3d',9],
-      ['ch3e',2],['ch3e',10],['ch3f',1],['ch3f',9],
-      ['ch4a',2],['ch4b',0],['ch4b',11],
-      ['ch4c',0],['ch4c',11],
-      ['ch4d',0],
-      ['ch5a',5],['ch5b',5]
-    ],
-    3:[
-      ['ch1',2],['ch1',9],
-      ['ch2',2],['ch2',6],
-      ['ch3a',3],['ch3a',9],['ch3b',3],['ch3b',11],
-      ['ch3c',3],['ch3c',8],['ch3d',3],['ch3d',10],
-      ['ch3e',1],['ch3e',12],['ch3f',3],['ch3f',11],
-      ['ch4a',3],['ch4b',1],['ch4b',13],
-      ['ch4c',3],['ch4c',12],
-      ['ch4d',6],
-      ['ch5a',6],['ch5b',7]
-    ]
-  };
+  // Each mock draws 24 questions spread across every topic, like the real test.
+  // A per-exam seed makes Mock 1/2/3 pull different questions, and each exam
+  // reshuffles within its own slice on every retake.
+  const keys=Object.keys(qBank);
+  const picked=[];
+  const used=new Set();
 
-  const set=mockSets[examNum]||mockSets[1];
-  activeQ=shuffle(set.map(([k,i])=>qBank[k][i]).filter(Boolean));
+  // Round-robin across topics until we have 24, offsetting the start point per exam
+  let round=0;
+  while(picked.length<24 && round<40){
+    for(const k of keys){
+      if(picked.length>=24) break;
+      const bank=qBank[k];
+      if(!bank||!bank.length) continue;
+      // offset by exam number so each mock starts at a different place in each bank
+      const idx=((examNum-1)*7 + round*3) % bank.length;
+      const id=k+':'+idx;
+      if(used.has(id)) continue;
+      used.add(id);
+      picked.push(bank[idx]);
+    }
+    round++;
+  }
+
+  // Top up from anywhere if a gap remains
+  if(picked.length<24){
+    for(const q of shuffle(allQ)){
+      if(picked.length>=24) break;
+      if(!picked.includes(q)) picked.push(q);
+    }
+  }
+
+  activeQ=shuffle(picked.slice(0,24));
   launch();
 
   // Start 45-min timer
@@ -633,7 +742,7 @@ function launch(){
   document.getElementById('quiz').style.display='block';
   document.getElementById('scoreBadge').style.display='flex';
   document.getElementById('hdrHomeBtn').style.display='flex';
-  document.getElementById('timelineLink').style.display='none';
+  document.getElementById('navLinks').style.display='none';
   renderQ();
 }
 
@@ -747,7 +856,7 @@ function goHome(){
   document.getElementById('timerBadge').style.display='none';
   document.getElementById('timerBadge').style.background='#ef4444';
   document.getElementById('hdrHomeBtn').style.display='none';
-  document.getElementById('timelineLink').style.display='inline-flex';
+  document.getElementById('navLinks').style.display='flex';
   document.getElementById('home').style.display='block';
 }
 
